@@ -1,0 +1,1725 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"AddOnSlug": {
+				"type": "string",
+				"enum": [
+					"oven",
+					"fridge",
+					"windows",
+					"chairs"
+				]
+			},
+			"AddOn": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"slug": {
+						"$ref": "#/components/schemas/AddOnSlug"
+					},
+					"hours_added": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug",
+					"hours_added"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"FrequencyOption": {
+				"type": "string",
+				"enum": [
+					"one-off",
+					"2-3-times-a-week",
+					"every-week",
+					"every-2-weeks"
+				]
+			},
+			"PricingConfig": {
+				"properties": {
+					"hourly_rate": {
+						"type": "number",
+						"format": "double"
+					},
+					"cleaning_products_fee": {
+						"type": "number",
+						"format": "double"
+					},
+					"service_fee": {
+						"type": "number",
+						"format": "double"
+					},
+					"weekend_surcharge": {
+						"type": "number",
+						"format": "double"
+					},
+					"currency": {
+						"type": "string",
+						"enum": [
+							"GBP"
+						],
+						"nullable": false
+					},
+					"add_ons": {
+						"items": {
+							"$ref": "#/components/schemas/AddOn"
+						},
+						"type": "array"
+					},
+					"frequencies": {
+						"items": {
+							"$ref": "#/components/schemas/FrequencyOption"
+						},
+						"type": "array"
+					},
+					"cleaning_products_note": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"hourly_rate",
+					"cleaning_products_fee",
+					"service_fee",
+					"weekend_surcharge",
+					"currency",
+					"add_ons",
+					"frequencies",
+					"cleaning_products_note"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleaningProducts": {
+				"type": "string",
+				"enum": [
+					"bring",
+					"provide"
+				]
+			},
+			"DayOfWeek": {
+				"type": "string",
+				"enum": [
+					"monday",
+					"tuesday",
+					"wednesday",
+					"thursday",
+					"friday",
+					"saturday",
+					"sunday"
+				]
+			},
+			"QuoteLineItem": {
+				"properties": {
+					"label": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"label",
+					"amount"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QuoteResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"postcode": {
+						"type": "string"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"add_ons": {
+						"items": {
+							"$ref": "#/components/schemas/AddOnSlug"
+						},
+						"type": "array"
+					},
+					"hours": {
+						"type": "number",
+						"format": "double"
+					},
+					"cleaning_products": {
+						"$ref": "#/components/schemas/CleaningProducts"
+					},
+					"frequency": {
+						"$ref": "#/components/schemas/FrequencyOption"
+					},
+					"preferred_days": {
+						"items": {
+							"$ref": "#/components/schemas/DayOfWeek"
+						},
+						"type": "array"
+					},
+					"line_items": {
+						"items": {
+							"$ref": "#/components/schemas/QuoteLineItem"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"currency": {
+						"type": "string",
+						"enum": [
+							"GBP"
+						],
+						"nullable": false
+					},
+					"recommended_hours": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"postcode",
+					"rooms",
+					"bathrooms",
+					"add_ons",
+					"hours",
+					"cleaning_products",
+					"frequency",
+					"preferred_days",
+					"line_items",
+					"total",
+					"currency",
+					"recommended_hours"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ErrorResponse": {
+				"properties": {
+					"error": {
+						"properties": {
+							"details": {},
+							"message": {
+								"type": "string"
+							},
+							"code": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"message",
+							"code"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"error"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QuoteRequest": {
+				"properties": {
+					"postcode": {
+						"type": "string",
+						"description": "Valid UK postcode e.g. DE1 1AA"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double",
+						"description": "Number of rooms to clean (1–20)"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double",
+						"description": "Number of bathrooms (0–10)"
+					},
+					"add_ons": {
+						"items": {
+							"$ref": "#/components/schemas/AddOnSlug"
+						},
+						"type": "array",
+						"description": "Selected add-on services"
+					},
+					"hours": {
+						"type": "number",
+						"format": "double",
+						"description": "Duration in hours. Valid values: 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0"
+					},
+					"cleaning_products": {
+						"$ref": "#/components/schemas/CleaningProducts",
+						"description": "'bring' = Fada provides sprays and cloths (not mops, buckets, or vacuums). 'provide' = customer provides all products."
+					},
+					"frequency": {
+						"$ref": "#/components/schemas/FrequencyOption"
+					},
+					"preferred_days": {
+						"items": {
+							"$ref": "#/components/schemas/DayOfWeek"
+						},
+						"type": "array"
+					},
+					"email": {
+						"type": "string"
+					},
+					"newsletter_opt_in": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"postcode",
+					"rooms",
+					"bathrooms",
+					"hours",
+					"cleaning_products",
+					"frequency",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QuoteScheduleResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"preferred_date": {
+						"type": "string"
+					},
+					"preferred_time": {
+						"type": "string"
+					},
+					"weekend_surcharge": {
+						"type": "number",
+						"format": "double",
+						"description": "Additional charge of £10 applied when booking falls on Friday, Saturday, or Sunday"
+					},
+					"final_total": {
+						"type": "number",
+						"format": "double"
+					},
+					"currency": {
+						"type": "string",
+						"enum": [
+							"GBP"
+						],
+						"nullable": false
+					}
+				},
+				"required": [
+					"id",
+					"preferred_date",
+					"preferred_time",
+					"weekend_surcharge",
+					"final_total",
+					"currency"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QuoteScheduleRequest": {
+				"properties": {
+					"preferred_date": {
+						"type": "string",
+						"description": "ISO date string (YYYY-MM-DD). Must be a future date."
+					},
+					"preferred_time": {
+						"type": "string",
+						"description": "Arrival time slot. 30-min intervals between 09:00 and 17:00 e.g. \"10:00\""
+					}
+				},
+				"required": [
+					"preferred_date",
+					"preferred_time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ContactMessageResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ContactMessageRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"source": {
+						"type": "string",
+						"enum": [
+							"about",
+							"locations",
+							"quote",
+							"cleaning_with_fada",
+							"cleaner_registration",
+							"other"
+						],
+						"description": "Which page or flow the message came from"
+					}
+				},
+				"required": [
+					"email",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ServiceRequestResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ServiceRequestBody": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"service_description": {
+						"type": "string"
+					},
+					"preferred_date": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"service_description"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Service": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"updated_at": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"icon_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"display_order": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"created_at",
+					"updated_at",
+					"title",
+					"slug",
+					"description",
+					"image_url",
+					"icon_url",
+					"display_order"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PaginationMeta": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_Service_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Service"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"BlogCategory": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_BlogCategory_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/BlogCategory"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"BlogPost": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					},
+					"excerpt": {
+						"type": "string",
+						"nullable": true
+					},
+					"content": {
+						"type": "string"
+					},
+					"cover_image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"author": {
+						"type": "string",
+						"nullable": true
+					},
+					"published_at": {
+						"type": "string",
+						"nullable": true
+					},
+					"category_name": {
+						"type": "string",
+						"nullable": true
+					},
+					"category_slug": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"created_at",
+					"title",
+					"slug",
+					"excerpt",
+					"content",
+					"cover_image_url",
+					"author",
+					"published_at",
+					"category_name",
+					"category_slug"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_BlogPost_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/BlogPost"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Faq": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"question": {
+						"type": "string"
+					},
+					"answer": {
+						"type": "string"
+					},
+					"display_order": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"question",
+					"answer",
+					"display_order"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_Faq_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Faq"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CostGuide": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					},
+					"excerpt": {
+						"type": "string",
+						"nullable": true
+					},
+					"published_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"slug",
+					"excerpt",
+					"published_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_CostGuide_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/CostGuide"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CostGuidePricingRow": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_category": {
+						"type": "string"
+					},
+					"rate": {
+						"type": "string"
+					},
+					"explanation": {
+						"type": "string",
+						"nullable": true
+					},
+					"display_order": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"service_category",
+					"rate",
+					"explanation",
+					"display_order"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CostGuideDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"slug": {
+						"type": "string"
+					},
+					"excerpt": {
+						"type": "string",
+						"nullable": true
+					},
+					"published_at": {
+						"type": "string",
+						"nullable": true
+					},
+					"content": {
+						"type": "string"
+					},
+					"pricing_table": {
+						"items": {
+							"$ref": "#/components/schemas/CostGuidePricingRow"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"slug",
+					"excerpt",
+					"published_at",
+					"content",
+					"pricing_table"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Location": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"region": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"region",
+					"country",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_Location_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Location"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AuthResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"email",
+					"token",
+					"refresh_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RegisterRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"description": "Minimum 8 characters, must include at least one number"
+					},
+					"service_type": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"first_name",
+					"email",
+					"password",
+					"service_type"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"LoginResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"token",
+					"refresh_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"LoginRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ForgotPasswordResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ForgotPasswordRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": true
+			}
+		},
+		"securitySchemes": {
+			"BearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "fada-lustre-api",
+		"version": "1.0.0",
+		"description": "Backend API for Fada Lustre — a professional cleaning marketplace based in Derby, UK.",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Fada Lustre",
+			"email": "marketing@fadalustre.com"
+		}
+	},
+	"paths": {
+		"/v1/pricing": {
+			"get": {
+				"operationId": "GetPricing",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PricingConfig"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns all pricing configuration: hourly rate, fees, add-ons, and frequency options.\nThe frontend should call this before rendering the quote form.",
+				"tags": [
+					"Quotes & Pricing"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/quotes": {
+			"post": {
+				"operationId": "CreateQuote",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/QuoteResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Step 1 of 2 — Submit cleaning details and receive an instant quote estimate.\nAfter receiving the quote ID, proceed to PATCH /v1/quotes/{id}/schedule to select a date and time.",
+				"tags": [
+					"Quotes & Pricing"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/QuoteRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/quotes/{id}/schedule": {
+			"post": {
+				"operationId": "ScheduleQuote",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/QuoteScheduleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Quote not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Step 2 of 2 — Attach a preferred date and arrival time to an existing quote.\nFriday, Saturday, and Sunday bookings incur a £10 weekend surcharge.",
+				"tags": [
+					"Quotes & Pricing"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/QuoteScheduleRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/contact-messages": {
+			"post": {
+				"operationId": "SubmitContactMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContactMessageResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Submit a contact message. Used on the Contact Us, About, Locations, and Cleaning with Fada pages.",
+				"tags": [
+					"Contact"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ContactMessageRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/service-requests": {
+			"post": {
+				"operationId": "SubmitServiceRequest",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Submit a custom service request. Used on the Services page \"Request Service\" CTA.",
+				"tags": [
+					"Service Requests"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ServiceRequestBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/services": {
+			"get": {
+				"operationId": "ListServices",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_Service_"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all active cleaning services. Supports optional search by title.",
+				"tags": [
+					"Services"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/services/{slug}": {
+			"get": {
+				"operationId": "GetService",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Service"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Service not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single service by its URL slug.",
+				"tags": [
+					"Services"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "slug",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/blog/categories": {
+			"get": {
+				"operationId": "ListCategories",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_BlogCategory_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all blog categories.",
+				"tags": [
+					"Blog"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/blog/posts": {
+			"get": {
+				"operationId": "ListPosts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_BlogPost_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List blog posts. Filterable by category slug, searchable by title/excerpt.",
+				"tags": [
+					"Blog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/blog/posts/{slug}": {
+			"get": {
+				"operationId": "GetPost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BlogPost"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Post not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single blog post by its URL slug.",
+				"tags": [
+					"Blog"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "slug",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/faqs": {
+			"get": {
+				"operationId": "ListFaqs",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_Faq_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all FAQs. Supports optional search by question text.",
+				"tags": [
+					"FAQs"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cost-guides": {
+			"get": {
+				"operationId": "ListCostGuides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_CostGuide_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all cost guides (summary view).",
+				"tags": [
+					"Cost Guides"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/cost-guides/{slug}": {
+			"get": {
+				"operationId": "GetCostGuide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CostGuideDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Cost guide not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single cost guide by slug, including the full pricing table.",
+				"tags": [
+					"Cost Guides"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "slug",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/locations": {
+			"get": {
+				"operationId": "ListLocations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_Location_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all active service locations.",
+				"tags": [
+					"Locations"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/v1/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Email already registered",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Register a new customer account.\nPassword must be at least 8 characters and include at least one number.",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LoginResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid credentials",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Log in with email and password. Returns a JWT access token and refresh token.",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/forgot-password": {
+			"post": {
+				"operationId": "ForgotPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ForgotPasswordResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Initiate a password reset. Always returns a generic success response to prevent user enumeration.",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ForgotPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"501": {
+						"description": "Not implemented",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Exchange a refresh token for a new access token.",
+				"tags": [
+					"Auth"
+				],
+				"deprecated": true,
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

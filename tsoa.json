@@ -1,0 +1,30 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "ignore",
+  "controllerPathGlobs": ["src/controllers/**/*.ts"],
+  "spec": {
+    "outputDirectory": "public",
+    "specVersion": 3,
+    "title": "Fada Lustre API",
+    "version": "1.0.0",
+    "description": "Backend API for Fada Lustre — a professional cleaning marketplace based in Derby, UK.",
+    "contact": {
+      "name": "Fada Lustre",
+      "email": "marketing@fadalustre.com"
+    },
+    "license": "MIT",
+    "basePath": "/",
+    "schemes": ["https", "http"],
+    "securityDefinitions": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "src",
+    "middleware": "express"
+  }
+}
