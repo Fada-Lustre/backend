@@ -64,7 +64,12 @@ app.use(
   }
 );
 
-app.listen(PORT, () => {
-  console.log(`Fada Lustre API running on port ${PORT}`);
-  console.log(`Swagger UI: http://localhost:${PORT}/docs`);
-});
+// Only bind to a port when running locally — Vercel handles this in production
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Fada Lustre API running on port ${PORT}`);
+    console.log(`Swagger UI: http://localhost:${PORT}/docs`);
+  });
+}
+
+export default app;
