@@ -38,7 +38,13 @@ app.get("/ready", async (_req: Request, res: Response) => {
 });
 
 // --- Swagger UI ---
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, {
+  customCssUrl: "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
+  customJs: [
+    "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
+    "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-standalone-preset.js",
+  ],
+}));
 app.get("/docs.json", (_req: Request, res: Response) => {
   res.json(swaggerDoc);
 });
