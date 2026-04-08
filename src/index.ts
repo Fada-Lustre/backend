@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
+import swaggerDoc from "../public/swagger.json";
 import { ApplicationError, WrapperError } from "./errors";
 import { env } from "./env";
 import db from "./db";
@@ -37,8 +38,6 @@ app.get("/ready", async (_req: Request, res: Response) => {
 });
 
 // --- Swagger UI ---
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const swaggerDoc = require("../public/swagger.json");
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.get("/docs.json", (_req: Request, res: Response) => {
   res.json(swaggerDoc);

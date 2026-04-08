@@ -8,8 +8,8 @@ const pool = new Pool({
   password: env.DB_PASSWORD,
   port: env.DB_PORT,
   ssl: env.DB_SSL ? { rejectUnauthorized: true } : false,
-  max: 10,
-  idleTimeoutMillis: 30000,
+  max: process.env.VERCEL ? 1 : 10,
+  idleTimeoutMillis: process.env.VERCEL ? 10000 : 30000,
   connectionTimeoutMillis: 5000,
 });
 

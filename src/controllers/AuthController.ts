@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Route, Tags, Response, SuccessResponse } from "tsoa";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import db from "../db";
 import { env } from "../env";
