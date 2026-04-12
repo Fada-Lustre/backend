@@ -25,6 +25,7 @@ export class AuthController extends Controller {
     if (!passwordValid) {
       this.setStatus(400);
       throw Object.assign(new Error("Invalid password"), {
+        status: 400,
         error: {
           code: "VALIDATION_ERROR",
           message: "Password must be at least 8 characters and include at least one number",
@@ -45,6 +46,7 @@ export class AuthController extends Controller {
       if (err?.code === "23505") {
         this.setStatus(409);
         throw Object.assign(new Error("Email already exists"), {
+          status: 409,
           error: { code: "DUPLICATE", message: "An account with this email already exists" },
         });
       }
@@ -77,6 +79,7 @@ export class AuthController extends Controller {
     if (rows.length === 0) {
       this.setStatus(401);
       throw Object.assign(new Error("Invalid credentials"), {
+        status: 401,
         error: { code: "AUTH_FAILED", message: "Invalid credentials" },
       });
     }
@@ -87,6 +90,7 @@ export class AuthController extends Controller {
     if (!isMatch) {
       this.setStatus(401);
       throw Object.assign(new Error("Invalid credentials"), {
+        status: 401,
         error: { code: "AUTH_FAILED", message: "Invalid credentials" },
       });
     }

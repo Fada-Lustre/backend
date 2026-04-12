@@ -39,6 +39,7 @@ export class ServicesController extends Controller {
     if (rows.length === 0) {
       this.setStatus(404);
       throw Object.assign(new Error("Service not found"), {
+        status: 404,
         error: { code: "NOT_FOUND", message: "Service not found" },
       });
     }
@@ -127,6 +128,7 @@ export class BlogController extends Controller {
     if (rows.length === 0) {
       this.setStatus(404);
       throw Object.assign(new Error("Post not found"), {
+        status: 404,
         error: { code: "NOT_FOUND", message: "Post not found" },
       });
     }
@@ -181,6 +183,7 @@ export class CostGuidesController extends Controller {
     if (rows.length === 0) {
       this.setStatus(404);
       throw Object.assign(new Error("Cost guide not found"), {
+        status: 404,
         error: { code: "NOT_FOUND", message: "Cost guide not found" },
       });
     }

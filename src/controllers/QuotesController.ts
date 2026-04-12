@@ -51,14 +51,14 @@ export class QuotesController extends Controller {
   @Response<ErrorResponse>(500, "Server error")
   public async createQuote(@Body() body: QuoteRequest): Promise<QuoteResponse> {
     if (!UK_POSTCODE_RE.test(body.postcode)) {
-      this.setStatus(400);
       throw Object.assign(new Error("Invalid UK postcode"), {
+        status: 400,
         error: { code: "VALIDATION_ERROR", message: "Invalid UK postcode" },
       });
     }
     if (!VALID_HOURS.includes(body.hours)) {
-      this.setStatus(400);
       throw Object.assign(new Error("Invalid hours value"), {
+        status: 400,
         error: { code: "VALIDATION_ERROR", message: `Hours must be one of: ${VALID_HOURS.join(", ")}` },
       });
     }
@@ -129,22 +129,22 @@ export class QuotesController extends Controller {
     @Body() body: QuoteScheduleRequest
   ): Promise<QuoteScheduleResponse> {
     if (!VALID_TIMES.includes(body.preferred_time)) {
-      this.setStatus(400);
       throw Object.assign(new Error("Invalid time slot"), {
+        status: 400,
         error: { code: "VALIDATION_ERROR", message: "preferred_time must be a 30-min slot between 09:00 and 17:00" },
       });
     }
     if (isNaN(Date.parse(body.preferred_date)) || new Date(body.preferred_date) <= new Date()) {
-      this.setStatus(400);
       throw Object.assign(new Error("Invalid date"), {
+        status: 400,
         error: { code: "VALIDATION_ERROR", message: "preferred_date must be a valid future date (YYYY-MM-DD)" },
       });
     }
 
     const existing = await db.query("SELECT id, total FROM quotes WHERE id = $1", [id]);
     if (existing.length === 0) {
-      this.setStatus(404);
       throw Object.assign(new Error("Quote not found"), {
+        status: 404,
         error: { code: "NOT_FOUND", message: "Quote not found" },
       });
     }
