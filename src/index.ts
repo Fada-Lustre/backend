@@ -55,8 +55,14 @@ RegisterRoutes(app);
 // --- Error Handler (must be last) ---
 app.use(
   (err: any, _req: Request, res: Response, _next: NextFunction): void => {
-    if (err?.error) {
-      // tsoa and controller-thrown structured errors
+    if (err?.fields) {
+      // TSOA ValidateError — request body/query/path validation failed
+      res.status(err.status ?? 400).json({
+        code: "VALIDATION_ERROR",
+        message: "Validation failed",
+        details: err.fields,
+      });
+    } else if (err?.error) {
       res.status(err.status ?? 500).json(err.error);
     } else if (err instanceof ApplicationError) {
       res.status(err.statusCode).json({ code: "APP_ERROR", message: err.message });
