@@ -11,6 +11,22 @@ const VALID_TIMES = [
 ];
 const UK_POSTCODE_RE = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
 
+function extractTime(raw: string): string | null {
+  if (/^\d{2}:\d{2}$/.test(raw)) return raw;
+  const parsed = new Date(raw);
+  if (isNaN(parsed.getTime())) return null;
+  const hh = String(parsed.getUTCHours()).padStart(2, "0");
+  const mm = String(parsed.getUTCMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+
+function extractDate(raw: string): string | null {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  const parsed = new Date(raw);
+  if (isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().split("T")[0] as string;
+}
+
 @Route("v1")
 @Tags("Quotes & Pricing")
 export class QuotesController extends Controller {
@@ -128,18 +144,24 @@ export class QuotesController extends Controller {
     @Path() id: string,
     @Body() body: QuoteScheduleRequest
   ): Promise<QuoteScheduleResponse> {
-    if (!VALID_TIMES.includes(body.preferred_time)) {
+    const time = extractTime(body.preferred_time);
+    if (!time || !VALID_TIMES.includes(time)) {
       throw Object.assign(new Error("Invalid time slot"), {
         status: 400,
-        error: { code: "VALIDATION_ERROR", message: "preferred_time must be a 30-min slot between 09:00 and 17:00" },
+        error: { code: "VALIDATION_ERROR", message: "preferred_time must be a 30-min slot between 09:00 and 17:00 (e.g. \"10:00\" or ISO datetime)" },
       });
     }
-    if (isNaN(Date.parse(body.preferred_date)) || new Date(body.preferred_date) <= new Date()) {
+
+    const date = extractDate(body.preferred_date);
+    if (!date || new Date(date) <= new Date()) {
       throw Object.assign(new Error("Invalid date"), {
         status: 400,
-        error: { code: "VALIDATION_ERROR", message: "preferred_date must be a valid future date (YYYY-MM-DD)" },
+        error: { code: "VALIDATION_ERROR", message: "preferred_date must be a valid future date (YYYY-MM-DD or ISO datetime)" },
       });
     }
+
+    body.preferred_time = time;
+    body.preferred_date = date;
 
     const existing = await db.query("SELECT id, total FROM quotes WHERE id = $1", [id]);
     if (existing.length === 0) {
