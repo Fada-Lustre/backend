@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS services (
 CREATE TABLE IF NOT EXISTS blog_categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ,
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL
 );
@@ -61,8 +62,10 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   deleted_at TIMESTAMPTZ,
   title TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
-  image_url TEXT,
-  body TEXT NOT NULL DEFAULT '',
+  excerpt TEXT,
+  content TEXT NOT NULL DEFAULT '',
+  cover_image_url TEXT,
+  author TEXT,
   published_at TIMESTAMPTZ,
   category_id UUID REFERENCES blog_categories(id) ON DELETE SET NULL
 );
@@ -89,8 +92,8 @@ CREATE TABLE IF NOT EXISTS cost_guides (
   deleted_at TIMESTAMPTZ,
   title TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
-  summary TEXT NOT NULL DEFAULT '',
-  body TEXT NOT NULL DEFAULT '',
+  excerpt TEXT NOT NULL DEFAULT '',
+  content TEXT NOT NULL DEFAULT '',
   published_at TIMESTAMPTZ
 );
 
@@ -186,9 +189,12 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 CREATE TABLE IF NOT EXISTS service_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  email TEXT NOT NULL,
   name TEXT NOT NULL,
-  description TEXT NOT NULL
+  email TEXT NOT NULL,
+  phone TEXT,
+  service_description TEXT NOT NULL,
+  preferred_date TEXT,
+  location TEXT
 );
 
 -- ============================================================
