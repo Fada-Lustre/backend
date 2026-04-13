@@ -1,7 +1,10 @@
+import type { DayOfWeek } from "./common";
+
 export type AddOnSlug = "oven" | "fridge" | "windows" | "chairs";
 export type FrequencyOption = "one-off" | "2-3-times-a-week" | "every-week" | "every-2-weeks";
-export type DayOfWeek = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
 export type CleaningProducts = "bring" | "provide";
+
+export type { DayOfWeek };
 
 export interface AddOn {
   id: string;

@@ -218,6 +218,11 @@ CREATE TABLE IF NOT EXISTS cleaner_applications (
   hours_per_week INT NOT NULL,
   available_days JSONB NOT NULL DEFAULT '[]',
   commitment_duration TEXT NOT NULL,
+  right_to_work_uk BOOLEAN NOT NULL DEFAULT FALSE,
+  has_uk_bank_account BOOLEAN NOT NULL DEFAULT FALSE,
+  understands_self_employed BOOLEAN NOT NULL DEFAULT FALSE,
+  no_criminal_record BOOLEAN NOT NULL DEFAULT FALSE,
+  accepts_terms BOOLEAN NOT NULL DEFAULT FALSE,
   photo_url TEXT,
   photo_public_id TEXT,
   status TEXT NOT NULL DEFAULT 'draft'

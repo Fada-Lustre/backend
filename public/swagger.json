@@ -449,6 +449,151 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"CleanerApplicationResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Gender": {
+				"type": "string",
+				"enum": [
+					"male",
+					"female"
+				]
+			},
+			"CleaningExperienceType": {
+				"type": "string",
+				"enum": [
+					"domestic",
+					"hotel",
+					"end_of_tenancy",
+					"laundry"
+				]
+			},
+			"CleanerApplicationRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"country_code": {
+						"type": "string",
+						"description": "Country code prefix, e.g. +44"
+					},
+					"phone_number": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"gender": {
+						"$ref": "#/components/schemas/Gender"
+					},
+					"postcode": {
+						"type": "string",
+						"description": "UK home postcode"
+					},
+					"years_of_experience": {
+						"type": "string"
+					},
+					"experience_types": {
+						"items": {
+							"$ref": "#/components/schemas/CleaningExperienceType"
+						},
+						"type": "array"
+					},
+					"experience_description": {
+						"type": "string"
+					},
+					"hours_per_week": {
+						"type": "number",
+						"format": "double",
+						"description": "Desired hours of cleaning work per week"
+					},
+					"available_days": {
+						"items": {
+							"$ref": "#/components/schemas/DayOfWeek"
+						},
+						"type": "array"
+					},
+					"commitment_duration": {
+						"type": "string"
+					},
+					"right_to_work_uk": {
+						"type": "boolean",
+						"enum": [
+							true
+						],
+						"nullable": false,
+						"description": "Must be true — applicant confirms right to work in UK"
+					},
+					"has_uk_bank_account": {
+						"type": "boolean",
+						"enum": [
+							true
+						],
+						"nullable": false,
+						"description": "Must be true — applicant confirms they have a UK bank account"
+					},
+					"understands_self_employed": {
+						"type": "boolean",
+						"enum": [
+							true
+						],
+						"nullable": false,
+						"description": "Must be true — applicant confirms they understand self-employment"
+					},
+					"no_criminal_record": {
+						"type": "boolean",
+						"enum": [
+							true
+						],
+						"nullable": false,
+						"description": "Must be true — applicant confirms no criminal record"
+					},
+					"accepts_terms": {
+						"type": "boolean",
+						"enum": [
+							true
+						],
+						"nullable": false,
+						"description": "Must be true — applicant has read and accepted the Privacy Policy and Terms of Service"
+					}
+				},
+				"required": [
+					"first_name",
+					"last_name",
+					"phone_number",
+					"email",
+					"gender",
+					"postcode",
+					"years_of_experience",
+					"experience_types",
+					"hours_per_week",
+					"available_days",
+					"commitment_duration",
+					"right_to_work_uk",
+					"has_uk_bank_account",
+					"understands_self_employed",
+					"no_criminal_record",
+					"accepts_terms"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"Service": {
 				"properties": {
 					"id": {
@@ -1220,6 +1365,49 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ServiceRequestBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner-applications": {
+			"post": {
+				"operationId": "SubmitApplication",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerApplicationResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Submit a cleaner application. All boolean confirmations must be true.",
+				"tags": [
+					"Cleaner Applications"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CleanerApplicationRequest"
 							}
 						}
 					}

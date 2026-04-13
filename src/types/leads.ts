@@ -1,6 +1,9 @@
+import type { DayOfWeek } from "./common";
+
 export type Gender = "male" | "female";
 export type CleaningExperienceType = "domestic" | "hotel" | "end_of_tenancy" | "laundry";
-export type DayOfWeek = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+
+export type { DayOfWeek };
 
 export interface ContactMessageRequest {
   email: string;

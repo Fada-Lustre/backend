@@ -1,5 +1,7 @@
 // Shared types used across multiple controllers
 
+export type DayOfWeek = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+
 export interface PaginationMeta {
   total: number;
   page?: number;

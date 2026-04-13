@@ -10,6 +10,8 @@ import { ContactController } from './controllers/LeadsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ServiceRequestsController } from './controllers/LeadsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CleanerApplicationsController } from './controllers/LeadsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ServicesController } from './controllers/ContentController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BlogController } from './controllers/ContentController';
@@ -187,6 +189,50 @@ const models: TsoaRoute.Models = {
             "service_description": {"dataType":"string","required":true},
             "preferred_date": {"dataType":"string"},
             "location": {"dataType":"string"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CleanerApplicationResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "created_at": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Gender": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["male"]},{"dataType":"enum","enums":["female"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CleaningExperienceType": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["domestic"]},{"dataType":"enum","enums":["hotel"]},{"dataType":"enum","enums":["end_of_tenancy"]},{"dataType":"enum","enums":["laundry"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CleanerApplicationRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "first_name": {"dataType":"string","required":true},
+            "last_name": {"dataType":"string","required":true},
+            "country_code": {"dataType":"string"},
+            "phone_number": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "gender": {"ref":"Gender","required":true},
+            "postcode": {"dataType":"string","required":true},
+            "years_of_experience": {"dataType":"string","required":true},
+            "experience_types": {"dataType":"array","array":{"dataType":"refAlias","ref":"CleaningExperienceType"},"required":true},
+            "experience_description": {"dataType":"string"},
+            "hours_per_week": {"dataType":"double","required":true},
+            "available_days": {"dataType":"array","array":{"dataType":"refAlias","ref":"DayOfWeek"},"required":true},
+            "commitment_duration": {"dataType":"string","required":true},
+            "right_to_work_uk": {"dataType":"enum","enums":[true],"required":true},
+            "has_uk_bank_account": {"dataType":"enum","enums":[true],"required":true},
+            "understands_self_employed": {"dataType":"enum","enums":[true],"required":true},
+            "no_criminal_record": {"dataType":"enum","enums":[true],"required":true},
+            "accepts_terms": {"dataType":"enum","enums":[true],"required":true},
         },
         "additionalProperties": true,
     },
@@ -580,6 +626,36 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsCleanerApplicationsController_submitApplication: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"CleanerApplicationRequest"},
+        };
+        app.post('/v1/cleaner-applications',
+            ...(fetchMiddlewares<RequestHandler>(CleanerApplicationsController)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerApplicationsController.prototype.submitApplication)),
+
+            async function CleanerApplicationsController_submitApplication(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerApplicationsController_submitApplication, request, response });
+
+                const controller = new CleanerApplicationsController();
+
+              await templateService.apiHandler({
+                methodName: 'submitApplication',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
               });
             } catch (err) {
                 return next(err);
