@@ -153,10 +153,12 @@ export class QuotesController extends Controller {
     }
 
     const date = extractDate(body.preferred_date);
-    if (!date || new Date(date) <= new Date()) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (!date || new Date(date) < today) {
       throw Object.assign(new Error("Invalid date"), {
         status: 400,
-        error: { code: "VALIDATION_ERROR", message: "preferred_date must be a valid future date (YYYY-MM-DD or ISO datetime)" },
+        error: { code: "VALIDATION_ERROR", message: "preferred_date must be today or a future date (YYYY-MM-DD or ISO datetime)" },
       });
     }
 
