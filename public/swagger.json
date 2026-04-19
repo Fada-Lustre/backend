@@ -7,6 +7,171 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"CreateTicketRequest": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "1-200 chars"
+					},
+					"message": {
+						"type": "string",
+						"description": "1-5000 chars"
+					}
+				},
+				"required": [
+					"title",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"TicketListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"last_message_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"status",
+					"created_at",
+					"last_message_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PaginationMeta": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"total",
+					"page",
+					"limit"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_TicketListItem_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/TicketListItem"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"TicketDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"messages": {
+						"items": {
+							"properties": {
+								"created_at": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"sender": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"created_at",
+								"body",
+								"sender",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"status",
+					"created_at",
+					"messages"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ErrorResponse": {
+				"properties": {
+					"error": {
+						"properties": {
+							"details": {},
+							"message": {
+								"type": "string"
+							},
+							"code": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"message",
+							"code"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"error"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"AddOnSlug": {
 				"type": "string",
 				"enum": [
@@ -218,31 +383,6 @@
 				"type": "object",
 				"additionalProperties": true
 			},
-			"ErrorResponse": {
-				"properties": {
-					"error": {
-						"properties": {
-							"details": {},
-							"message": {
-								"type": "string"
-							},
-							"code": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"message",
-							"code"
-						],
-						"type": "object"
-					}
-				},
-				"required": [
-					"error"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
 			"QuoteRequest": {
 				"properties": {
 					"postcode": {
@@ -356,6 +496,201 @@
 				"required": [
 					"preferred_date",
 					"preferred_time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ProfileResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string",
+						"nullable": true
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string"
+					},
+					"profile_image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"rating": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"last_name",
+					"phone",
+					"email",
+					"profile_image_url",
+					"rating"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateProfileRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string",
+						"description": "1-100 chars"
+					},
+					"last_name": {
+						"type": "string",
+						"description": "1-100 chars"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdatePhoneResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"verification_method": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"verification_method"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdatePhoneRequest": {
+				"properties": {
+					"phone": {
+						"type": "string",
+						"description": "E.164 phone number"
+					},
+					"verification_method": {
+						"type": "string",
+						"enum": [
+							"sms",
+							"email"
+						]
+					}
+				},
+				"required": [
+					"phone",
+					"verification_method"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PaymentMethodResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"last4": {
+						"type": "string",
+						"nullable": true
+					},
+					"brand": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"type",
+					"last4",
+					"brand"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreatePaymentMethodRequest": {
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": [
+							"card"
+						],
+						"nullable": false
+					},
+					"card_name": {
+						"type": "string",
+						"description": "1-100 chars"
+					},
+					"card_token": {
+						"type": "string",
+						"description": "Valid Stripe token"
+					}
+				},
+				"required": [
+					"type",
+					"card_name",
+					"card_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"NotificationResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"body": {
+						"type": "string"
+					},
+					"read": {
+						"type": "boolean"
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"type",
+					"title",
+					"body",
+					"read",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_NotificationResponse_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/NotificationResponse"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -594,6 +929,67 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"CleanerApplicationDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone_number": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"last_name",
+					"email",
+					"phone_number",
+					"status",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateCleanerApplicationRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"phone_number": {
+						"type": "string"
+					},
+					"postcode": {
+						"type": "string"
+					},
+					"experience_description": {
+						"type": "string"
+					},
+					"hours_per_week": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"Service": {
 				"properties": {
 					"id": {
@@ -637,27 +1033,6 @@
 					"image_url",
 					"icon_url",
 					"display_order"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"PaginationMeta": {
-				"properties": {
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"page": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"total"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -1008,6 +1383,1129 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"ChangePinResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ChangePinRequest": {
+				"properties": {
+					"old_pin": {
+						"type": "string",
+						"description": "Current 4-digit PIN"
+					},
+					"new_pin": {
+						"type": "string",
+						"description": "New 4-digit PIN"
+					},
+					"confirm_pin": {
+						"type": "string",
+						"description": "Must match new_pin"
+					}
+				},
+				"required": [
+					"old_pin",
+					"new_pin",
+					"confirm_pin"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerHomeAddress": {
+				"properties": {
+					"street": {
+						"type": "string",
+						"nullable": true
+					},
+					"country": {
+						"type": "string",
+						"nullable": true
+					},
+					"postcode": {
+						"type": "string",
+						"nullable": true
+					},
+					"floor_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"door_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"entrance_notes": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"street",
+					"country",
+					"postcode",
+					"floor_number",
+					"door_number",
+					"entrance_notes"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerProfileResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string",
+						"nullable": true
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string"
+					},
+					"profile_image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"rating": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"completed_bookings": {
+						"type": "number",
+						"format": "double"
+					},
+					"location": {
+						"type": "string",
+						"nullable": true
+					},
+					"address": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/CleanerHomeAddress"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"last_name",
+					"phone",
+					"email",
+					"profile_image_url",
+					"rating",
+					"completed_bookings",
+					"location",
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateCleanerProfileRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string",
+						"description": "1-100 chars"
+					},
+					"last_name": {
+						"type": "string",
+						"description": "1-100 chars"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateCleanerPhoneResponse": {
+				"$ref": "#/components/schemas/UpdatePhoneResponse"
+			},
+			"UpdateCleanerPhoneRequest": {
+				"$ref": "#/components/schemas/UpdatePhoneRequest"
+			},
+			"UpdateCleanerAddressResponse": {
+				"properties": {
+					"street": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"postcode": {
+						"type": "string"
+					},
+					"floor_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"door_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"entrance_notes": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"street",
+					"country",
+					"postcode",
+					"floor_number",
+					"door_number",
+					"entrance_notes"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateCleanerAddressRequest": {
+				"properties": {
+					"address": {
+						"type": "string",
+						"description": "Required"
+					},
+					"country": {
+						"type": "string",
+						"description": "Required"
+					},
+					"postcode": {
+						"type": "string",
+						"description": "Required"
+					},
+					"floor_number": {
+						"type": "string"
+					},
+					"door_number": {
+						"type": "string"
+					},
+					"entrance_notes": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"address",
+					"country",
+					"postcode"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerPaymentMethodResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"account_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"bank_name": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"type",
+					"account_number",
+					"bank_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateCleanerPaymentMethodRequest": {
+				"properties": {
+					"account_number": {
+						"type": "string"
+					},
+					"account_holder": {
+						"type": "string"
+					},
+					"bank_name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"account_number",
+					"account_holder",
+					"bank_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"EarningsSummary": {
+				"properties": {
+					"total_earnings": {
+						"type": "string"
+					},
+					"total_withdrawals": {
+						"type": "string"
+					},
+					"bookings_completed": {
+						"type": "number",
+						"format": "double"
+					},
+					"period": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"total_earnings",
+					"total_withdrawals",
+					"bookings_completed",
+					"period"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"IncomeLine": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service": {
+						"type": "string"
+					},
+					"customer": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"service",
+					"customer",
+					"date",
+					"time",
+					"address",
+					"amount",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"WithdrawalLine": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"bank_account": {
+						"type": "string",
+						"nullable": true
+					},
+					"bank_name": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"amount",
+					"date",
+					"time",
+					"status",
+					"bank_account",
+					"bank_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"WithdrawalResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"bank_account": {
+						"type": "string",
+						"nullable": true
+					},
+					"bank_name": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"amount",
+					"status",
+					"bank_account",
+					"bank_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateWithdrawalRequest": {
+				"properties": {
+					"amount": {
+						"type": "number",
+						"format": "double",
+						"description": "Must be > 0 and <= available balance"
+					},
+					"pin": {
+						"type": "string",
+						"description": "4-digit PIN string"
+					}
+				},
+				"required": [
+					"amount",
+					"pin"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerBookingListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"customer": {
+						"properties": {
+							"rating": {
+								"type": "number",
+								"format": "double",
+								"nullable": true
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"rating",
+							"name"
+						],
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"service_type",
+					"date",
+					"time",
+					"status",
+					"customer"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerBookingDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"additional_info": {
+						"type": "string",
+						"nullable": true
+					},
+					"customer": {
+						"properties": {
+							"completed_bookings": {
+								"type": "number",
+								"format": "double"
+							},
+							"rating": {
+								"type": "number",
+								"format": "double",
+								"nullable": true
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"completed_bookings",
+							"rating",
+							"name",
+							"id"
+						],
+						"type": "object",
+						"nullable": true
+					},
+					"address": {
+						"properties": {
+							"entrance_notes": {
+								"type": "string",
+								"nullable": true
+							},
+							"county": {
+								"type": "string",
+								"nullable": true
+							},
+							"door_number": {
+								"type": "string",
+								"nullable": true
+							},
+							"floor_number": {
+								"type": "string",
+								"nullable": true
+							},
+							"street": {
+								"type": "string"
+							},
+							"label": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"entrance_notes",
+							"county",
+							"door_number",
+							"floor_number",
+							"street",
+							"label"
+						],
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"service_type",
+					"status",
+					"date",
+					"time",
+					"additional_info",
+					"customer",
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RateBookingRequest": {
+				"properties": {
+					"rating": {
+						"type": "number",
+						"format": "double",
+						"description": "1-5"
+					},
+					"review": {
+						"type": "string",
+						"description": "0-2000 chars"
+					}
+				},
+				"required": [
+					"rating"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CleanerRateRequest": {
+				"$ref": "#/components/schemas/RateBookingRequest"
+			},
+			"DaySchedule": {
+				"properties": {
+					"accept": {
+						"type": "boolean"
+					},
+					"start": {
+						"type": "string"
+					},
+					"end": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accept"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AvailabilitySchedule": {
+				"properties": {
+					"monday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"tuesday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"wednesday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"thursday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"friday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"saturday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					},
+					"sunday": {
+						"$ref": "#/components/schemas/DaySchedule"
+					}
+				},
+				"required": [
+					"monday",
+					"tuesday",
+					"wednesday",
+					"thursday",
+					"friday",
+					"saturday",
+					"sunday"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AvailabilityResponse": {
+				"properties": {
+					"mode": {
+						"type": "string"
+					},
+					"schedule": {
+						"$ref": "#/components/schemas/AvailabilitySchedule"
+					},
+					"accept_bookings": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"mode",
+					"schedule",
+					"accept_bookings"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AvailabilityMode": {
+				"type": "string",
+				"enum": [
+					"every_day",
+					"weekdays",
+					"weekends",
+					"custom"
+				]
+			},
+			"UpdateAvailabilityRequest": {
+				"properties": {
+					"mode": {
+						"$ref": "#/components/schemas/AvailabilityMode"
+					},
+					"schedule": {
+						"$ref": "#/components/schemas/AvailabilitySchedule"
+					},
+					"accept_bookings": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"mode",
+					"schedule"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ServiceType": {
+				"type": "string",
+				"enum": [
+					"domestic",
+					"commercial",
+					"hotel",
+					"laundry",
+					"end_of_tenancy",
+					"appliance"
+				]
+			},
+			"PropertyCondition": {
+				"type": "string",
+				"enum": [
+					"mildly_used",
+					"heavily_used",
+					"new"
+				]
+			},
+			"PropertyType": {
+				"type": "string",
+				"enum": [
+					"home",
+					"condo",
+					"office",
+					"hotel"
+				]
+			},
+			"BookingAddOn": {
+				"type": "string",
+				"enum": [
+					"oven",
+					"dryer",
+					"airfryer",
+					"dishwasher"
+				]
+			},
+			"CreateBookingRequest": {
+				"properties": {
+					"address_id": {
+						"type": "string"
+					},
+					"service_type": {
+						"$ref": "#/components/schemas/ServiceType"
+					},
+					"condition": {
+						"$ref": "#/components/schemas/PropertyCondition"
+					},
+					"property_type": {
+						"$ref": "#/components/schemas/PropertyType"
+					},
+					"total_sq_metres": {
+						"type": "number",
+						"format": "double"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double",
+						"description": "1-50"
+					},
+					"floors": {
+						"type": "number",
+						"format": "double",
+						"description": "1-20"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double",
+						"description": "0-20"
+					},
+					"add_ons": {
+						"items": {
+							"$ref": "#/components/schemas/BookingAddOn"
+						},
+						"type": "array"
+					},
+					"date": {
+						"type": "string",
+						"description": "ISO date, must be in the future"
+					},
+					"time": {
+						"type": "string",
+						"description": "HH:MM format"
+					},
+					"additional_info": {
+						"type": "string",
+						"description": "0-2000 chars"
+					},
+					"use_same_cleaner": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"address_id",
+					"service_type",
+					"condition",
+					"property_type",
+					"total_sq_metres",
+					"rooms",
+					"floors",
+					"bathrooms",
+					"date",
+					"time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"BookingListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"cleaner": {
+						"properties": {
+							"rating": {
+								"type": "number",
+								"format": "double",
+								"nullable": true
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"rating",
+							"name"
+						],
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"service_type",
+					"date",
+					"time",
+					"status",
+					"cleaner"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_BookingListItem_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/BookingListItem"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"BookingDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"additional_info": {
+						"type": "string",
+						"nullable": true
+					},
+					"use_same_cleaner": {
+						"type": "boolean"
+					},
+					"cleaner": {
+						"properties": {
+							"location": {
+								"type": "string",
+								"nullable": true
+							},
+							"completed_bookings": {
+								"type": "number",
+								"format": "double"
+							},
+							"rating": {
+								"type": "number",
+								"format": "double",
+								"nullable": true
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"location",
+							"completed_bookings",
+							"rating",
+							"name",
+							"id"
+						],
+						"type": "object",
+						"nullable": true
+					},
+					"payment": {
+						"properties": {
+							"status": {
+								"type": "string"
+							},
+							"method": {
+								"type": "string",
+								"nullable": true
+							},
+							"total": {
+								"type": "string",
+								"nullable": true
+							},
+							"discount": {
+								"type": "string",
+								"nullable": true
+							},
+							"charges": {
+								"type": "string",
+								"nullable": true
+							},
+							"booking_fee": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"status",
+							"method",
+							"total",
+							"discount",
+							"charges",
+							"booking_fee"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"service_type",
+					"status",
+					"date",
+					"time",
+					"additional_info",
+					"use_same_cleaner",
+					"cleaner",
+					"payment"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PayBookingResponse": {
+				"properties": {
+					"transaction_id": {
+						"type": "string"
+					},
+					"client_secret": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"transaction_id",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PaymentMethod": {
+				"type": "string",
+				"enum": [
+					"cash",
+					"card",
+					"apple_pay",
+					"google_pay"
+				]
+			},
+			"PayBookingRequest": {
+				"properties": {
+					"method": {
+						"$ref": "#/components/schemas/PaymentMethod"
+					},
+					"tip": {
+						"type": "number",
+						"format": "double",
+						"description": ">= 0, default 0. 100% to cleaner"
+					}
+				},
+				"required": [
+					"method"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AmendBookingRequest": {
+				"properties": {
+					"floors": {
+						"type": "number",
+						"format": "double"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"add_ons": {
+						"items": {
+							"$ref": "#/components/schemas/BookingAddOn"
+						},
+						"type": "array"
+					},
+					"additional_info": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RescheduleBookingRequest": {
+				"properties": {
+					"date": {
+						"type": "string",
+						"description": "Future ISO date"
+					},
+					"time": {
+						"type": "string",
+						"description": "HH:MM"
+					}
+				},
+				"required": [
+					"date",
+					"time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"BookingImageResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"uploaded_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"url",
+					"uploaded_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ReceiptResponse": {
+				"properties": {
+					"booking_fee": {
+						"type": "string",
+						"nullable": true
+					},
+					"charges": {
+						"type": "string",
+						"nullable": true
+					},
+					"discount": {
+						"type": "string",
+						"nullable": true
+					},
+					"total": {
+						"type": "string",
+						"nullable": true
+					},
+					"payment_method": {
+						"type": "string",
+						"nullable": true
+					},
+					"payment_status": {
+						"type": "string"
+					},
+					"service": {
+						"type": "string"
+					},
+					"additional_info": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"booking_fee",
+					"charges",
+					"discount",
+					"total",
+					"payment_method",
+					"payment_status",
+					"service",
+					"additional_info"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"AuthResponse": {
 				"properties": {
 					"id": {
@@ -1115,19 +2613,1728 @@
 			},
 			"ForgotPasswordRequest": {
 				"properties": {
-					"email": {
+					"phone": {
+						"type": "string",
+						"description": "E.164 phone number"
+					}
+				},
+				"required": [
+					"phone"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"VerifyOtpResponse": {
+				"properties": {
+					"verified": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"verified"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"VerifyOtpRequest": {
+				"properties": {
+					"phone": {
+						"type": "string",
+						"description": "E.164 phone number"
+					},
+					"code": {
+						"type": "string",
+						"description": "6-digit numeric code"
+					}
+				},
+				"required": [
+					"phone",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ResetPasswordResponse": {
+				"properties": {
+					"message": {
 						"type": "string"
 					}
 				},
 				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ResetPasswordRequest": {
+				"properties": {
+					"phone": {
+						"type": "string",
+						"description": "E.164 phone number — must have a verified OTP"
+					},
+					"new_password": {
+						"type": "string",
+						"description": "Min 8 chars, >= 1 number"
+					},
+					"confirm_password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"phone",
+					"new_password",
+					"confirm_password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ChangePasswordResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ChangePasswordRequest": {
+				"properties": {
+					"current_password": {
+						"type": "string"
+					},
+					"new_password": {
+						"type": "string",
+						"description": "Min 8 chars, >= 1 number"
+					},
+					"confirm_password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"current_password",
+					"new_password",
+					"confirm_password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RefreshResponse": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"token",
+					"refresh_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RefreshRequest": {
+				"properties": {
+					"refresh_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"refresh_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ActivateResponse": {
+				"properties": {
+					"activation_token": {
+						"type": "string"
+					},
+					"requires_profile_setup": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"activation_token",
+					"requires_profile_setup"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ActivateRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"temporary_password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"temporary_password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"SetupProfileResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					},
+					"refresh_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"token",
+					"refresh_token"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"SetupProfileRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"description": "E.164 phone number"
+					},
+					"password": {
+						"type": "string",
+						"description": "Min 8 chars, uppercase, lowercase, digit"
+					},
+					"confirm_password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"first_name",
+					"last_name",
+					"phone",
+					"password",
+					"confirm_password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminUserListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"role": {
+						"type": "string"
+					},
+					"last_login": {
+						"type": "string",
+						"nullable": true
+					},
+					"joined": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"phone",
+					"role",
+					"last_login",
+					"joined",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminUserListResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/AdminUserListItem"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"properties": {
+							"limit": {
+								"type": "number",
+								"format": "double"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"limit",
+							"page",
+							"total"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"InviteAdminResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"InviteAdminRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"description": "Must be unique"
+					},
+					"role_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"first_name",
+					"last_name",
+					"email",
+					"role_id"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"IdStatusResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Record_string.unknown_": {
+				"properties": {},
+				"additionalProperties": {},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"AdminListResponse_Record_string.unknown__": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Record_string.unknown_"
+						},
+						"type": "array"
+					},
+					"stats": {
+						"$ref": "#/components/schemas/Record_string.unknown_"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"stats",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminTransactionDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"ref": {
+						"type": "string",
+						"nullable": true
+					},
+					"date": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"nullable": true
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string"
+					},
+					"payment_method": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"ref",
+					"date",
+					"name",
+					"amount",
+					"type",
+					"payment_method",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"MessageResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PersonSummary": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminTicketDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"user": {
+						"properties": {
+							"email": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"email",
+							"name",
+							"id"
+						],
+						"type": "object"
+					},
+					"title": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"assigned_to": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/PersonSummary"
+							}
+						],
+						"nullable": true
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"messages": {
+						"items": {
+							"properties": {
+								"created_at": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"sender": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"created_at",
+								"body",
+								"sender",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"user",
+					"title",
+					"message",
+					"status",
+					"assigned_to",
+					"created_at",
+					"messages"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminTicketMessageRequest": {
+				"properties": {
+					"body": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"body"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminTicketUpdateRequest": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"assigned_to": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminServiceDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					},
+					"date_added": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"image_url",
+					"status",
+					"date_added"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RoleListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"display_name": {
+						"type": "string"
+					},
+					"access": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"user_count": {
+						"type": "number",
+						"format": "double"
+					},
+					"date_added": {
+						"type": "string"
+					},
+					"is_system": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"display_name",
+					"access",
+					"user_count",
+					"date_added",
+					"is_system"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"RoleListResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/RoleListItem"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateRoleResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"access": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"access"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateRoleRequest": {
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Unique, 1-100 chars"
+					},
+					"display_name": {
+						"type": "string"
+					},
+					"access": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"display_name",
+					"access"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateRoleRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"display_name": {
+						"type": "string"
+					},
+					"access": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ArchiveRoleResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Record_string.number_": {
+				"properties": {},
+				"additionalProperties": {
+					"type": "number",
+					"format": "double"
+				},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"DashboardResponse": {
+				"properties": {
+					"balance": {
+						"type": "number",
+						"format": "double"
+					},
+					"pending": {
+						"type": "number",
+						"format": "double"
+					},
+					"total_bookings": {
+						"type": "number",
+						"format": "double"
+					},
+					"top_clients": {
+						"items": {
+							"properties": {
+								"rating": {
+									"type": "number",
+									"format": "double"
+								},
+								"name": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"rating",
+								"name",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"top_cleaners": {
+						"items": {
+							"properties": {
+								"rating": {
+									"type": "number",
+									"format": "double"
+								},
+								"name": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"rating",
+								"name",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"upcoming_bookings": {
+						"items": {
+							"properties": {
+								"total": {
+									"type": "number",
+									"format": "double"
+								},
+								"pending": {
+									"type": "number",
+									"format": "double"
+								},
+								"started": {
+									"type": "number",
+									"format": "double"
+								},
+								"service": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"total",
+								"pending",
+								"started",
+								"service"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"service_counts": {
+						"$ref": "#/components/schemas/Record_string.number_"
+					},
+					"recent_transactions": {
+						"items": {
+							"properties": {
+								"status": {
+									"type": "string"
+								},
+								"time": {
+									"type": "string"
+								},
+								"date": {
+									"type": "string"
+								},
+								"amount": {
+									"type": "number",
+									"format": "double"
+								},
+								"type": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string"
+								},
+								"ref": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"status",
+								"time",
+								"date",
+								"amount",
+								"type",
+								"name",
+								"ref",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"balance",
+					"pending",
+					"total_bookings",
+					"top_clients",
+					"top_cleaners",
+					"upcoming_bookings",
+					"service_counts",
+					"recent_transactions"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ReviewSnippet": {
+				"properties": {
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"review_text": {
+						"type": "string",
+						"nullable": true
+					},
+					"created_at": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"rating",
+					"review_text",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminCustomerDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"joined": {
+						"type": "string"
+					},
+					"bookings_count": {
+						"type": "number",
+						"format": "double"
+					},
+					"last_booked": {
+						"type": "string",
+						"nullable": true
+					},
+					"reviews": {
+						"items": {
+							"$ref": "#/components/schemas/ReviewSnippet"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"phone",
+					"rating",
+					"joined",
+					"bookings_count",
+					"last_booked",
+					"reviews"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminCreateBookingRequest": {
+				"properties": {
+					"customer_name": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"condition": {
+						"type": "string"
+					},
+					"property_type": {
+						"type": "string"
+					},
+					"total_sq_metres": {
+						"type": "number",
+						"format": "double"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"floors": {
+						"type": "number",
+						"format": "double"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"add_ons": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time_start": {
+						"type": "string"
+					},
+					"time_end": {
+						"type": "string"
+					},
+					"cleaning_address": {
+						"type": "string"
+					},
+					"additional_info": {
+						"type": "string"
+					},
+					"use_same_cleaner": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"customer_name",
+					"location",
+					"email",
+					"phone",
+					"service_type",
+					"rooms",
+					"bathrooms",
+					"date",
+					"time_start",
+					"cleaning_address"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ContentBlock": {
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": [
+							"callout",
+							"subtitle",
+							"text",
+							"table",
+							"button"
+						]
+					},
+					"title": {
+						"type": "string"
+					},
+					"text": {
+						"type": "string"
+					},
+					"rows": {
+						"items": {
+							"properties": {
+								"explanation": {
+									"type": "string"
+								},
+								"rate": {
+									"type": "string"
+								},
+								"service_category": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"explanation",
+								"rate",
+								"service_category"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"url": {
+						"type": "string"
+					},
+					"label": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"CreateCostGuideRequest": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"content_blocks": {
+						"items": {
+							"$ref": "#/components/schemas/ContentBlock"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"title",
+					"description",
+					"content_blocks"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminCostGuideDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"content_blocks": {
+						"items": {
+							"$ref": "#/components/schemas/ContentBlock"
+						},
+						"type": "array"
+					},
+					"status": {
+						"type": "string"
+					},
+					"date_added": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"description",
+					"content_blocks",
+					"status",
+					"date_added"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateCostGuideRequest": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"content_blocks": {
+						"items": {
+							"$ref": "#/components/schemas/ContentBlock"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminCleanerDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"joined": {
+						"type": "string"
+					},
+					"reviews": {
+						"items": {
+							"$ref": "#/components/schemas/ReviewSnippet"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email",
+					"phone",
+					"rating",
+					"joined",
+					"reviews"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PayCleanerResponse": {
+				"properties": {
+					"transaction_id": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"transaction_id",
+					"amount",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PayCleanerRequest": {
+				"properties": {
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"account_number": {
+						"type": "string"
+					},
+					"bank_name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"amount",
+					"account_number",
+					"bank_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminBookingListItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"customer_name": {
+						"type": "string"
+					},
+					"customer_location": {
+						"type": "string",
+						"nullable": true
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"scheduled_date": {
+						"type": "string"
+					},
+					"time_start": {
+						"type": "string"
+					},
+					"time_end": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					},
+					"total_price": {
+						"type": "number",
+						"format": "double"
+					},
+					"cleaner_name": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"customer_name",
+					"customer_location",
+					"service_type",
+					"scheduled_date",
+					"time_start",
+					"time_end",
+					"status",
+					"total_price",
+					"cleaner_name"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminListResponse_AdminBookingListItem_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/AdminBookingListItem"
+						},
+						"type": "array"
+					},
+					"stats": {
+						"$ref": "#/components/schemas/Record_string.unknown_"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"stats",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"PersonDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"name",
 					"email"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminBookingDetail": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"service_type": {
+						"type": "string"
+					},
+					"booked_on": {
+						"type": "string"
+					},
+					"booked_for": {
+						"properties": {
+							"time_end": {
+								"type": "string",
+								"nullable": true
+							},
+							"time_start": {
+								"type": "string"
+							},
+							"date": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"time_end",
+							"time_start",
+							"date"
+						],
+						"type": "object"
+					},
+					"location": {
+						"type": "string",
+						"nullable": true
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"payment_method": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					},
+					"transaction_ref": {
+						"type": "string",
+						"nullable": true
+					},
+					"additional_info": {
+						"type": "string",
+						"nullable": true
+					},
+					"property_type": {
+						"type": "string",
+						"nullable": true
+					},
+					"total_sq_metres": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"floors": {
+						"type": "number",
+						"format": "double"
+					},
+					"rooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"bathrooms": {
+						"type": "number",
+						"format": "double"
+					},
+					"customer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/PersonDetail"
+							}
+						],
+						"nullable": true
+					},
+					"cleaner": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/PersonSummary"
+							}
+						],
+						"nullable": true
+					},
+					"images": {
+						"items": {
+							"properties": {
+								"uploaded_at": {
+									"type": "string"
+								},
+								"url": {
+									"type": "string"
+								},
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"uploaded_at",
+								"url",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"service_type",
+					"booked_on",
+					"booked_for",
+					"location",
+					"price",
+					"payment_method",
+					"status",
+					"transaction_ref",
+					"additional_info",
+					"property_type",
+					"total_sq_metres",
+					"floors",
+					"rooms",
+					"bathrooms",
+					"customer",
+					"cleaner",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminAssignRequest": {
+				"properties": {
+					"cleaner_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"cleaner_id"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminRescheduleRequest": {
+				"properties": {
+					"date": {
+						"type": "string"
+					},
+					"start_time": {
+						"type": "string"
+					},
+					"end_time": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"date",
+					"start_time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ActivityLogItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"user": {
+						"type": "string"
+					},
+					"action": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"user",
+					"action",
+					"date",
+					"time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ActivityLogResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ActivityLogItem"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"properties": {
+							"limit": {
+								"type": "number",
+								"format": "double"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"limit",
+							"page",
+							"total"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AddressResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"street": {
+						"type": "string"
+					},
+					"floor_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"door_number": {
+						"type": "string",
+						"nullable": true
+					},
+					"additional_info": {
+						"type": "string",
+						"nullable": true
+					},
+					"entrance_notes": {
+						"type": "string",
+						"nullable": true
+					},
+					"label": {
+						"type": "string"
+					},
+					"custom_label": {
+						"type": "string",
+						"nullable": true
+					},
+					"is_default": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"street",
+					"floor_number",
+					"door_number",
+					"additional_info",
+					"entrance_notes",
+					"label",
+					"custom_label",
+					"is_default"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AddressLabel": {
+				"type": "string",
+				"enum": [
+					"home",
+					"office",
+					"custom"
+				]
+			},
+			"CreateAddressRequest": {
+				"properties": {
+					"street": {
+						"type": "string",
+						"description": "1-500 chars"
+					},
+					"floor_number": {
+						"type": "string",
+						"description": "1-10 chars"
+					},
+					"door_number": {
+						"type": "string",
+						"description": "1-10 chars"
+					},
+					"additional_info": {
+						"type": "string",
+						"description": "0-2000 chars"
+					},
+					"entrance_notes": {
+						"type": "string",
+						"description": "0-2000 chars"
+					},
+					"label": {
+						"$ref": "#/components/schemas/AddressLabel"
+					},
+					"custom_label": {
+						"type": "string",
+						"description": "Required when label is \"custom\", 1-50 chars"
+					}
+				},
+				"required": [
+					"street",
+					"label"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateAddressRequest": {
+				"properties": {
+					"street": {
+						"type": "string",
+						"description": "1-500 chars"
+					},
+					"floor_number": {
+						"type": "string",
+						"description": "1-10 chars"
+					},
+					"door_number": {
+						"type": "string",
+						"description": "1-10 chars"
+					},
+					"additional_info": {
+						"type": "string",
+						"description": "0-2000 chars"
+					},
+					"entrance_notes": {
+						"type": "string",
+						"description": "0-2000 chars"
+					},
+					"label": {
+						"$ref": "#/components/schemas/AddressLabel"
+					},
+					"custom_label": {
+						"type": "string",
+						"description": "Required when label is \"custom\", 1-50 chars"
+					}
+				},
+				"required": [
+					"street",
+					"label"
 				],
 				"type": "object",
 				"additionalProperties": true
 			}
 		},
 		"securitySchemes": {
-			"BearerAuth": {
+			"jwt": {
 				"type": "http",
 				"scheme": "bearer",
 				"bearerFormat": "JWT"
@@ -1147,6 +4354,163 @@
 		}
 	},
 	"paths": {
+		"/v1/support/tickets": {
+			"post": {
+				"operationId": "CreateTicket",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"created_at": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"created_at",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer",
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateTicketRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListTickets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_TicketListItem_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer",
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/support/tickets/{id}": {
+			"get": {
+				"operationId": "GetTicket",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TicketDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Ticket not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer",
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/v1/pricing": {
 			"get": {
 				"operationId": "GetPricing",
@@ -1162,7 +4526,6 @@
 						}
 					}
 				},
-				"description": "Returns all pricing configuration: hourly rate, fees, add-ons, and frequency options.\nThe frontend should call this before rendering the quote form.",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -1193,19 +4556,8 @@
 								}
 							}
 						}
-					},
-					"500": {
-						"description": "Server error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
 					}
 				},
-				"description": "Step 1 of 2 — Submit cleaning details and receive an instant quote estimate.\nAfter receiving the quote ID, proceed to PATCH /v1/quotes/{id}/schedule to select a date and time.",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -1224,7 +4576,7 @@
 			}
 		},
 		"/v1/quotes/{id}/schedule": {
-			"post": {
+			"patch": {
 				"operationId": "ScheduleQuote",
 				"responses": {
 					"200": {
@@ -1258,7 +4610,6 @@
 						}
 					}
 				},
-				"description": "Step 2 of 2 — Attach a preferred date and arrival time to an existing quote.\nFriday, Saturday, and Sunday bookings incur a £10 weekend surcharge.",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -1283,6 +4634,352 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/customer/profile": {
+			"get": {
+				"operationId": "GetProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProfileRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/customer/profile/phone": {
+			"patch": {
+				"operationId": "RequestPhoneUpdate",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdatePhoneResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePhoneRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/customer/payment-methods": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/PaymentMethodResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaymentMethodResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePaymentMethodRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/customer/payment-methods/{id}": {
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Payment method not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/notifications": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_NotificationResponse_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Notifications"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/notifications/{id}/read": {
+			"patch": {
+				"operationId": "MarkRead",
+				"responses": {
+					"204": {
+						"description": "Marked as read"
+					},
+					"404": {
+						"description": "Notification not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Notifications"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/contact-messages": {
@@ -1310,7 +5007,6 @@
 						}
 					}
 				},
-				"description": "Submit a contact message. Used on the Contact Us, About, Locations, and Cleaning with Fada pages.",
 				"tags": [
 					"Contact"
 				],
@@ -1353,7 +5049,6 @@
 						}
 					}
 				},
-				"description": "Submit a custom service request. Used on the Services page \"Request Service\" CTA.",
 				"tags": [
 					"Service Requests"
 				],
@@ -1396,7 +5091,6 @@
 						}
 					}
 				},
-				"description": "Submit a cleaner application. All boolean confirmations must be true.",
 				"tags": [
 					"Cleaner Applications"
 				],
@@ -1408,6 +5102,119 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/CleanerApplicationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner-applications/{id}": {
+			"get": {
+				"operationId": "GetApplication",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerApplicationDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Applications"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer",
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateApplication",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerApplicationDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Not in draft status",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Applications"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCleanerApplicationRequest"
 							}
 						}
 					}
@@ -1439,7 +5246,6 @@
 						}
 					}
 				},
-				"description": "List all active cleaning services. Supports optional search by title.",
 				"tags": [
 					"Services"
 				],
@@ -1479,19 +5285,8 @@
 								}
 							}
 						}
-					},
-					"500": {
-						"description": "Server error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
 					}
 				},
-				"description": "Get a single service by its URL slug.",
 				"tags": [
 					"Services"
 				],
@@ -1523,7 +5318,6 @@
 						}
 					}
 				},
-				"description": "List all blog categories.",
 				"tags": [
 					"Blog"
 				],
@@ -1546,7 +5340,6 @@
 						}
 					}
 				},
-				"description": "List blog posts. Filterable by category slug, searchable by title/excerpt.",
 				"tags": [
 					"Blog"
 				],
@@ -1614,7 +5407,6 @@
 						}
 					}
 				},
-				"description": "Get a single blog post by its URL slug.",
 				"tags": [
 					"Blog"
 				],
@@ -1646,7 +5438,6 @@
 						}
 					}
 				},
-				"description": "List all FAQs. Supports optional search by question text.",
 				"tags": [
 					"FAQs"
 				],
@@ -1678,7 +5469,6 @@
 						}
 					}
 				},
-				"description": "List all cost guides (summary view).",
 				"tags": [
 					"Cost Guides"
 				],
@@ -1711,7 +5501,6 @@
 						}
 					}
 				},
-				"description": "Get a single cost guide by slug, including the full pricing table.",
 				"tags": [
 					"Cost Guides"
 				],
@@ -1743,12 +5532,1826 @@
 						}
 					}
 				},
-				"description": "List all active service locations.",
 				"tags": [
 					"Locations"
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/v1/cleaner/security/pin": {
+			"patch": {
+				"operationId": "ChangePin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangePinResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid PIN or mismatch",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Security"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangePinRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/profile": {
+			"get": {
+				"operationId": "GetProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCleanerProfileRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/profile/phone": {
+			"patch": {
+				"operationId": "RequestPhoneUpdate",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateCleanerPhoneResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCleanerPhoneRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/profile/address": {
+			"patch": {
+				"operationId": "UpdateAddress",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateCleanerAddressResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCleanerAddressRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/payment-methods": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/CleanerPaymentMethodResponse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerPaymentMethodResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCleanerPaymentMethodRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/payment-methods/{id}": {
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Payment method not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Payment Methods"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/earnings": {
+			"get": {
+				"operationId": "GetSummary",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EarningsSummary"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Earnings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "start",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "end",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/earnings/income": {
+			"get": {
+				"operationId": "GetIncome",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"total": {
+											"type": "number",
+											"format": "double"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/IncomeLine"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"total",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Earnings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "start",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "end",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/earnings/withdrawals": {
+			"get": {
+				"operationId": "GetWithdrawals",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"total": {
+											"type": "number",
+											"format": "double"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/WithdrawalLine"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"total",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Earnings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "start",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "end",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/withdrawals": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Withdrawal created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WithdrawalResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error or insufficient balance",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Earnings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateWithdrawalRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/bookings": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"total": {
+											"type": "number",
+											"format": "double"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/CleanerBookingListItem"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"total",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/bookings/{id}": {
+			"get": {
+				"operationId": "GetDetail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CleanerBookingDetail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Not assigned to this booking",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Booking not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/bookings/{id}/start": {
+			"post": {
+				"operationId": "Start",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Not assigned",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Invalid state transition",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/bookings/{id}/finish": {
+			"post": {
+				"operationId": "Finish",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Not assigned",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Invalid state transition",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/bookings/{id}/cancel": {
+			"post": {
+				"operationId": "Cancel",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Not assigned",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Invalid state transition",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/cleaner/bookings/{id}/rate": {
+			"post": {
+				"operationId": "Rate",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"rating": {
+											"type": "number",
+											"format": "double"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"rating",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid rating",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Already rated or not done",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CleanerRateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/cleaner/availability": {
+			"get": {
+				"operationId": "GetAvailability",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailabilityResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Availability"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"put": {
+				"operationId": "UpdateAvailability",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailabilityResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Cleaner Availability"
+				],
+				"security": [
+					{
+						"jwt": [
+							"cleaner"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAvailabilityRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/bookings": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"price": {
+											"type": "string",
+											"nullable": true
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"price",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateBookingRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_BookingListItem_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookingDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}/pay": {
+			"post": {
+				"operationId": "Pay",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PayBookingResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Already paid",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PayBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/bookings/{id}/amend": {
+			"patch": {
+				"operationId": "Amend",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"amendment_id": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"amendment_id",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "State conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AmendBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/bookings/{id}/reschedule": {
+			"patch": {
+				"operationId": "Reschedule",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"new_time": {
+											"type": "string"
+										},
+										"new_date": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"new_time",
+										"new_date",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "State conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RescheduleBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/bookings/{id}/cancel": {
+			"post": {
+				"operationId": "Cancel",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"refund_status": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"refund_status",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "State conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}/rebook": {
+			"post": {
+				"operationId": "Rebook",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"cloned_from": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"cloned_from",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}/rate": {
+			"post": {
+				"operationId": "Rate",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"rating": {
+											"type": "number",
+											"format": "double"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"rating",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Already rated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RateBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/bookings/{id}/change-cleaner": {
+			"post": {
+				"operationId": "ChangeCleaner",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										},
+										"new_cleaner": {
+											"properties": {
+												"rating": {
+													"type": "number",
+													"format": "double",
+													"nullable": true
+												},
+												"name": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"rating",
+												"name",
+												"id"
+											],
+											"type": "object"
+										},
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}/images": {
+			"get": {
+				"operationId": "Images",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/BookingImageResponse"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer",
+							"cleaner",
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/bookings/{id}/receipt": {
+			"get": {
+				"operationId": "Receipt",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReceiptResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/auth/register": {
@@ -1776,7 +7379,6 @@
 						}
 					}
 				},
-				"description": "Register a new customer account.\nPassword must be at least 8 characters and include at least one number.",
 				"tags": [
 					"Auth"
 				],
@@ -1819,7 +7421,6 @@
 						}
 					}
 				},
-				"description": "Log in with email and password. Returns a JWT access token and refresh token.",
 				"tags": [
 					"Auth"
 				],
@@ -1852,7 +7453,6 @@
 						}
 					}
 				},
-				"description": "Initiate a password reset. Always returns a generic success response to prevent user enumeration.",
 				"tags": [
 					"Auth"
 				],
@@ -1870,22 +7470,22 @@
 				}
 			}
 		},
-		"/v1/auth/refresh": {
+		"/v1/auth/verify-otp": {
 			"post": {
-				"operationId": "Refresh",
+				"operationId": "VerifyOtp",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
+									"$ref": "#/components/schemas/VerifyOtpResponse"
 								}
 							}
 						}
 					},
-					"501": {
-						"description": "Not implemented",
+					"400": {
+						"description": "Invalid or expired code",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1895,13 +7495,2667 @@
 						}
 					}
 				},
-				"description": "Exchange a refresh token for a new access token.",
 				"tags": [
 					"Auth"
 				],
-				"deprecated": true,
 				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyOtpRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/reset-password": {
+			"post": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResetPasswordResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ResetPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/change-password": {
+			"post": {
+				"operationId": "ChangePassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangePasswordResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangePasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RefreshResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid refresh token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RefreshRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/activate": {
+			"post": {
+				"operationId": "Activate",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ActivateResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid invitation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid credentials",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ActivateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/setup-profile": {
+			"post": {
+				"operationId": "SetupProfile",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SetupProfileResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SetupProfileRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/users": {
+			"get": {
+				"operationId": "ListAdminUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminUserListResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Users"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InviteAdmin",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InviteAdminResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Duplicate",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Users"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/InviteAdminRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/users/{id}/block": {
+			"post": {
+				"operationId": "BlockAdminUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Users"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/transactions": {
+			"get": {
+				"operationId": "ListTransactions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminListResponse_Record_string.unknown__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Transactions"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:transactions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "type",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/transactions/{id}": {
+			"get": {
+				"operationId": "GetTransaction",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminTransactionDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Transactions"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:transactions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/transactions/{id}/receipt": {
+			"post": {
+				"operationId": "SendReceipt",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MessageResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Transactions"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:transactions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/support/tickets": {
+			"get": {
+				"operationId": "ListTickets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminListResponse_Record_string.unknown__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:support"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/support/tickets/{id}": {
+			"get": {
+				"operationId": "GetTicket",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminTicketDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:support"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateTicket",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Record_string.unknown_"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:support"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminTicketUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/support/tickets/{id}/messages": {
+			"post": {
+				"operationId": "AddMessage",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"created_at": {
+											"type": "string"
+										},
+										"body": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"created_at",
+										"body",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Support"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:support"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminTicketMessageRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/services": {
+			"get": {
+				"operationId": "ListServices",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"stats": {
+											"properties": {
+												"archived": {
+													"type": "number",
+													"format": "double"
+												},
+												"active": {
+													"type": "number",
+													"format": "double"
+												},
+												"total": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"archived",
+												"active",
+												"total"
+											],
+											"type": "object"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/Record_string.unknown_"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"stats",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Services"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
 				"parameters": []
+			}
+		},
+		"/v1/admin/services/{id}": {
+			"get": {
+				"operationId": "GetService",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminServiceDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Services"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/services/{id}/archive": {
+			"patch": {
+				"operationId": "ArchiveService",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Services"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/roles": {
+			"get": {
+				"operationId": "ListRoles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RoleListResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Roles"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:control_permissions"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateRole",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateRoleResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Duplicate",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Roles"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:control_permissions"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRoleRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/roles/{id}": {
+			"patch": {
+				"operationId": "UpdateRole",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RoleListItem"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Roles"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:control_permissions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateRoleRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/roles/{id}/archive": {
+			"patch": {
+				"operationId": "ArchiveRole",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArchiveRoleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Role has users",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Roles"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:control_permissions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/dashboard": {
+			"get": {
+				"operationId": "GetDashboard",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DashboardResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Dashboard"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/v1/admin/customers": {
+			"get": {
+				"operationId": "ListCustomers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminListResponse_Record_string.unknown__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Customers"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:customers"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "service",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/customers/{id}": {
+			"get": {
+				"operationId": "GetCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminCustomerDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Customers"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:customers"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/customers/{id}/block": {
+			"post": {
+				"operationId": "BlockCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Customers"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:customers"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/customers/{id}/book": {
+			"post": {
+				"operationId": "BookForCustomer",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"price",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Customers"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:customers"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminCreateBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/cost-guides": {
+			"get": {
+				"operationId": "ListCostGuides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"stats": {
+											"properties": {
+												"archived": {
+													"type": "number",
+													"format": "double"
+												},
+												"active": {
+													"type": "number",
+													"format": "double"
+												},
+												"total": {
+													"type": "number",
+													"format": "double"
+												}
+											},
+											"required": [
+												"archived",
+												"active",
+												"total"
+											],
+											"type": "object"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/Record_string.unknown_"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"stats",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateCostGuide",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"title": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"title",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCostGuideRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/cost-guides/{id}": {
+			"get": {
+				"operationId": "GetCostGuide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminCostGuideDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateCostGuide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminCostGuideDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCostGuideRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/cost-guides/{id}/archive": {
+			"patch": {
+				"operationId": "ArchiveCostGuide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/cleaners": {
+			"get": {
+				"operationId": "ListCleaners",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminListResponse_Record_string.unknown__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cleaners"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:cleaners"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "service",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/cleaners/{id}": {
+			"get": {
+				"operationId": "GetCleaner",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminCleanerDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cleaners"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:cleaners"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/cleaners/{id}/block": {
+			"post": {
+				"operationId": "BlockCleaner",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cleaners"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:cleaners"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/cleaners/{id}/pay": {
+			"post": {
+				"operationId": "PayCleaner",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PayCleanerResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Cleaners"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:cleaners"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PayCleanerRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/bookings": {
+			"get": {
+				"operationId": "ListBookings",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminListResponse_AdminBookingListItem_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "date",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "service",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateBooking",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"price",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminCreateBookingRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/bookings/{id}": {
+			"get": {
+				"operationId": "GetBooking",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminBookingDetail"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/bookings/{id}/assign": {
+			"post": {
+				"operationId": "AssignCleaner",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"cleaner": {
+											"properties": {
+												"name": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"name",
+												"id"
+											],
+											"type": "object"
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"cleaner",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid state",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminAssignRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/bookings/{id}/reschedule": {
+			"patch": {
+				"operationId": "RescheduleBooking",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"time_end": {
+											"type": "string",
+											"nullable": true
+										},
+										"time_start": {
+											"type": "string"
+										},
+										"scheduled_date": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"time_end",
+										"time_start",
+										"scheduled_date",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid state",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminRescheduleRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/admin/bookings/{id}/cancel": {
+			"post": {
+				"operationId": "CancelBooking",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"notifications_sent": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"status": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"notifications_sent",
+										"status",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid state",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/bookings/{id}/receipt": {
+			"post": {
+				"operationId": "SendReceipt",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MessageResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/activity-log": {
+			"get": {
+				"operationId": "GetActivityLog",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ActivityLogResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Admin Activity Log"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:control_permissions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/customer/addresses": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/AddressResponse"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Addresses"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Addresses"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAddressRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/customer/addresses/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Addresses"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Addresses"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAddressRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Addresses"
+				],
+				"security": [
+					{
+						"jwt": [
+							"customer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
