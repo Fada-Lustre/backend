@@ -1,9 +1,14 @@
 import * as process from "process";
+import * as path from "path";
 
 import dotenv from "dotenv";
 import { z } from "zod";
 
-dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === "test"
+    ? path.resolve(process.cwd(), ".env.test")
+    : undefined,
+});
 
 const EnvironmentVariableSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
@@ -18,6 +23,14 @@ const EnvironmentVariableSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional().default(""),
   CLOUDINARY_API_KEY: z.string().optional().default(""),
   CLOUDINARY_API_SECRET: z.string().optional().default(""),
+  ALLOWED_ORIGINS: z.preprocess(
+    (arg) => {
+      if (typeof arg === "string" && arg.length > 0) return arg.split(",");
+      return process.env.NODE_ENV === "production" ? [] : ["*"];
+    },
+    z.array(z.string())
+  ),
+  ENCRYPTION_KEY: z.union([z.string().min(32), z.literal("")]).default(""),
 });
 
 export const env = EnvironmentVariableSchema.parse(process.env);
