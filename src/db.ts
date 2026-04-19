@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 import { env } from "./env";
 
 const pool = new Pool({
@@ -31,16 +31,13 @@ const db = {
     }
   },
 
-  async queryViaTransaction(
-    text: string,
-    values?: (string | number | boolean | null | undefined | Date)[]
-  ) {
+  async withTransaction<T>(fn: (client: PoolClient) => Promise<T>): Promise<T> {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
-      const result = await client.query(text, values);
+      const result = await fn(client);
       await client.query("COMMIT");
-      return result.rows;
+      return result;
     } catch (err) {
       await client.query("ROLLBACK");
       throw err;

@@ -146,3 +146,4 @@ agents/
 commands/
 docs/
 skills/
+.claude/

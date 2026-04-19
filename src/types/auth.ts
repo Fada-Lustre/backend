@@ -27,9 +27,53 @@ export interface LoginResponse {
 }
 
 export interface ForgotPasswordRequest {
-  email: string;
+  /** E.164 phone number */
+  phone: string;
 }
 
 export interface ForgotPasswordResponse {
   message: string;
+}
+
+export interface VerifyOtpRequest {
+  /** E.164 phone number */
+  phone: string;
+  /** 6-digit numeric code */
+  code: string;
+}
+
+export interface VerifyOtpResponse {
+  verified: boolean;
+}
+
+export interface ResetPasswordRequest {
+  /** E.164 phone number — must have a verified OTP */
+  phone: string;
+  /** Min 8 chars, >= 1 number */
+  new_password: string;
+  confirm_password: string;
+}
+
+export interface ResetPasswordResponse {
+  message: string;
+}
+
+export interface ChangePasswordRequest {
+  current_password: string;
+  /** Min 8 chars, >= 1 number */
+  new_password: string;
+  confirm_password: string;
+}
+
+export interface ChangePasswordResponse {
+  message: string;
+}
+
+export interface RefreshRequest {
+  refresh_token: string;
+}
+
+export interface RefreshResponse {
+  token: string;
+  refresh_token: string;
 }
