@@ -1,0 +1,57 @@
+import { Controller, Get, Post, Route, Tags, Security, Request, Query, Path, Body, Response, SuccessResponse } from "tsoa";
+import { Request as ExpressRequest } from "express";
+import * as adminCustomerService from "../services/admin-customer.service";
+import * as adminBookingService from "../services/admin-booking.service";
+import { clampPagination } from "../lib/validation";
+import type { AdminCreateBookingRequest } from "../types/admin-booking";
+import type { AdminCustomerDetail } from "../types/admin-customer";
+import type { ErrorResponse, IdStatusResponse } from "../types/common";
+import type { AdminListResponse } from "../types/admin-common";
+
+@Route("v1/admin/customers")
+@Tags("Admin Customers")
+@Security("jwt", ["admin:customers"])
+export class AdminCustomerController extends Controller {
+  @Get()
+  public async listCustomers(
+    @Request() _req: ExpressRequest,
+    @Query() page: number = 1,
+    @Query() limit: number = 10,
+    @Query() status?: string,
+    @Query() location?: string,
+    @Query() service?: string,
+    @Query() search?: string
+  ): Promise<AdminListResponse<Record<string, unknown>>> {
+    const { page: p, limit: l } = clampPagination(page, limit);
+    return adminCustomerService.listCustomers(p, l, { status, location, service, search });
+  }
+
+  @Get("{id}")
+  @Response<ErrorResponse>(404, "Not found")
+  public async getCustomer(
+    @Request() _req: ExpressRequest,
+    @Path() id: string
+  ): Promise<AdminCustomerDetail> {
+    return adminCustomerService.getCustomer(id) as unknown as Promise<AdminCustomerDetail>;
+  }
+
+  @Post("{id}/block")
+  @Response<ErrorResponse>(404, "Not found")
+  public async blockCustomer(
+    @Request() req: ExpressRequest,
+    @Path() id: string
+  ): Promise<IdStatusResponse> {
+    return adminCustomerService.blockCustomer(req.user!.id, id);
+  }
+
+  @Post("{id}/book")
+  @SuccessResponse(201, "Created")
+  public async bookForCustomer(
+    @Request() req: ExpressRequest,
+    @Path() id: string,
+    @Body() body: AdminCreateBookingRequest
+  ): Promise<{ id: string; price: number; status: string }> {
+    this.setStatus(201);
+    return adminBookingService.createBooking(req.user!.id, body);
+  }
+}
