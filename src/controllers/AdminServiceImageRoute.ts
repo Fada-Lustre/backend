@@ -1,0 +1,51 @@
+import { Router, Request, Response, NextFunction } from "express";
+import fileUpload from "express-fileupload";
+import { ApplicationError } from "../errors";
+import { requireJwtScopes } from "../lib/auth-middleware";
+import * as adminServiceService from "../services/admin-service.service";
+
+const router = Router();
+
+router.use(fileUpload({ limits: { fileSize: 5 * 1024 * 1024 }, abortOnLimit: true }));
+
+router.post("/", requireJwtScopes("admin:services"), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const name = req.body.name as string;
+    const description = (req.body.description as string) || "";
+
+    if (!name) {
+      throw new ApplicationError(400, "Name is required", "VALIDATION_ERROR");
+    }
+
+    let imageUrl: string | null = null;
+    if (req.files && req.files.image) {
+      imageUrl = "https://res.cloudinary.com/stub/services/" + Date.now();
+    }
+
+    const result = await adminServiceService.createService(req.user!.id, name, description, imageUrl);
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.patch("/:id", requireJwtScopes("admin:services"), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const serviceId = req.params.id as string;
+    const updates: { name?: string; description?: string; imageUrl?: string } = {};
+
+    if (req.body.name) updates.name = req.body.name;
+    if (req.body.description) updates.description = req.body.description;
+
+    if (req.files && req.files.image) {
+      updates.imageUrl = "https://res.cloudinary.com/stub/services/" + Date.now();
+    }
+
+    const result = await adminServiceService.updateService(req.user!.id, serviceId, updates);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
+export default router;

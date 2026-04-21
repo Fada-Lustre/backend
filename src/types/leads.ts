@@ -64,3 +64,22 @@ export interface CleanerApplicationResponse {
   id: string;
   created_at: string;
 }
+
+export interface CleanerApplicationDetail {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  status: string;
+  created_at: string;
+}
+
+export interface UpdateCleanerApplicationRequest {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  postcode?: string;
+  experience_description?: string;
+  hours_per_week?: number;
+}

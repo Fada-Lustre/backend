@@ -1,0 +1,36 @@
+import { Body, Controller, Get, Patch, Route, Tags, Security, Request, Response } from "tsoa";
+import { Request as ExpressRequest } from "express";
+import * as profileService from "../services/profile.service";
+import type { ProfileResponse, UpdateProfileRequest, UpdatePhoneRequest, UpdatePhoneResponse } from "../types/profile";
+import type { ErrorResponse } from "../types/common";
+
+@Route("v1/customer/profile")
+@Tags("Profile")
+@Security("jwt", ["customer"])
+export class ProfileController extends Controller {
+  @Get("/")
+  @Response<ErrorResponse>(404, "Profile not found")
+  public async getProfile(
+    @Request() req: ExpressRequest
+  ): Promise<ProfileResponse> {
+    return profileService.getProfile(req.user!.id);
+  }
+
+  @Patch("/")
+  @Response<ErrorResponse>(404, "Profile not found")
+  public async updateProfile(
+    @Request() req: ExpressRequest,
+    @Body() body: UpdateProfileRequest
+  ): Promise<ProfileResponse> {
+    return profileService.updateProfile(req.user!.id, body);
+  }
+
+  @Patch("phone")
+  @Response<ErrorResponse>(400, "Validation error")
+  public async requestPhoneUpdate(
+    @Request() req: ExpressRequest,
+    @Body() body: UpdatePhoneRequest
+  ): Promise<UpdatePhoneResponse> {
+    return profileService.requestPhoneUpdate(req.user!.id, body.phone, body.verification_method);
+  }
+}
