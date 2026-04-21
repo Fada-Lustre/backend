@@ -6,8 +6,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const result = await db.query(
+  const rows = await db.query(
     "DELETE FROM otp_codes WHERE expires_at < NOW() - INTERVAL '1 hour' RETURNING id"
-  );
-  res.json({ deleted: result.rows.length, timestamp: new Date().toISOString() });
+  ) as { id: string }[];
+  res.json({ deleted: rows.length, timestamp: new Date().toISOString() });
 }
