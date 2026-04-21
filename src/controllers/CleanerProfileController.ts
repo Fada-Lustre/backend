@@ -14,7 +14,7 @@ import type { ErrorResponse } from "../types/common";
 export class CleanerProfileController extends Controller {
   @Get("/")
   @Response<ErrorResponse>(404, "Profile not found")
-  public async getProfile(
+  public async getCleanerProfile(
     @Request() req: ExpressRequest
   ): Promise<CleanerProfileResponse> {
     return cleanerProfileService.getProfile(req.user!.id);
@@ -22,7 +22,7 @@ export class CleanerProfileController extends Controller {
 
   @Patch("/")
   @Response<ErrorResponse>(404, "Profile not found")
-  public async updateProfile(
+  public async updateCleanerProfile(
     @Request() req: ExpressRequest,
     @Body() body: UpdateCleanerProfileRequest
   ): Promise<CleanerProfileResponse> {
@@ -31,7 +31,7 @@ export class CleanerProfileController extends Controller {
 
   @Patch("phone")
   @Response<ErrorResponse>(400, "Validation error")
-  public async requestPhoneUpdate(
+  public async requestCleanerPhoneUpdate(
     @Request() req: ExpressRequest,
     @Body() body: UpdateCleanerPhoneRequest
   ): Promise<UpdateCleanerPhoneResponse> {

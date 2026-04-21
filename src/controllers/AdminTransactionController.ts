@@ -34,7 +34,7 @@ export class AdminTransactionController extends Controller {
 
   @Post("{id}/receipt")
   @Response<ErrorResponse>(404, "Not found")
-  public async sendReceipt(
+  public async sendTransactionReceipt(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<MessageResponse> {

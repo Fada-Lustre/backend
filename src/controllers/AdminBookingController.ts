@@ -11,7 +11,7 @@ import type { AdminListResponse } from "../types/admin-common";
 @Security("jwt", ["admin:bookings"])
 export class AdminBookingController extends Controller {
   @Get()
-  public async listBookings(
+  public async adminListBookings(
     @Request() _req: ExpressRequest,
     @Query() page: number = 1,
     @Query() limit: number = 10,
@@ -27,7 +27,7 @@ export class AdminBookingController extends Controller {
 
   @Post()
   @SuccessResponse(201, "Created")
-  public async createBooking(
+  public async adminCreateBooking(
     @Request() req: ExpressRequest,
     @Body() body: AdminCreateBookingRequest
   ): Promise<{ id: string; price: number; status: string }> {
@@ -66,7 +66,7 @@ export class AdminBookingController extends Controller {
 
   @Post("{id}/cancel")
   @Response<ErrorResponse>(400, "Invalid state")
-  public async cancelBooking(
+  public async adminCancelBooking(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<{ id: string; status: string; notifications_sent: string[] }> {
@@ -75,7 +75,7 @@ export class AdminBookingController extends Controller {
 
   @Post("{id}/receipt")
   @Response<ErrorResponse>(404, "Not found")
-  public async sendReceipt(
+  public async sendBookingReceipt(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<MessageResponse> {

@@ -9,7 +9,7 @@ import type { ListResponse, ErrorResponse } from "../types/common";
 @Security("jwt", ["customer"])
 export class NotificationController extends Controller {
   @Get("/")
-  public async list(
+  public async listNotifications(
     @Request() req: ExpressRequest,
     @Query() page?: number,
     @Query() limit?: number

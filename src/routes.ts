@@ -1906,26 +1906,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProfileController_getProfile: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProfileController_getCustomerProfile: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.get('/v1/customer/profile',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(ProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.getProfile)),
+            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.getCustomerProfile)),
 
-            async function ProfileController_getProfile(request: ExRequest, response: ExResponse, next: any) {
+            async function ProfileController_getCustomerProfile(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_getProfile, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_getCustomerProfile, request, response });
 
                 const controller = new ProfileController();
 
               await templateService.apiHandler({
-                methodName: 'getProfile',
+                methodName: 'getCustomerProfile',
                 controller,
                 response,
                 next,
@@ -1937,27 +1937,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProfileController_updateProfile: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProfileController_updateCustomerProfile: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"UpdateProfileRequest"},
         };
         app.patch('/v1/customer/profile',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(ProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.updateProfile)),
+            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.updateCustomerProfile)),
 
-            async function ProfileController_updateProfile(request: ExRequest, response: ExResponse, next: any) {
+            async function ProfileController_updateCustomerProfile(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_updateProfile, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_updateCustomerProfile, request, response });
 
                 const controller = new ProfileController();
 
               await templateService.apiHandler({
-                methodName: 'updateProfile',
+                methodName: 'updateCustomerProfile',
                 controller,
                 response,
                 next,
@@ -1969,27 +1969,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsProfileController_requestPhoneUpdate: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsProfileController_requestCustomerPhoneUpdate: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"UpdatePhoneRequest"},
         };
         app.patch('/v1/customer/profile/phone',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(ProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.requestPhoneUpdate)),
+            ...(fetchMiddlewares<RequestHandler>(ProfileController.prototype.requestCustomerPhoneUpdate)),
 
-            async function ProfileController_requestPhoneUpdate(request: ExRequest, response: ExResponse, next: any) {
+            async function ProfileController_requestCustomerPhoneUpdate(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_requestPhoneUpdate, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsProfileController_requestCustomerPhoneUpdate, request, response });
 
                 const controller = new ProfileController();
 
               await templateService.apiHandler({
-                methodName: 'requestPhoneUpdate',
+                methodName: 'requestCustomerPhoneUpdate',
                 controller,
                 response,
                 next,
@@ -2001,26 +2001,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsPaymentMethodController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsPaymentMethodController_listPaymentMethods: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.get('/v1/customer/payment-methods',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(PaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.listPaymentMethods)),
 
-            async function PaymentMethodController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function PaymentMethodController_listPaymentMethods(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_listPaymentMethods, request, response });
 
                 const controller = new PaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listPaymentMethods',
                 controller,
                 response,
                 next,
@@ -2032,27 +2032,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsPaymentMethodController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsPaymentMethodController_createPaymentMethod: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"CreatePaymentMethodRequest"},
         };
         app.post('/v1/customer/payment-methods',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(PaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.createPaymentMethod)),
 
-            async function PaymentMethodController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function PaymentMethodController_createPaymentMethod(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_createPaymentMethod, request, response });
 
                 const controller = new PaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createPaymentMethod',
                 controller,
                 response,
                 next,
@@ -2064,27 +2064,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsPaymentMethodController_remove: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsPaymentMethodController_removePaymentMethod: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.delete('/v1/customer/payment-methods/:id',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(PaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.remove)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentMethodController.prototype.removePaymentMethod)),
 
-            async function PaymentMethodController_remove(request: ExRequest, response: ExResponse, next: any) {
+            async function PaymentMethodController_removePaymentMethod(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_remove, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentMethodController_removePaymentMethod, request, response });
 
                 const controller = new PaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'remove',
+                methodName: 'removePaymentMethod',
                 controller,
                 response,
                 next,
@@ -2096,7 +2096,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsNotificationController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsNotificationController_listNotifications: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 page: {"in":"query","name":"page","dataType":"double"},
                 limit: {"in":"query","name":"limit","dataType":"double"},
@@ -2104,20 +2104,20 @@ export function RegisterRoutes(app: Router) {
         app.get('/v1/notifications',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(NotificationController)),
-            ...(fetchMiddlewares<RequestHandler>(NotificationController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(NotificationController.prototype.listNotifications)),
 
-            async function NotificationController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function NotificationController_listNotifications(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsNotificationController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsNotificationController_listNotifications, request, response });
 
                 const controller = new NotificationController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listNotifications',
                 controller,
                 response,
                 next,
@@ -2616,26 +2616,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerProfileController_getProfile: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerProfileController_getCleanerProfile: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.get('/v1/cleaner/profile',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.getProfile)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.getCleanerProfile)),
 
-            async function CleanerProfileController_getProfile(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerProfileController_getCleanerProfile(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_getProfile, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_getCleanerProfile, request, response });
 
                 const controller = new CleanerProfileController();
 
               await templateService.apiHandler({
-                methodName: 'getProfile',
+                methodName: 'getCleanerProfile',
                 controller,
                 response,
                 next,
@@ -2647,27 +2647,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerProfileController_updateProfile: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerProfileController_updateCleanerProfile: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"UpdateCleanerProfileRequest"},
         };
         app.patch('/v1/cleaner/profile',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.updateProfile)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.updateCleanerProfile)),
 
-            async function CleanerProfileController_updateProfile(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerProfileController_updateCleanerProfile(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_updateProfile, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_updateCleanerProfile, request, response });
 
                 const controller = new CleanerProfileController();
 
               await templateService.apiHandler({
-                methodName: 'updateProfile',
+                methodName: 'updateCleanerProfile',
                 controller,
                 response,
                 next,
@@ -2679,27 +2679,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerProfileController_requestPhoneUpdate: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerProfileController_requestCleanerPhoneUpdate: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"UpdateCleanerPhoneRequest"},
         };
         app.patch('/v1/cleaner/profile/phone',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerProfileController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.requestPhoneUpdate)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerProfileController.prototype.requestCleanerPhoneUpdate)),
 
-            async function CleanerProfileController_requestPhoneUpdate(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerProfileController_requestCleanerPhoneUpdate(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_requestPhoneUpdate, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerProfileController_requestCleanerPhoneUpdate, request, response });
 
                 const controller = new CleanerProfileController();
 
               await templateService.apiHandler({
-                methodName: 'requestPhoneUpdate',
+                methodName: 'requestCleanerPhoneUpdate',
                 controller,
                 response,
                 next,
@@ -2743,26 +2743,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerPaymentMethodController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerPaymentMethodController_listCleanerPaymentMethods: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.get('/v1/cleaner/payment-methods',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.listCleanerPaymentMethods)),
 
-            async function CleanerPaymentMethodController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerPaymentMethodController_listCleanerPaymentMethods(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_listCleanerPaymentMethods, request, response });
 
                 const controller = new CleanerPaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listCleanerPaymentMethods',
                 controller,
                 response,
                 next,
@@ -2774,27 +2774,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerPaymentMethodController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerPaymentMethodController_createCleanerPaymentMethod: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"CreateCleanerPaymentMethodRequest"},
         };
         app.post('/v1/cleaner/payment-methods',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.createCleanerPaymentMethod)),
 
-            async function CleanerPaymentMethodController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerPaymentMethodController_createCleanerPaymentMethod(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_createCleanerPaymentMethod, request, response });
 
                 const controller = new CleanerPaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createCleanerPaymentMethod',
                 controller,
                 response,
                 next,
@@ -2806,27 +2806,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerPaymentMethodController_remove: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerPaymentMethodController_removeCleanerPaymentMethod: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.delete('/v1/cleaner/payment-methods/:id',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.remove)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerPaymentMethodController.prototype.removeCleanerPaymentMethod)),
 
-            async function CleanerPaymentMethodController_remove(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerPaymentMethodController_removeCleanerPaymentMethod(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_remove, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerPaymentMethodController_removeCleanerPaymentMethod, request, response });
 
                 const controller = new CleanerPaymentMethodController();
 
               await templateService.apiHandler({
-                methodName: 'remove',
+                methodName: 'removeCleanerPaymentMethod',
                 controller,
                 response,
                 next,
@@ -2944,27 +2944,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerWithdrawalsController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerWithdrawalsController_createWithdrawal: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"CreateWithdrawalRequest"},
         };
         app.post('/v1/cleaner/withdrawals',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerWithdrawalsController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerWithdrawalsController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerWithdrawalsController.prototype.createWithdrawal)),
 
-            async function CleanerWithdrawalsController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerWithdrawalsController_createWithdrawal(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerWithdrawalsController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerWithdrawalsController_createWithdrawal, request, response });
 
                 const controller = new CleanerWithdrawalsController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createWithdrawal',
                 controller,
                 response,
                 next,
@@ -2976,7 +2976,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerBookingController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerBookingController_listCleanerBookings: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 filter: {"in":"query","name":"filter","dataType":"string"},
                 page: {"in":"query","name":"page","dataType":"double"},
@@ -2985,20 +2985,20 @@ export function RegisterRoutes(app: Router) {
         app.get('/v1/cleaner/bookings',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.listCleanerBookings)),
 
-            async function CleanerBookingController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerBookingController_listCleanerBookings(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_listCleanerBookings, request, response });
 
                 const controller = new CleanerBookingController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listCleanerBookings',
                 controller,
                 response,
                 next,
@@ -3106,27 +3106,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerBookingController_cancel: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerBookingController_cancelCleanerBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.post('/v1/cleaner/bookings/:id/cancel',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.cancel)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.cancelCleanerBooking)),
 
-            async function CleanerBookingController_cancel(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerBookingController_cancelCleanerBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_cancel, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_cancelCleanerBooking, request, response });
 
                 const controller = new CleanerBookingController();
 
               await templateService.apiHandler({
-                methodName: 'cancel',
+                methodName: 'cancelCleanerBooking',
                 controller,
                 response,
                 next,
@@ -3138,7 +3138,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCleanerBookingController_rate: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCleanerBookingController_rateCleanerBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 body: {"in":"body","name":"body","required":true,"ref":"CleanerRateRequest"},
@@ -3146,20 +3146,20 @@ export function RegisterRoutes(app: Router) {
         app.post('/v1/cleaner/bookings/:id/rate',
             authenticateMiddleware([{"jwt":["cleaner"]}]),
             ...(fetchMiddlewares<RequestHandler>(CleanerBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.rate)),
+            ...(fetchMiddlewares<RequestHandler>(CleanerBookingController.prototype.rateCleanerBooking)),
 
-            async function CleanerBookingController_rate(request: ExRequest, response: ExResponse, next: any) {
+            async function CleanerBookingController_rateCleanerBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_rate, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCleanerBookingController_rateCleanerBooking, request, response });
 
                 const controller = new CleanerBookingController();
 
               await templateService.apiHandler({
-                methodName: 'rate',
+                methodName: 'rateCleanerBooking',
                 controller,
                 response,
                 next,
@@ -3234,27 +3234,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsBookingController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsBookingController_createBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"CreateBookingRequest"},
         };
         app.post('/v1/bookings',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookingController)),
-            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.createBooking)),
 
-            async function BookingController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function BookingController_createBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_createBooking, request, response });
 
                 const controller = new BookingController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createBooking',
                 controller,
                 response,
                 next,
@@ -3266,7 +3266,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsBookingController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsBookingController_listBookings: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 status: {"in":"query","name":"status","dataType":"string"},
                 page: {"in":"query","name":"page","dataType":"double"},
@@ -3275,20 +3275,20 @@ export function RegisterRoutes(app: Router) {
         app.get('/v1/bookings',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookingController)),
-            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.listBookings)),
 
-            async function BookingController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function BookingController_listBookings(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_listBookings, request, response });
 
                 const controller = new BookingController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listBookings',
                 controller,
                 response,
                 next,
@@ -3431,27 +3431,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsBookingController_cancel: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsBookingController_cancelBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.post('/v1/bookings/:id/cancel',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookingController)),
-            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.cancel)),
+            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.cancelBooking)),
 
-            async function BookingController_cancel(request: ExRequest, response: ExResponse, next: any) {
+            async function BookingController_cancelBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_cancel, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_cancelBooking, request, response });
 
                 const controller = new BookingController();
 
               await templateService.apiHandler({
-                methodName: 'cancel',
+                methodName: 'cancelBooking',
                 controller,
                 response,
                 next,
@@ -3495,7 +3495,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsBookingController_rate: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsBookingController_rateBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 body: {"in":"body","name":"body","required":true,"ref":"RateBookingRequest"},
@@ -3503,20 +3503,20 @@ export function RegisterRoutes(app: Router) {
         app.post('/v1/bookings/:id/rate',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookingController)),
-            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.rate)),
+            ...(fetchMiddlewares<RequestHandler>(BookingController.prototype.rateBooking)),
 
-            async function BookingController_rate(request: ExRequest, response: ExResponse, next: any) {
+            async function BookingController_rateBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_rate, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsBookingController_rateBooking, request, response });
 
                 const controller = new BookingController();
 
               await templateService.apiHandler({
-                methodName: 'rate',
+                methodName: 'rateBooking',
                 controller,
                 response,
                 next,
@@ -4064,27 +4064,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminTransactionController_sendReceipt: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminTransactionController_sendTransactionReceipt: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.post('/v1/admin/transactions/:id/receipt',
             authenticateMiddleware([{"jwt":["admin:transactions"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminTransactionController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminTransactionController.prototype.sendReceipt)),
+            ...(fetchMiddlewares<RequestHandler>(AdminTransactionController.prototype.sendTransactionReceipt)),
 
-            async function AdminTransactionController_sendReceipt(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminTransactionController_sendTransactionReceipt(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminTransactionController_sendReceipt, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminTransactionController_sendTransactionReceipt, request, response });
 
                 const controller = new AdminTransactionController();
 
               await templateService.apiHandler({
-                methodName: 'sendReceipt',
+                methodName: 'sendTransactionReceipt',
                 controller,
                 response,
                 next,
@@ -4096,7 +4096,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminSupportController_listTickets: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminSupportController_listAdminTickets: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
@@ -4106,20 +4106,20 @@ export function RegisterRoutes(app: Router) {
         app.get('/v1/admin/support/tickets',
             authenticateMiddleware([{"jwt":["admin:support"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminSupportController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminSupportController.prototype.listTickets)),
+            ...(fetchMiddlewares<RequestHandler>(AdminSupportController.prototype.listAdminTickets)),
 
-            async function AdminSupportController_listTickets(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminSupportController_listAdminTickets(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminSupportController_listTickets, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminSupportController_listAdminTickets, request, response });
 
                 const controller = new AdminSupportController();
 
               await templateService.apiHandler({
-                methodName: 'listTickets',
+                methodName: 'listAdminTickets',
                 controller,
                 response,
                 next,
@@ -4131,27 +4131,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminSupportController_getTicket: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminSupportController_getAdminTicket: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.get('/v1/admin/support/tickets/:id',
             authenticateMiddleware([{"jwt":["admin:support"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminSupportController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminSupportController.prototype.getTicket)),
+            ...(fetchMiddlewares<RequestHandler>(AdminSupportController.prototype.getAdminTicket)),
 
-            async function AdminSupportController_getTicket(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminSupportController_getAdminTicket(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminSupportController_getTicket, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminSupportController_getAdminTicket, request, response });
 
                 const controller = new AdminSupportController();
 
               await templateService.apiHandler({
-                methodName: 'getTicket',
+                methodName: 'getAdminTicket',
                 controller,
                 response,
                 next,
@@ -4229,26 +4229,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminServiceController_listServices: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminServiceController_listAdminServices: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
         };
         app.get('/v1/admin/services',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminServiceController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminServiceController.prototype.listServices)),
+            ...(fetchMiddlewares<RequestHandler>(AdminServiceController.prototype.listAdminServices)),
 
-            async function AdminServiceController_listServices(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminServiceController_listAdminServices(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminServiceController_listServices, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminServiceController_listAdminServices, request, response });
 
                 const controller = new AdminServiceController();
 
               await templateService.apiHandler({
-                methodName: 'listServices',
+                methodName: 'listAdminServices',
                 controller,
                 response,
                 next,
@@ -4260,27 +4260,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminServiceController_getService: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminServiceController_getAdminService: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.get('/v1/admin/services/:id',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminServiceController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminServiceController.prototype.getService)),
+            ...(fetchMiddlewares<RequestHandler>(AdminServiceController.prototype.getAdminService)),
 
-            async function AdminServiceController_getService(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminServiceController_getAdminService(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminServiceController_getService, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminServiceController_getAdminService, request, response });
 
                 const controller = new AdminServiceController();
 
               await templateService.apiHandler({
-                methodName: 'getService',
+                methodName: 'getAdminService',
                 controller,
                 response,
                 next,
@@ -4617,26 +4617,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminCostGuideController_listCostGuides: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminCostGuideController_listAdminCostGuides: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
         };
         app.get('/v1/admin/cost-guides',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController.prototype.listCostGuides)),
+            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController.prototype.listAdminCostGuides)),
 
-            async function AdminCostGuideController_listCostGuides(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminCostGuideController_listAdminCostGuides(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminCostGuideController_listCostGuides, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminCostGuideController_listAdminCostGuides, request, response });
 
                 const controller = new AdminCostGuideController();
 
               await templateService.apiHandler({
-                methodName: 'listCostGuides',
+                methodName: 'listAdminCostGuides',
                 controller,
                 response,
                 next,
@@ -4680,27 +4680,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminCostGuideController_getCostGuide: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminCostGuideController_getAdminCostGuide: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.get('/v1/admin/cost-guides/:id',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController.prototype.getCostGuide)),
+            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController.prototype.getAdminCostGuide)),
 
-            async function AdminCostGuideController_getCostGuide(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminCostGuideController_getAdminCostGuide(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminCostGuideController_getCostGuide, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminCostGuideController_getAdminCostGuide, request, response });
 
                 const controller = new AdminCostGuideController();
 
               await templateService.apiHandler({
-                methodName: 'getCostGuide',
+                methodName: 'getAdminCostGuide',
                 controller,
                 response,
                 next,
@@ -4911,7 +4911,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminBookingController_listBookings: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminBookingController_adminListBookings: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
@@ -4924,20 +4924,20 @@ export function RegisterRoutes(app: Router) {
         app.get('/v1/admin/bookings',
             authenticateMiddleware([{"jwt":["admin:bookings"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.listBookings)),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.adminListBookings)),
 
-            async function AdminBookingController_listBookings(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminBookingController_adminListBookings(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_listBookings, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_adminListBookings, request, response });
 
                 const controller = new AdminBookingController();
 
               await templateService.apiHandler({
-                methodName: 'listBookings',
+                methodName: 'adminListBookings',
                 controller,
                 response,
                 next,
@@ -4949,27 +4949,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminBookingController_createBooking: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminBookingController_adminCreateBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"AdminCreateBookingRequest"},
         };
         app.post('/v1/admin/bookings',
             authenticateMiddleware([{"jwt":["admin:bookings"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.createBooking)),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.adminCreateBooking)),
 
-            async function AdminBookingController_createBooking(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminBookingController_adminCreateBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_createBooking, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_adminCreateBooking, request, response });
 
                 const controller = new AdminBookingController();
 
               await templateService.apiHandler({
-                methodName: 'createBooking',
+                methodName: 'adminCreateBooking',
                 controller,
                 response,
                 next,
@@ -5079,27 +5079,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminBookingController_cancelBooking: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminBookingController_adminCancelBooking: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.post('/v1/admin/bookings/:id/cancel',
             authenticateMiddleware([{"jwt":["admin:bookings"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.cancelBooking)),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.adminCancelBooking)),
 
-            async function AdminBookingController_cancelBooking(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminBookingController_adminCancelBooking(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_cancelBooking, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_adminCancelBooking, request, response });
 
                 const controller = new AdminBookingController();
 
               await templateService.apiHandler({
-                methodName: 'cancelBooking',
+                methodName: 'adminCancelBooking',
                 controller,
                 response,
                 next,
@@ -5111,27 +5111,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAdminBookingController_sendReceipt: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAdminBookingController_sendBookingReceipt: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.post('/v1/admin/bookings/:id/receipt',
             authenticateMiddleware([{"jwt":["admin:bookings"]}]),
             ...(fetchMiddlewares<RequestHandler>(AdminBookingController)),
-            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.sendReceipt)),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.sendBookingReceipt)),
 
-            async function AdminBookingController_sendReceipt(request: ExRequest, response: ExResponse, next: any) {
+            async function AdminBookingController_sendBookingReceipt(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_sendReceipt, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_sendBookingReceipt, request, response });
 
                 const controller = new AdminBookingController();
 
               await templateService.apiHandler({
-                methodName: 'sendReceipt',
+                methodName: 'sendBookingReceipt',
                 controller,
                 response,
                 next,
@@ -5177,26 +5177,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAddressController_list: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAddressController_listAddresses: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
         app.get('/v1/customer/addresses',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(AddressController)),
-            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.list)),
+            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.listAddresses)),
 
-            async function AddressController_list(request: ExRequest, response: ExResponse, next: any) {
+            async function AddressController_listAddresses(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_list, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_listAddresses, request, response });
 
                 const controller = new AddressController();
 
               await templateService.apiHandler({
-                methodName: 'list',
+                methodName: 'listAddresses',
                 controller,
                 response,
                 next,
@@ -5240,27 +5240,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAddressController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAddressController_createAddress: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 body: {"in":"body","name":"body","required":true,"ref":"CreateAddressRequest"},
         };
         app.post('/v1/customer/addresses',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(AddressController)),
-            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.createAddress)),
 
-            async function AddressController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function AddressController_createAddress(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_createAddress, request, response });
 
                 const controller = new AddressController();
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'createAddress',
                 controller,
                 response,
                 next,
@@ -5305,27 +5305,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsAddressController_remove: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsAddressController_removeAddress: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
         app.delete('/v1/customer/addresses/:id',
             authenticateMiddleware([{"jwt":["customer"]}]),
             ...(fetchMiddlewares<RequestHandler>(AddressController)),
-            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.remove)),
+            ...(fetchMiddlewares<RequestHandler>(AddressController.prototype.removeAddress)),
 
-            async function AddressController_remove(request: ExRequest, response: ExResponse, next: any) {
+            async function AddressController_removeAddress(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_remove, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsAddressController_removeAddress, request, response });
 
                 const controller = new AddressController();
 
               await templateService.apiHandler({
-                methodName: 'remove',
+                methodName: 'removeAddress',
                 controller,
                 response,
                 next,

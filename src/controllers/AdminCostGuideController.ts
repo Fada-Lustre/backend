@@ -9,7 +9,7 @@ import type { ErrorResponse, IdStatusResponse } from "../types/common";
 @Security("jwt", ["admin:services"])
 export class AdminCostGuideController extends Controller {
   @Get()
-  public async listCostGuides(@Request() _req: ExpressRequest): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+  public async listAdminCostGuides(@Request() _req: ExpressRequest): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
     return adminCostGuideService.listCostGuides();
   }
 
@@ -25,7 +25,7 @@ export class AdminCostGuideController extends Controller {
 
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
-  public async getCostGuide(
+  public async getAdminCostGuide(
     @Request() _req: ExpressRequest,
     @Path() id: string
   ): Promise<AdminCostGuideDetail> {

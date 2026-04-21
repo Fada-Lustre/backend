@@ -15,7 +15,7 @@ import type { ListResponse, ErrorResponse } from "../types/common";
 export class BookingController extends Controller {
   @Post("/")
   @SuccessResponse(201, "Created")
-  public async create(
+  public async createBooking(
     @Request() req: ExpressRequest,
     @Body() body: CreateBookingRequest
   ): Promise<{ id: string; status: string; price: string | null }> {
@@ -24,7 +24,7 @@ export class BookingController extends Controller {
   }
 
   @Get("/")
-  public async list(
+  public async listBookings(
     @Request() req: ExpressRequest,
     @Query() status?: string,
     @Query() page?: number,
@@ -77,7 +77,7 @@ export class BookingController extends Controller {
 
   @Post("{id}/cancel")
   @Response<ErrorResponse>(409, "State conflict")
-  public async cancel(
+  public async cancelBooking(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<{ id: string; status: string; refund_status: string }> {
@@ -97,7 +97,7 @@ export class BookingController extends Controller {
   @Post("{id}/rate")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(409, "Already rated")
-  public async rate(
+  public async rateBooking(
     @Request() req: ExpressRequest,
     @Path() id: string,
     @Body() body: RateBookingRequest

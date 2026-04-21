@@ -4638,7 +4638,7 @@
 		},
 		"/v1/customer/profile": {
 			"get": {
-				"operationId": "GetProfile",
+				"operationId": "GetCustomerProfile",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -4674,7 +4674,7 @@
 				"parameters": []
 			},
 			"patch": {
-				"operationId": "UpdateProfile",
+				"operationId": "UpdateCustomerProfile",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -4722,7 +4722,7 @@
 		},
 		"/v1/customer/profile/phone": {
 			"patch": {
-				"operationId": "RequestPhoneUpdate",
+				"operationId": "RequestCustomerPhoneUpdate",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -4770,7 +4770,7 @@
 		},
 		"/v1/customer/payment-methods": {
 			"get": {
-				"operationId": "List",
+				"operationId": "ListPaymentMethods",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -4799,7 +4799,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreatePaymentMethod",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -4847,7 +4847,7 @@
 		},
 		"/v1/customer/payment-methods/{id}": {
 			"delete": {
-				"operationId": "Remove",
+				"operationId": "RemovePaymentMethod",
 				"responses": {
 					"204": {
 						"description": "Deleted"
@@ -4897,7 +4897,7 @@
 		},
 		"/v1/notifications": {
 			"get": {
-				"operationId": "List",
+				"operationId": "ListNotifications",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -5589,7 +5589,7 @@
 		},
 		"/v1/cleaner/profile": {
 			"get": {
-				"operationId": "GetProfile",
+				"operationId": "GetCleanerProfile",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -5625,7 +5625,7 @@
 				"parameters": []
 			},
 			"patch": {
-				"operationId": "UpdateProfile",
+				"operationId": "UpdateCleanerProfile",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -5673,7 +5673,7 @@
 		},
 		"/v1/cleaner/profile/phone": {
 			"patch": {
-				"operationId": "RequestPhoneUpdate",
+				"operationId": "RequestCleanerPhoneUpdate",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -5769,7 +5769,7 @@
 		},
 		"/v1/cleaner/payment-methods": {
 			"get": {
-				"operationId": "List",
+				"operationId": "ListCleanerPaymentMethods",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -5798,7 +5798,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateCleanerPaymentMethod",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -5846,7 +5846,7 @@
 		},
 		"/v1/cleaner/payment-methods/{id}": {
 			"delete": {
-				"operationId": "Remove",
+				"operationId": "RemoveCleanerPaymentMethod",
 				"responses": {
 					"204": {
 						"description": "Deleted"
@@ -6123,7 +6123,7 @@
 		},
 		"/v1/cleaner/withdrawals": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateWithdrawal",
 				"responses": {
 					"201": {
 						"description": "Withdrawal created",
@@ -6171,7 +6171,7 @@
 		},
 		"/v1/cleaner/bookings": {
 			"get": {
-				"operationId": "List",
+				"operationId": "ListCleanerBookings",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -6437,7 +6437,7 @@
 		},
 		"/v1/cleaner/bookings/{id}/cancel": {
 			"post": {
-				"operationId": "Cancel",
+				"operationId": "CancelCleanerBooking",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -6506,7 +6506,7 @@
 		},
 		"/v1/cleaner/bookings/{id}/rate": {
 			"post": {
-				"operationId": "Rate",
+				"operationId": "RateCleanerBooking",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -6660,7 +6660,7 @@
 		},
 		"/v1/bookings": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateBooking",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -6713,7 +6713,7 @@
 				}
 			},
 			"get": {
-				"operationId": "List",
+				"operationId": "ListBookings",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7014,7 +7014,7 @@
 		},
 		"/v1/bookings/{id}/cancel": {
 			"post": {
-				"operationId": "Cancel",
+				"operationId": "CancelBooking",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7130,7 +7130,7 @@
 		},
 		"/v1/bookings/{id}/rate": {
 			"post": {
-				"operationId": "Rate",
+				"operationId": "RateBooking",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -8026,7 +8026,7 @@
 		},
 		"/v1/admin/transactions/{id}/receipt": {
 			"post": {
-				"operationId": "SendReceipt",
+				"operationId": "SendTransactionReceipt",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8073,7 +8073,7 @@
 		},
 		"/v1/admin/support/tickets": {
 			"get": {
-				"operationId": "ListTickets",
+				"operationId": "ListAdminTickets",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8138,7 +8138,7 @@
 		},
 		"/v1/admin/support/tickets/{id}": {
 			"get": {
-				"operationId": "GetTicket",
+				"operationId": "GetAdminTicket",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8313,7 +8313,7 @@
 		},
 		"/v1/admin/services": {
 			"get": {
-				"operationId": "ListServices",
+				"operationId": "ListAdminServices",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8375,7 +8375,7 @@
 		},
 		"/v1/admin/services/{id}": {
 			"get": {
-				"operationId": "GetService",
+				"operationId": "GetAdminService",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8924,7 +8924,7 @@
 		},
 		"/v1/admin/cost-guides": {
 			"get": {
-				"operationId": "ListCostGuides",
+				"operationId": "ListAdminCostGuides",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9038,7 +9038,7 @@
 		},
 		"/v1/admin/cost-guides/{id}": {
 			"get": {
-				"operationId": "GetCostGuide",
+				"operationId": "GetAdminCostGuide",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9419,7 +9419,7 @@
 		},
 		"/v1/admin/bookings": {
 			"get": {
-				"operationId": "ListBookings",
+				"operationId": "AdminListBookings",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9506,7 +9506,7 @@
 				]
 			},
 			"post": {
-				"operationId": "CreateBooking",
+				"operationId": "AdminCreateBooking",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -9775,7 +9775,7 @@
 		},
 		"/v1/admin/bookings/{id}/cancel": {
 			"post": {
-				"operationId": "CancelBooking",
+				"operationId": "AdminCancelBooking",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9841,7 +9841,7 @@
 		},
 		"/v1/admin/bookings/{id}/receipt": {
 			"post": {
-				"operationId": "SendReceipt",
+				"operationId": "SendBookingReceipt",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9945,7 +9945,7 @@
 		},
 		"/v1/customer/addresses": {
 			"get": {
-				"operationId": "List",
+				"operationId": "ListAddresses",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9982,7 +9982,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateAddress",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -10120,7 +10120,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "Remove",
+				"operationId": "RemoveAddress",
 				"responses": {
 					"204": {
 						"description": "No content"

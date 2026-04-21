@@ -50,7 +50,7 @@ export class CleanerWithdrawalsController extends Controller {
   @Post("/")
   @SuccessResponse(201, "Withdrawal created")
   @Response<ErrorResponse>(400, "Validation error or insufficient balance")
-  public async create(
+  public async createWithdrawal(
     @Request() req: ExpressRequest,
     @Body() body: CreateWithdrawalRequest
   ): Promise<WithdrawalResponse> {

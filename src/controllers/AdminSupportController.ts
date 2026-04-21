@@ -11,7 +11,7 @@ import type { AdminListResponse } from "../types/admin-common";
 @Security("jwt", ["admin:support"])
 export class AdminSupportController extends Controller {
   @Get()
-  public async listTickets(
+  public async listAdminTickets(
     @Request() _req: ExpressRequest,
     @Query() page: number = 1,
     @Query() limit: number = 10,
@@ -24,7 +24,7 @@ export class AdminSupportController extends Controller {
 
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
-  public async getTicket(
+  public async getAdminTicket(
     @Request() _req: ExpressRequest,
     @Path() id: string
   ): Promise<AdminTicketDetail> {

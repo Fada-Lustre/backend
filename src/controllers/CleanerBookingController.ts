@@ -10,7 +10,7 @@ import type { ErrorResponse } from "../types/common";
 @Security("jwt", ["cleaner"])
 export class CleanerBookingController extends Controller {
   @Get("/")
-  public async list(
+  public async listCleanerBookings(
     @Request() req: ExpressRequest,
     @Query() filter?: string,
     @Query() page?: number,
@@ -52,7 +52,7 @@ export class CleanerBookingController extends Controller {
   @Post("{id}/cancel")
   @Response<ErrorResponse>(409, "Invalid state transition")
   @Response<ErrorResponse>(403, "Not assigned")
-  public async cancel(
+  public async cancelCleanerBooking(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<{ id: string; status: string }> {
@@ -63,7 +63,7 @@ export class CleanerBookingController extends Controller {
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(409, "Already rated or not done")
   @Response<ErrorResponse>(400, "Invalid rating")
-  public async rate(
+  public async rateCleanerBooking(
     @Request() req: ExpressRequest,
     @Path() id: string,
     @Body() body: CleanerRateRequest

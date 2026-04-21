@@ -9,7 +9,7 @@ import type { ErrorResponse } from "../types/common";
 @Security("jwt", ["customer"])
 export class PaymentMethodController extends Controller {
   @Get("/")
-  public async list(
+  public async listPaymentMethods(
     @Request() req: ExpressRequest
   ): Promise<PaymentMethodResponse[]> {
     return paymentMethodService.list(req.user!.id);
@@ -18,7 +18,7 @@ export class PaymentMethodController extends Controller {
   @Post("/")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(400, "Validation error")
-  public async create(
+  public async createPaymentMethod(
     @Request() req: ExpressRequest,
     @Body() body: CreatePaymentMethodRequest
   ): Promise<PaymentMethodResponse> {
@@ -30,7 +30,7 @@ export class PaymentMethodController extends Controller {
   @SuccessResponse(204, "Deleted")
   @Response<ErrorResponse>(403, "Forbidden")
   @Response<ErrorResponse>(404, "Payment method not found")
-  public async remove(
+  public async removePaymentMethod(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<void> {

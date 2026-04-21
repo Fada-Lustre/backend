@@ -9,7 +9,7 @@ import type { ErrorResponse } from "../types/common";
 @Security("jwt", ["customer"])
 export class AddressController extends Controller {
   @Get("/")
-  public async list(@Request() req: ExpressRequest): Promise<{ data: AddressResponse[] }> {
+  public async listAddresses(@Request() req: ExpressRequest): Promise<{ data: AddressResponse[] }> {
     const data = await addressService.list(req.user!.id);
     return { data };
   }
@@ -25,7 +25,7 @@ export class AddressController extends Controller {
 
   @Post("/")
   @SuccessResponse(201, "Created")
-  public async create(
+  public async createAddress(
     @Request() req: ExpressRequest,
     @Body() body: CreateAddressRequest
   ): Promise<AddressResponse> {
@@ -46,7 +46,7 @@ export class AddressController extends Controller {
   @Delete("{id}")
   @SuccessResponse(204, "No content")
   @Response<ErrorResponse>(404, "Not found")
-  public async remove(
+  public async removeAddress(
     @Request() req: ExpressRequest,
     @Path() id: string
   ): Promise<void> {
