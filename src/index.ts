@@ -58,16 +58,20 @@ app.get("/ready", async (_req: Request, res: Response) => {
   }
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, {
+app.get("/docs.json", (_req: Request, res: Response) => {
+  res.setHeader("Content-Type", "application/json");
+  res.json(swaggerDoc);
+});
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(undefined, {
+  swaggerOptions: {
+    url: "/docs.json",
+  },
   customCssUrl: "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
   customJs: [
     "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
     "https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-standalone-preset.js",
   ],
 }));
-app.get("/docs.json", (_req: Request, res: Response) => {
-  res.json(swaggerDoc);
-});
 
 RegisterRoutes(app);
 
