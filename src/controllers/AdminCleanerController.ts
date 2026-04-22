@@ -10,6 +10,11 @@ import type { AdminListResponse } from "../types/admin-common";
 @Tags("Admin Cleaners")
 @Security("jwt", ["admin:cleaners"])
 export class AdminCleanerController extends Controller {
+  /**
+   * List all cleaners with filters for status, location, service type,
+   * and text search. Includes aggregate stats.
+   * @summary List cleaners
+   */
   @Get()
   public async listCleaners(
     @Request() _req: ExpressRequest,
@@ -24,6 +29,11 @@ export class AdminCleanerController extends Controller {
     return adminCleanerService.listCleaners(p, l, { status, location, service, search });
   }
 
+  /**
+   * Retrieve detailed cleaner information including reviews, availability,
+   * payment history, and performance metrics.
+   * @summary Get cleaner details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getCleaner(
@@ -33,6 +43,10 @@ export class AdminCleanerController extends Controller {
     return adminCleanerService.getCleaner(id) as unknown as Promise<AdminCleanerDetail>;
   }
 
+  /**
+   * Block a cleaner account, preventing them from receiving bookings.
+   * @summary Block cleaner
+   */
   @Post("{id}/block")
   @Response<ErrorResponse>(404, "Not found")
   public async blockCleaner(
@@ -42,6 +56,11 @@ export class AdminCleanerController extends Controller {
     return adminCleanerService.blockCleaner(req.user!.id, id);
   }
 
+  /**
+   * Process a manual payment to a cleaner's bank account.
+   * Creates a transaction record for audit tracking.
+   * @summary Pay cleaner
+   */
   @Post("{id}/pay")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(404, "Not found")

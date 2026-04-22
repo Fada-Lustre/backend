@@ -4385,6 +4385,8 @@
 						}
 					}
 				},
+				"description": "Create a new support ticket with a title and initial message.\nAvailable to both customers and cleaners.",
+				"summary": "Create support ticket",
 				"tags": [
 					"Support"
 				],
@@ -4422,6 +4424,8 @@
 						}
 					}
 				},
+				"description": "List the user's support tickets with optional status filter and pagination.",
+				"summary": "List my tickets",
 				"tags": [
 					"Support"
 				],
@@ -4488,6 +4492,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a support ticket with its full message thread.\nOnly accessible by the ticket owner.",
+				"summary": "Get ticket details",
 				"tags": [
 					"Support"
 				],
@@ -4526,6 +4532,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the current pricing configuration including hourly rates,\nadd-on prices, frequency discounts, and service fees.",
+				"summary": "Get pricing config",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -4558,6 +4566,8 @@
 						}
 					}
 				},
+				"description": "Calculate an instant cleaning quote based on postcode, rooms, hours,\ncleaning products preference, and frequency. Returns itemised line items and total.",
+				"summary": "Create quote",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -4610,6 +4620,8 @@
 						}
 					}
 				},
+				"description": "Schedule a previously created quote by setting a preferred date and time slot.\nConverts the quote into a bookable appointment.",
+				"summary": "Schedule quote",
 				"tags": [
 					"Quotes & Pricing"
 				],
@@ -4661,6 +4673,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the authenticated customer's profile including name, email,\nphone, and profile image.",
+				"summary": "Get my profile",
 				"tags": [
 					"Profile"
 				],
@@ -4697,6 +4711,8 @@
 						}
 					}
 				},
+				"description": "Update the customer's profile fields (name, email, etc.).\nOnly provided fields are updated.",
+				"summary": "Update my profile",
 				"tags": [
 					"Profile"
 				],
@@ -4745,6 +4761,8 @@
 						}
 					}
 				},
+				"description": "Initiate a phone number change by sending an OTP via SMS or email.\nThe phone number is updated after OTP verification.",
+				"summary": "Request phone update",
 				"tags": [
 					"Profile"
 				],
@@ -4786,6 +4804,8 @@
 						}
 					}
 				},
+				"description": "List all saved payment methods for the authenticated customer.\nReturns card details with masked numbers.",
+				"summary": "List payment methods",
 				"tags": [
 					"Payment Methods"
 				],
@@ -4822,6 +4842,8 @@
 						}
 					}
 				},
+				"description": "Add a new payment method (card) to the customer's account.\nCard details are tokenised — only the last 4 digits are stored.",
+				"summary": "Add payment method",
 				"tags": [
 					"Payment Methods"
 				],
@@ -4873,6 +4895,8 @@
 						}
 					}
 				},
+				"description": "Remove a saved payment method. Only the owner can delete their methods.",
+				"summary": "Remove payment method",
 				"tags": [
 					"Payment Methods"
 				],
@@ -4910,6 +4934,8 @@
 						}
 					}
 				},
+				"description": "List notifications for the authenticated user with pagination.\nReturns both read and unread notifications.",
+				"summary": "List notifications",
 				"tags": [
 					"Notifications"
 				],
@@ -4960,6 +4986,8 @@
 						}
 					}
 				},
+				"description": "Mark a specific notification as read. Returns 204 on success.",
+				"summary": "Mark notification read",
 				"tags": [
 					"Notifications"
 				],
@@ -5007,6 +5035,8 @@
 						}
 					}
 				},
+				"description": "Submit a contact form message from the website. No authentication required.",
+				"summary": "Submit contact message",
 				"tags": [
 					"Contact"
 				],
@@ -5049,6 +5079,8 @@
 						}
 					}
 				},
+				"description": "Submit a custom service request from the website.\nUsed when customers need a service outside standard offerings.",
+				"summary": "Submit service request",
 				"tags": [
 					"Service Requests"
 				],
@@ -5091,6 +5123,8 @@
 						}
 					}
 				},
+				"description": "Submit a new cleaner application. Captures personal details,\nexperience, availability, and compliance declarations.",
+				"summary": "Submit cleaner application",
 				"tags": [
 					"Cleaner Applications"
 				],
@@ -5133,6 +5167,8 @@
 						}
 					}
 				},
+				"description": "Retrieve full details of a cleaner application by ID.\nAccessible by the applicant and admins.",
+				"summary": "Get application details",
 				"tags": [
 					"Cleaner Applications"
 				],
@@ -5189,6 +5225,8 @@
 						}
 					}
 				},
+				"description": "Update a draft cleaner application before final submission.\nOnly applications in 'draft' status can be modified.",
+				"summary": "Update application",
 				"tags": [
 					"Cleaner Applications"
 				],
@@ -5246,6 +5284,8 @@
 						}
 					}
 				},
+				"description": "Retrieve all active cleaning services. Supports optional text search.\nPublic endpoint — no authentication required.",
+				"summary": "List services",
 				"tags": [
 					"Services"
 				],
@@ -5287,6 +5327,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a single service by its URL-friendly slug.",
+				"summary": "Get service by slug",
 				"tags": [
 					"Services"
 				],
@@ -5318,6 +5360,8 @@
 						}
 					}
 				},
+				"description": "Retrieve all blog categories.",
+				"summary": "List blog categories",
 				"tags": [
 					"Blog"
 				],
@@ -5340,6 +5384,8 @@
 						}
 					}
 				},
+				"description": "Retrieve published blog posts with optional filtering by category, search,\nand pagination.",
+				"summary": "List blog posts",
 				"tags": [
 					"Blog"
 				],
@@ -5407,6 +5453,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a single blog post by its slug, including full content.",
+				"summary": "Get blog post",
 				"tags": [
 					"Blog"
 				],
@@ -5438,6 +5486,8 @@
 						}
 					}
 				},
+				"description": "Retrieve all frequently asked questions. Supports optional text search.",
+				"summary": "List FAQs",
 				"tags": [
 					"FAQs"
 				],
@@ -5469,6 +5519,8 @@
 						}
 					}
 				},
+				"description": "Retrieve all published cost guides with title, description, and slug.",
+				"summary": "List cost guides",
 				"tags": [
 					"Cost Guides"
 				],
@@ -5501,6 +5553,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a single cost guide by slug with full content blocks.",
+				"summary": "Get cost guide",
 				"tags": [
 					"Cost Guides"
 				],
@@ -5532,6 +5586,8 @@
 						}
 					}
 				},
+				"description": "Retrieve all service locations (cities/areas where Fada Lustre operates).",
+				"summary": "List locations",
 				"tags": [
 					"Locations"
 				],
@@ -5564,6 +5620,8 @@
 						}
 					}
 				},
+				"description": "Change the cleaner's 4-digit PIN used for withdrawal verification.\nRequires the current PIN and matching new/confirm PIN.",
+				"summary": "Change withdrawal PIN",
 				"tags": [
 					"Cleaner Security"
 				],
@@ -5612,6 +5670,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the authenticated cleaner's profile including name, rating,\ncompleted bookings count, and home address.",
+				"summary": "Get cleaner profile",
 				"tags": [
 					"Cleaner Profile"
 				],
@@ -5648,6 +5708,8 @@
 						}
 					}
 				},
+				"description": "Update the cleaner's profile fields (name, etc.).\nOnly provided fields are updated.",
+				"summary": "Update cleaner profile",
 				"tags": [
 					"Cleaner Profile"
 				],
@@ -5696,6 +5758,8 @@
 						}
 					}
 				},
+				"description": "Initiate a phone number change by sending an OTP for verification.",
+				"summary": "Request phone update",
 				"tags": [
 					"Cleaner Profile"
 				],
@@ -5744,6 +5808,8 @@
 						}
 					}
 				},
+				"description": "Update the cleaner's home address used for proximity-based booking matching.",
+				"summary": "Update home address",
 				"tags": [
 					"Cleaner Profile"
 				],
@@ -5785,6 +5851,8 @@
 						}
 					}
 				},
+				"description": "List all saved bank accounts for the authenticated cleaner.\nUsed for receiving earnings withdrawals.",
+				"summary": "List bank accounts",
 				"tags": [
 					"Cleaner Payment Methods"
 				],
@@ -5821,6 +5889,8 @@
 						}
 					}
 				},
+				"description": "Add a new bank account for receiving earnings withdrawals.",
+				"summary": "Add bank account",
 				"tags": [
 					"Cleaner Payment Methods"
 				],
@@ -5872,6 +5942,8 @@
 						}
 					}
 				},
+				"description": "Remove a saved bank account. Only the owner can delete their accounts.",
+				"summary": "Remove bank account",
 				"tags": [
 					"Cleaner Payment Methods"
 				],
@@ -5909,6 +5981,8 @@
 						}
 					}
 				},
+				"description": "Retrieve an earnings summary for the authenticated cleaner.\nIncludes total earned, pending, and available balance for the selected period.",
+				"summary": "Get earnings summary",
 				"tags": [
 					"Cleaner Earnings"
 				],
@@ -5978,6 +6052,8 @@
 						}
 					}
 				},
+				"description": "List individual income transactions (completed booking payments)\nwith optional period filtering and pagination.",
+				"summary": "List income history",
 				"tags": [
 					"Cleaner Earnings"
 				],
@@ -6065,6 +6141,8 @@
 						}
 					}
 				},
+				"description": "List withdrawal transactions with optional period filtering and pagination.",
+				"summary": "List withdrawal history",
 				"tags": [
 					"Cleaner Earnings"
 				],
@@ -6146,6 +6224,8 @@
 						}
 					}
 				},
+				"description": "Request a withdrawal of available earnings to the cleaner's bank account.\nRequires PIN verification and sufficient balance.",
+				"summary": "Request withdrawal",
 				"tags": [
 					"Cleaner Earnings"
 				],
@@ -6200,6 +6280,8 @@
 						}
 					}
 				},
+				"description": "List bookings assigned to the authenticated cleaner.\nSupports filtering by status (upcoming, ongoing, completed, all).",
+				"summary": "List my assigned bookings",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6275,6 +6357,8 @@
 						}
 					}
 				},
+				"description": "Retrieve detailed booking information including customer details,\naddress with entrance notes, and service requirements.",
+				"summary": "Get booking details",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6344,6 +6428,8 @@
 						}
 					}
 				},
+				"description": "Mark a scheduled booking as started. Transitions status to 'ongoing'.\nOnly the assigned cleaner can start their bookings.",
+				"summary": "Start booking",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6413,6 +6499,8 @@
 						}
 					}
 				},
+				"description": "Mark an ongoing booking as finished. Transitions status to 'done'.\nTriggers earnings calculation for the cleaner.",
+				"summary": "Finish booking",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6482,6 +6570,8 @@
 						}
 					}
 				},
+				"description": "Cancel an assigned booking from the cleaner side.\nThe booking returns to 'unassigned' for reassignment.",
+				"summary": "Cancel booking (cleaner)",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6552,6 +6642,8 @@
 						}
 					}
 				},
+				"description": "Rate the customer after a completed booking.\nRating must be 1-5. Only allowed for bookings with status 'done'.",
+				"summary": "Rate customer",
 				"tags": [
 					"Cleaner Bookings"
 				],
@@ -6599,6 +6691,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the cleaner's current availability settings including\nmode (default/custom), working hours, and day overrides.",
+				"summary": "Get availability",
 				"tags": [
 					"Cleaner Availability"
 				],
@@ -6635,6 +6729,8 @@
 						}
 					}
 				},
+				"description": "Update the cleaner's availability settings. Can toggle accepting bookings,\nset default hours, or define custom day-by-day schedules.",
+				"summary": "Update availability",
 				"tags": [
 					"Cleaner Availability"
 				],
@@ -6690,6 +6786,8 @@
 						}
 					}
 				},
+				"description": "Create a new cleaning booking. Requires an address, service type, property details,\nand preferred date/time. The booking starts in 'unassigned' status.",
+				"summary": "Create booking",
 				"tags": [
 					"Bookings"
 				],
@@ -6726,6 +6824,8 @@
 						}
 					}
 				},
+				"description": "List the authenticated customer's bookings with optional status filter\nand pagination. Returns bookings sorted by scheduled date.",
+				"summary": "List my bookings",
 				"tags": [
 					"Bookings"
 				],
@@ -6791,6 +6891,8 @@
 						}
 					}
 				},
+				"description": "Retrieve detailed information about a specific booking including\ncleaner info, payment status, and service details.",
+				"summary": "Get booking details",
 				"tags": [
 					"Bookings"
 				],
@@ -6838,6 +6940,8 @@
 						}
 					}
 				},
+				"description": "Submit payment for a booking. Supports cash and card methods.\nOptional tip amount can be included.",
+				"summary": "Pay for booking",
 				"tags": [
 					"Bookings"
 				],
@@ -6907,6 +7011,8 @@
 						}
 					}
 				},
+				"description": "Request changes to a booking's details (e.g. room count, additional info).\nCreates an amendment record for tracking.",
+				"summary": "Amend booking",
 				"tags": [
 					"Bookings"
 				],
@@ -6980,6 +7086,8 @@
 						}
 					}
 				},
+				"description": "Reschedule a booking to a new date and time.\nOnly allowed for bookings not yet started.",
+				"summary": "Reschedule booking",
 				"tags": [
 					"Bookings"
 				],
@@ -7053,6 +7161,8 @@
 						}
 					}
 				},
+				"description": "Cancel a booking. Refund eligibility depends on the cancellation timing\nrelative to the scheduled date.",
+				"summary": "Cancel booking",
 				"tags": [
 					"Bookings"
 				],
@@ -7106,6 +7216,8 @@
 						}
 					}
 				},
+				"description": "Create a new booking by cloning a previously cancelled or completed booking.\nCopies the original service details and address.",
+				"summary": "Rebook previous booking",
 				"tags": [
 					"Bookings"
 				],
@@ -7166,6 +7278,8 @@
 						}
 					}
 				},
+				"description": "Rate and review the cleaner after a completed booking.\nRating must be 1-5. Only allowed for bookings with status 'done'.",
+				"summary": "Rate booking",
 				"tags": [
 					"Bookings"
 				],
@@ -7245,6 +7359,8 @@
 						}
 					}
 				},
+				"description": "Request a different cleaner for a scheduled booking.\nThe system attempts to find an available replacement.",
+				"summary": "Request cleaner change",
 				"tags": [
 					"Bookings"
 				],
@@ -7293,6 +7409,8 @@
 						}
 					}
 				},
+				"description": "Retrieve before/after images uploaded for a booking.\nAccessible by the customer, assigned cleaner, and admins.",
+				"summary": "Get booking images",
 				"tags": [
 					"Bookings"
 				],
@@ -7332,6 +7450,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the receipt for a booking including service details,\npricing breakdown, and payment status.",
+				"summary": "Get booking receipt",
 				"tags": [
 					"Bookings"
 				],
@@ -7379,6 +7499,8 @@
 						}
 					}
 				},
+				"description": "Register a new customer account with email and password.\nReturns JWT access and refresh tokens on success.",
+				"summary": "Register new customer",
 				"tags": [
 					"Auth"
 				],
@@ -7421,6 +7543,8 @@
 						}
 					}
 				},
+				"description": "Authenticate a user (customer, cleaner, or admin) with email and password.\nReturns JWT tokens. Blocked accounts receive a 403 error.",
+				"summary": "Login",
 				"tags": [
 					"Auth"
 				],
@@ -7453,6 +7577,8 @@
 						}
 					}
 				},
+				"description": "Request a password reset by phone number. Sends an OTP code via SMS\nif a matching account exists. Returns a generic message to prevent email enumeration.",
+				"summary": "Request password reset OTP",
 				"tags": [
 					"Auth"
 				],
@@ -7495,6 +7621,8 @@
 						}
 					}
 				},
+				"description": "Verify a one-time password (OTP) code sent during the password reset flow.\nMust be called before reset-password.",
+				"summary": "Verify OTP code",
 				"tags": [
 					"Auth"
 				],
@@ -7537,6 +7665,8 @@
 						}
 					}
 				},
+				"description": "Set a new password after successful OTP verification.\nRequires matching new_password and confirm_password fields.",
+				"summary": "Reset password",
 				"tags": [
 					"Auth"
 				],
@@ -7579,6 +7709,8 @@
 						}
 					}
 				},
+				"description": "Change the password for the currently authenticated user.\nRequires the current password for verification.",
+				"summary": "Change password",
 				"tags": [
 					"Auth"
 				],
@@ -7625,6 +7757,8 @@
 						}
 					}
 				},
+				"description": "Exchange a valid refresh token for a new access/refresh token pair.\nUse this to maintain sessions without re-authenticating.",
+				"summary": "Refresh tokens",
 				"tags": [
 					"Auth"
 				],
@@ -7677,6 +7811,8 @@
 						}
 					}
 				},
+				"description": "Activate an invited admin account using the email and temporary password\nreceived in the invitation. Returns an activation token for profile setup.",
+				"summary": "Activate admin invitation",
 				"tags": [
 					"Auth"
 				],
@@ -7729,6 +7865,8 @@
 						}
 					}
 				},
+				"description": "Complete admin onboarding by setting up the profile with name, phone,\nand a permanent password. Requires the activation token from /activate.",
+				"summary": "Setup admin profile",
 				"tags": [
 					"Auth"
 				],
@@ -7761,6 +7899,8 @@
 						}
 					}
 				},
+				"description": "List all admin users with filters for status and text search.",
+				"summary": "List admin users",
 				"tags": [
 					"Admin Users"
 				],
@@ -7834,6 +7974,8 @@
 						}
 					}
 				},
+				"description": "Invite a new admin user by email. Generates a temporary password\nand creates a pending invitation record.",
+				"summary": "Invite admin user",
 				"tags": [
 					"Admin Users"
 				],
@@ -7882,6 +8024,8 @@
 						}
 					}
 				},
+				"description": "Block an admin user, revoking their dashboard access.\nCannot block your own account.",
+				"summary": "Block admin user",
 				"tags": [
 					"Admin Users"
 				],
@@ -7919,6 +8063,8 @@
 						}
 					}
 				},
+				"description": "List all financial transactions with filters for period, type,\nand text search. Includes aggregate stats.",
+				"summary": "List transactions",
 				"tags": [
 					"Admin Transactions"
 				],
@@ -8002,6 +8148,8 @@
 						}
 					}
 				},
+				"description": "Retrieve full transaction details including linked booking and user info.",
+				"summary": "Get transaction details",
 				"tags": [
 					"Admin Transactions"
 				],
@@ -8049,6 +8197,8 @@
 						}
 					}
 				},
+				"description": "Send or resend the transaction receipt to the associated user's email.",
+				"summary": "Send transaction receipt",
 				"tags": [
 					"Admin Transactions"
 				],
@@ -8086,6 +8236,8 @@
 						}
 					}
 				},
+				"description": "List all support tickets across users with filters for status and search.\nIncludes assignment info and message timestamps.",
+				"summary": "List all tickets",
 				"tags": [
 					"Admin Support"
 				],
@@ -8161,6 +8313,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a support ticket with full message thread and user details.",
+				"summary": "Get ticket details",
 				"tags": [
 					"Admin Support"
 				],
@@ -8206,6 +8360,8 @@
 						}
 					}
 				},
+				"description": "Update ticket properties such as status, priority, or assigned agent.",
+				"summary": "Update ticket",
 				"tags": [
 					"Admin Support"
 				],
@@ -8279,6 +8435,8 @@
 						}
 					}
 				},
+				"description": "Add an admin reply to a support ticket's message thread.",
+				"summary": "Reply to ticket",
 				"tags": [
 					"Admin Support"
 				],
@@ -8360,6 +8518,8 @@
 						}
 					}
 				},
+				"description": "List all cleaning services with stats (total, active, archived).",
+				"summary": "List services",
 				"tags": [
 					"Admin Services"
 				],
@@ -8398,6 +8558,8 @@
 						}
 					}
 				},
+				"description": "Retrieve full service details including description, pricing, and image.",
+				"summary": "Get service details",
 				"tags": [
 					"Admin Services"
 				],
@@ -8445,6 +8607,8 @@
 						}
 					}
 				},
+				"description": "Archive a service, hiding it from public listings.\nExisting bookings for this service are not affected.",
+				"summary": "Archive service",
 				"tags": [
 					"Admin Services"
 				],
@@ -8482,6 +8646,8 @@
 						}
 					}
 				},
+				"description": "List all admin roles with their assigned permissions.",
+				"summary": "List roles",
 				"tags": [
 					"Admin Roles"
 				],
@@ -8518,6 +8684,8 @@
 						}
 					}
 				},
+				"description": "Create a new admin role with a display name and set of permissions.",
+				"summary": "Create role",
 				"tags": [
 					"Admin Roles"
 				],
@@ -8566,6 +8734,8 @@
 						}
 					}
 				},
+				"description": "Update a role's display name or permissions.",
+				"summary": "Update role",
 				"tags": [
 					"Admin Roles"
 				],
@@ -8633,6 +8803,8 @@
 						}
 					}
 				},
+				"description": "Archive a role. Fails if any admin users are still assigned to it.",
+				"summary": "Archive role",
 				"tags": [
 					"Admin Roles"
 				],
@@ -8670,6 +8842,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the admin dashboard summary including balance, pending amounts,\ntotal bookings, top clients/cleaners, upcoming bookings by service,\nservice counts, and recent transactions.",
+				"summary": "Get dashboard overview",
 				"tags": [
 					"Admin Dashboard"
 				],
@@ -8698,6 +8872,8 @@
 						}
 					}
 				},
+				"description": "List all customers with filters for status, location, service type,\nand text search. Includes aggregate stats.",
+				"summary": "List customers",
 				"tags": [
 					"Admin Customers"
 				],
@@ -8789,6 +8965,8 @@
 						}
 					}
 				},
+				"description": "Retrieve detailed customer information including booking history,\nreviews, services booked, booking frequency, and last payment method.",
+				"summary": "Get customer details",
 				"tags": [
 					"Admin Customers"
 				],
@@ -8836,6 +9014,8 @@
 						}
 					}
 				},
+				"description": "Block a customer account, preventing them from logging in or making bookings.",
+				"summary": "Block customer",
 				"tags": [
 					"Admin Customers"
 				],
@@ -8890,6 +9070,8 @@
 						}
 					}
 				},
+				"description": "Create a booking on behalf of a specific customer.",
+				"summary": "Book for customer",
 				"tags": [
 					"Admin Customers"
 				],
@@ -8971,6 +9153,8 @@
 						}
 					}
 				},
+				"description": "List all cost guides with stats (total, active, archived).",
+				"summary": "List cost guides",
 				"tags": [
 					"Admin Cost Guides"
 				],
@@ -9013,6 +9197,8 @@
 						}
 					}
 				},
+				"description": "Create a new cost guide with title, description, and structured content blocks.",
+				"summary": "Create cost guide",
 				"tags": [
 					"Admin Cost Guides"
 				],
@@ -9061,6 +9247,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a cost guide with full content blocks for editing.",
+				"summary": "Get cost guide details",
 				"tags": [
 					"Admin Cost Guides"
 				],
@@ -9106,6 +9294,8 @@
 						}
 					}
 				},
+				"description": "Update a cost guide's title, description, or content blocks.",
+				"summary": "Update cost guide",
 				"tags": [
 					"Admin Cost Guides"
 				],
@@ -9163,6 +9353,8 @@
 						}
 					}
 				},
+				"description": "Archive a cost guide, hiding it from public listings.",
+				"summary": "Archive cost guide",
 				"tags": [
 					"Admin Cost Guides"
 				],
@@ -9200,6 +9392,8 @@
 						}
 					}
 				},
+				"description": "List all cleaners with filters for status, location, service type,\nand text search. Includes aggregate stats.",
+				"summary": "List cleaners",
 				"tags": [
 					"Admin Cleaners"
 				],
@@ -9291,6 +9485,8 @@
 						}
 					}
 				},
+				"description": "Retrieve detailed cleaner information including reviews, availability,\npayment history, and performance metrics.",
+				"summary": "Get cleaner details",
 				"tags": [
 					"Admin Cleaners"
 				],
@@ -9338,6 +9534,8 @@
 						}
 					}
 				},
+				"description": "Block a cleaner account, preventing them from receiving bookings.",
+				"summary": "Block cleaner",
 				"tags": [
 					"Admin Cleaners"
 				],
@@ -9385,6 +9583,8 @@
 						}
 					}
 				},
+				"description": "Process a manual payment to a cleaner's bank account.\nCreates a transaction record for audit tracking.",
+				"summary": "Pay cleaner",
 				"tags": [
 					"Admin Cleaners"
 				],
@@ -9432,6 +9632,8 @@
 						}
 					}
 				},
+				"description": "List all bookings with filters for date, location, service type, and status.\nIncludes aggregate stats (total, scheduled, completed, cancelled).",
+				"summary": "List all bookings",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9536,6 +9738,8 @@
 						}
 					}
 				},
+				"description": "Create a booking on behalf of a customer. Used when admins receive\nphone or in-person booking requests.",
+				"summary": "Create booking (admin)",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9584,6 +9788,8 @@
 						}
 					}
 				},
+				"description": "Retrieve full booking details including customer/cleaner info,\nproperty details, payment status, and uploaded images.",
+				"summary": "Get booking details",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9659,6 +9865,8 @@
 						}
 					}
 				},
+				"description": "Assign a cleaner to an unassigned booking. Transitions status to 'scheduled'\nand sends notifications to both parties.",
+				"summary": "Assign cleaner to booking",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9741,6 +9949,8 @@
 						}
 					}
 				},
+				"description": "Reschedule a booking to a new date and time on behalf of the customer.",
+				"summary": "Reschedule booking (admin)",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9817,6 +10027,8 @@
 						}
 					}
 				},
+				"description": "Cancel a booking and notify the customer and assigned cleaner.",
+				"summary": "Cancel booking (admin)",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9864,6 +10076,8 @@
 						}
 					}
 				},
+				"description": "Send or resend the booking receipt to the customer's email.",
+				"summary": "Send booking receipt",
 				"tags": [
 					"Admin Bookings"
 				],
@@ -9901,6 +10115,8 @@
 						}
 					}
 				},
+				"description": "Retrieve the admin activity log showing all actions performed by admin users.\nSupports text search and pagination.",
+				"summary": "Get activity log",
 				"tags": [
 					"Admin Activity Log"
 				],
@@ -9969,6 +10185,8 @@
 						}
 					}
 				},
+				"description": "List all saved addresses for the authenticated customer.",
+				"summary": "List my addresses",
 				"tags": [
 					"Addresses"
 				],
@@ -9995,6 +10213,8 @@
 						}
 					}
 				},
+				"description": "Save a new address to the customer's address book.\nIncludes street, floor, door number, and optional entrance notes.",
+				"summary": "Create address",
 				"tags": [
 					"Addresses"
 				],
@@ -10043,6 +10263,8 @@
 						}
 					}
 				},
+				"description": "Retrieve a single saved address by its ID.",
+				"summary": "Get address by ID",
 				"tags": [
 					"Addresses"
 				],
@@ -10088,6 +10310,8 @@
 						}
 					}
 				},
+				"description": "Update an existing address. All provided fields are overwritten.",
+				"summary": "Update address",
 				"tags": [
 					"Addresses"
 				],
@@ -10136,6 +10360,8 @@
 						}
 					}
 				},
+				"description": "Soft-delete an address from the customer's address book.\nThe address is retained in the database for booking history.",
+				"summary": "Delete address",
 				"tags": [
 					"Addresses"
 				],

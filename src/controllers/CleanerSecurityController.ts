@@ -8,6 +8,11 @@ import type { ErrorResponse } from "../types/common";
 @Tags("Cleaner Security")
 @Security("jwt", ["cleaner"])
 export class CleanerSecurityController extends Controller {
+  /**
+   * Change the cleaner's 4-digit PIN used for withdrawal verification.
+   * Requires the current PIN and matching new/confirm PIN.
+   * @summary Change withdrawal PIN
+   */
   @Patch("pin")
   @Response<ErrorResponse>(400, "Invalid PIN or mismatch")
   public async changePin(

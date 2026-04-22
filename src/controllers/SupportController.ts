@@ -8,6 +8,11 @@ import type { ListResponse, ErrorResponse } from "../types/common";
 @Tags("Support")
 @Security("jwt", ["customer", "cleaner"])
 export class SupportController extends Controller {
+  /**
+   * Create a new support ticket with a title and initial message.
+   * Available to both customers and cleaners.
+   * @summary Create support ticket
+   */
   @Post("/")
   @SuccessResponse(201, "Created")
   public async createTicket(
@@ -18,6 +23,10 @@ export class SupportController extends Controller {
     return supportService.createTicket(req.user!.id, body);
   }
 
+  /**
+   * List the user's support tickets with optional status filter and pagination.
+   * @summary List my tickets
+   */
   @Get("/")
   public async listTickets(
     @Request() req: ExpressRequest,
@@ -28,6 +37,11 @@ export class SupportController extends Controller {
     return supportService.listTickets(req.user!.id, status ?? "all", page ?? 1, limit ?? 20);
   }
 
+  /**
+   * Retrieve a support ticket with its full message thread.
+   * Only accessible by the ticket owner.
+   * @summary Get ticket details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Ticket not found")
   public async getTicket(

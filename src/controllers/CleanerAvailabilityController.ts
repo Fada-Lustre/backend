@@ -8,6 +8,11 @@ import type { ErrorResponse } from "../types/common";
 @Tags("Cleaner Availability")
 @Security("jwt", ["cleaner"])
 export class CleanerAvailabilityController extends Controller {
+  /**
+   * Retrieve the cleaner's current availability settings including
+   * mode (default/custom), working hours, and day overrides.
+   * @summary Get availability
+   */
   @Get("/")
   public async getAvailability(
     @Request() req: ExpressRequest
@@ -15,6 +20,11 @@ export class CleanerAvailabilityController extends Controller {
     return availabilityService.getAvailability(req.user!.id);
   }
 
+  /**
+   * Update the cleaner's availability settings. Can toggle accepting bookings,
+   * set default hours, or define custom day-by-day schedules.
+   * @summary Update availability
+   */
   @Put("/")
   @Response<ErrorResponse>(400, "Validation error")
   public async updateAvailability(

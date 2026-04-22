@@ -8,6 +8,11 @@ import type { ErrorResponse } from "../types/common";
 @Tags("Cleaner Earnings")
 @Security("jwt", ["cleaner"])
 export class CleanerEarningsController extends Controller {
+  /**
+   * Retrieve an earnings summary for the authenticated cleaner.
+   * Includes total earned, pending, and available balance for the selected period.
+   * @summary Get earnings summary
+   */
   @Get("/")
   public async getSummary(
     @Request() req: ExpressRequest,
@@ -18,6 +23,11 @@ export class CleanerEarningsController extends Controller {
     return earningsService.getSummary(req.user!.id, period ?? "this_week", start, end);
   }
 
+  /**
+   * List individual income transactions (completed booking payments)
+   * with optional period filtering and pagination.
+   * @summary List income history
+   */
   @Get("income")
   public async getIncome(
     @Request() req: ExpressRequest,
@@ -30,6 +40,10 @@ export class CleanerEarningsController extends Controller {
     return earningsService.listIncome(req.user!.id, period ?? "this_week", start, end, page ?? 1, limit ?? 20);
   }
 
+  /**
+   * List withdrawal transactions with optional period filtering and pagination.
+   * @summary List withdrawal history
+   */
   @Get("withdrawals")
   public async getWithdrawals(
     @Request() req: ExpressRequest,
@@ -47,6 +61,11 @@ export class CleanerEarningsController extends Controller {
 @Tags("Cleaner Earnings")
 @Security("jwt", ["cleaner"])
 export class CleanerWithdrawalsController extends Controller {
+  /**
+   * Request a withdrawal of available earnings to the cleaner's bank account.
+   * Requires PIN verification and sufficient balance.
+   * @summary Request withdrawal
+   */
   @Post("/")
   @SuccessResponse(201, "Withdrawal created")
   @Response<ErrorResponse>(400, "Validation error or insufficient balance")

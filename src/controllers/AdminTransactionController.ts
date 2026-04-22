@@ -10,6 +10,11 @@ import type { AdminListResponse } from "../types/admin-common";
 @Tags("Admin Transactions")
 @Security("jwt", ["admin:transactions"])
 export class AdminTransactionController extends Controller {
+  /**
+   * List all financial transactions with filters for period, type,
+   * and text search. Includes aggregate stats.
+   * @summary List transactions
+   */
   @Get()
   public async listTransactions(
     @Request() _req: ExpressRequest,
@@ -23,6 +28,10 @@ export class AdminTransactionController extends Controller {
     return adminTransactionService.listTransactions(p, l, { period, type, search });
   }
 
+  /**
+   * Retrieve full transaction details including linked booking and user info.
+   * @summary Get transaction details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getTransaction(
@@ -32,6 +41,10 @@ export class AdminTransactionController extends Controller {
     return adminTransactionService.getTransaction(id) as unknown as Promise<AdminTransactionDetail>;
   }
 
+  /**
+   * Send or resend the transaction receipt to the associated user's email.
+   * @summary Send transaction receipt
+   */
   @Post("{id}/receipt")
   @Response<ErrorResponse>(404, "Not found")
   public async sendTransactionReceipt(

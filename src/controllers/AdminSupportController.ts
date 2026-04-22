@@ -10,6 +10,11 @@ import type { AdminListResponse } from "../types/admin-common";
 @Tags("Admin Support")
 @Security("jwt", ["admin:support"])
 export class AdminSupportController extends Controller {
+  /**
+   * List all support tickets across users with filters for status and search.
+   * Includes assignment info and message timestamps.
+   * @summary List all tickets
+   */
   @Get()
   public async listAdminTickets(
     @Request() _req: ExpressRequest,
@@ -22,6 +27,10 @@ export class AdminSupportController extends Controller {
     return adminSupportService.listTickets(p, l, { status, search });
   }
 
+  /**
+   * Retrieve a support ticket with full message thread and user details.
+   * @summary Get ticket details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getAdminTicket(
@@ -31,6 +40,10 @@ export class AdminSupportController extends Controller {
     return adminSupportService.getTicket(id) as unknown as Promise<AdminTicketDetail>;
   }
 
+  /**
+   * Add an admin reply to a support ticket's message thread.
+   * @summary Reply to ticket
+   */
   @Post("{id}/messages")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(404, "Not found")
@@ -43,6 +56,10 @@ export class AdminSupportController extends Controller {
     return adminSupportService.addMessage(req.user!.id, id, body.body);
   }
 
+  /**
+   * Update ticket properties such as status, priority, or assigned agent.
+   * @summary Update ticket
+   */
   @Patch("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async updateTicket(

@@ -8,6 +8,11 @@ import type { ErrorResponse } from "../types/common";
 @Tags("Cleaner Payment Methods")
 @Security("jwt", ["cleaner"])
 export class CleanerPaymentMethodController extends Controller {
+  /**
+   * List all saved bank accounts for the authenticated cleaner.
+   * Used for receiving earnings withdrawals.
+   * @summary List bank accounts
+   */
   @Get("/")
   public async listCleanerPaymentMethods(
     @Request() req: ExpressRequest
@@ -15,6 +20,10 @@ export class CleanerPaymentMethodController extends Controller {
     return cleanerPaymentMethodService.list(req.user!.id);
   }
 
+  /**
+   * Add a new bank account for receiving earnings withdrawals.
+   * @summary Add bank account
+   */
   @Post("/")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(400, "Validation error")
@@ -26,6 +35,10 @@ export class CleanerPaymentMethodController extends Controller {
     return cleanerPaymentMethodService.create(req.user!.id, body);
   }
 
+  /**
+   * Remove a saved bank account. Only the owner can delete their accounts.
+   * @summary Remove bank account
+   */
   @Delete("{id}")
   @SuccessResponse(204, "Deleted")
   @Response<ErrorResponse>(403, "Forbidden")

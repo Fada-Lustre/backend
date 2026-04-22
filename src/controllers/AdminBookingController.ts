@@ -10,6 +10,11 @@ import type { AdminListResponse } from "../types/admin-common";
 @Tags("Admin Bookings")
 @Security("jwt", ["admin:bookings"])
 export class AdminBookingController extends Controller {
+  /**
+   * List all bookings with filters for date, location, service type, and status.
+   * Includes aggregate stats (total, scheduled, completed, cancelled).
+   * @summary List all bookings
+   */
   @Get()
   public async adminListBookings(
     @Request() _req: ExpressRequest,
@@ -25,6 +30,11 @@ export class AdminBookingController extends Controller {
     return adminBookingService.listBookings(p, l, { date, location, service, status, search });
   }
 
+  /**
+   * Create a booking on behalf of a customer. Used when admins receive
+   * phone or in-person booking requests.
+   * @summary Create booking (admin)
+   */
   @Post()
   @SuccessResponse(201, "Created")
   public async adminCreateBooking(
@@ -35,6 +45,11 @@ export class AdminBookingController extends Controller {
     return adminBookingService.createBooking(req.user!.id, body);
   }
 
+  /**
+   * Retrieve full booking details including customer/cleaner info,
+   * property details, payment status, and uploaded images.
+   * @summary Get booking details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getBooking(
@@ -44,6 +59,11 @@ export class AdminBookingController extends Controller {
     return adminBookingService.getBooking(id);
   }
 
+  /**
+   * Assign a cleaner to an unassigned booking. Transitions status to 'scheduled'
+   * and sends notifications to both parties.
+   * @summary Assign cleaner to booking
+   */
   @Post("{id}/assign")
   @Response<ErrorResponse>(400, "Invalid state")
   public async assignCleaner(
@@ -54,6 +74,10 @@ export class AdminBookingController extends Controller {
     return adminBookingService.assignCleaner(req.user!.id, id, body.cleaner_id);
   }
 
+  /**
+   * Reschedule a booking to a new date and time on behalf of the customer.
+   * @summary Reschedule booking (admin)
+   */
   @Patch("{id}/reschedule")
   @Response<ErrorResponse>(400, "Invalid state")
   public async rescheduleBooking(
@@ -64,6 +88,10 @@ export class AdminBookingController extends Controller {
     return adminBookingService.rescheduleBooking(req.user!.id, id, body.date, body.start_time, body.end_time);
   }
 
+  /**
+   * Cancel a booking and notify the customer and assigned cleaner.
+   * @summary Cancel booking (admin)
+   */
   @Post("{id}/cancel")
   @Response<ErrorResponse>(400, "Invalid state")
   public async adminCancelBooking(
@@ -73,6 +101,10 @@ export class AdminBookingController extends Controller {
     return adminBookingService.cancelBooking(req.user!.id, id);
   }
 
+  /**
+   * Send or resend the booking receipt to the customer's email.
+   * @summary Send booking receipt
+   */
   @Post("{id}/receipt")
   @Response<ErrorResponse>(404, "Not found")
   public async sendBookingReceipt(

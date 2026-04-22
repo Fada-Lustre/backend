@@ -9,6 +9,10 @@ import type { ErrorResponse, IdStatusResponse } from "../types/common";
 @Tags("Admin Users")
 @Security("jwt", ["admin:all_users"])
 export class AdminUserController extends Controller {
+  /**
+   * List all admin users with filters for status and text search.
+   * @summary List admin users
+   */
   @Get()
   public async listAdminUsers(
     @Request() _req: ExpressRequest,
@@ -21,6 +25,11 @@ export class AdminUserController extends Controller {
     return adminUserService.listAdminUsers(p, l, status, search) as unknown as AdminUserListResponse;
   }
 
+  /**
+   * Invite a new admin user by email. Generates a temporary password
+   * and creates a pending invitation record.
+   * @summary Invite admin user
+   */
   @Post()
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(409, "Duplicate")
@@ -38,6 +47,11 @@ export class AdminUserController extends Controller {
     );
   }
 
+  /**
+   * Block an admin user, revoking their dashboard access.
+   * Cannot block your own account.
+   * @summary Block admin user
+   */
   @Post("{id}/block")
   @Response<ErrorResponse>(404, "Not found")
   public async blockAdminUser(

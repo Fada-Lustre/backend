@@ -8,6 +8,11 @@ import type { ActivityLogResponse } from "../types/admin-activity-log";
 @Tags("Admin Activity Log")
 @Security("jwt", ["admin:control_permissions"])
 export class AdminActivityLogController extends Controller {
+  /**
+   * Retrieve the admin activity log showing all actions performed by admin users.
+   * Supports text search and pagination.
+   * @summary Get activity log
+   */
   @Get()
   public async getActivityLog(
     @Request() _req: ExpressRequest,

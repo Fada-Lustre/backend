@@ -12,6 +12,11 @@ import type { AdminListResponse } from "../types/admin-common";
 @Tags("Admin Customers")
 @Security("jwt", ["admin:customers"])
 export class AdminCustomerController extends Controller {
+  /**
+   * List all customers with filters for status, location, service type,
+   * and text search. Includes aggregate stats.
+   * @summary List customers
+   */
   @Get()
   public async listCustomers(
     @Request() _req: ExpressRequest,
@@ -26,6 +31,11 @@ export class AdminCustomerController extends Controller {
     return adminCustomerService.listCustomers(p, l, { status, location, service, search });
   }
 
+  /**
+   * Retrieve detailed customer information including booking history,
+   * reviews, services booked, booking frequency, and last payment method.
+   * @summary Get customer details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getCustomer(
@@ -35,6 +45,10 @@ export class AdminCustomerController extends Controller {
     return adminCustomerService.getCustomer(id) as unknown as Promise<AdminCustomerDetail>;
   }
 
+  /**
+   * Block a customer account, preventing them from logging in or making bookings.
+   * @summary Block customer
+   */
   @Post("{id}/block")
   @Response<ErrorResponse>(404, "Not found")
   public async blockCustomer(
@@ -44,6 +58,10 @@ export class AdminCustomerController extends Controller {
     return adminCustomerService.blockCustomer(req.user!.id, id);
   }
 
+  /**
+   * Create a booking on behalf of a specific customer.
+   * @summary Book for customer
+   */
   @Post("{id}/book")
   @SuccessResponse(201, "Created")
   public async bookForCustomer(

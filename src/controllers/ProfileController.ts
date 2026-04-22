@@ -8,6 +8,11 @@ import type { ErrorResponse } from "../types/common";
 @Tags("Profile")
 @Security("jwt", ["customer"])
 export class ProfileController extends Controller {
+  /**
+   * Retrieve the authenticated customer's profile including name, email,
+   * phone, and profile image.
+   * @summary Get my profile
+   */
   @Get("/")
   @Response<ErrorResponse>(404, "Profile not found")
   public async getCustomerProfile(
@@ -16,6 +21,11 @@ export class ProfileController extends Controller {
     return profileService.getProfile(req.user!.id);
   }
 
+  /**
+   * Update the customer's profile fields (name, email, etc.).
+   * Only provided fields are updated.
+   * @summary Update my profile
+   */
   @Patch("/")
   @Response<ErrorResponse>(404, "Profile not found")
   public async updateCustomerProfile(
@@ -25,6 +35,11 @@ export class ProfileController extends Controller {
     return profileService.updateProfile(req.user!.id, body);
   }
 
+  /**
+   * Initiate a phone number change by sending an OTP via SMS or email.
+   * The phone number is updated after OTP verification.
+   * @summary Request phone update
+   */
   @Patch("phone")
   @Response<ErrorResponse>(400, "Validation error")
   public async requestCustomerPhoneUpdate(

@@ -22,6 +22,11 @@ import * as adminAuthService from "../services/admin-auth.service";
 @Route("v1/auth")
 @Tags("Auth")
 export class AuthController extends Controller {
+  /**
+   * Register a new customer account with email and password.
+   * Returns JWT access and refresh tokens on success.
+   * @summary Register new customer
+   */
   @Post("register")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(409, "Email already registered")
@@ -53,6 +58,11 @@ export class AuthController extends Controller {
     return { id: user.id, first_name: user.first_name, email: user.email, token, refresh_token: refreshToken };
   }
 
+  /**
+   * Authenticate a user (customer, cleaner, or admin) with email and password.
+   * Returns JWT tokens. Blocked accounts receive a 403 error.
+   * @summary Login
+   */
   @Post("login")
   @Response<ErrorResponse>(401, "Invalid credentials")
   public async login(@Body() body: LoginRequest): Promise<LoginResponse> {
@@ -78,6 +88,11 @@ export class AuthController extends Controller {
     return { id: user.id, first_name: user.first_name, token, refresh_token: refreshToken };
   }
 
+  /**
+   * Request a password reset by phone number. Sends an OTP code via SMS
+   * if a matching account exists. Returns a generic message to prevent email enumeration.
+   * @summary Request password reset OTP
+   */
   @Post("forgot-password")
   public async forgotPassword(
     @Body() body: ForgotPasswordRequest
@@ -91,6 +106,11 @@ export class AuthController extends Controller {
     return { message: "If an account exists with this phone number, a verification code has been sent." };
   }
 
+  /**
+   * Verify a one-time password (OTP) code sent during the password reset flow.
+   * Must be called before reset-password.
+   * @summary Verify OTP code
+   */
   @Post("verify-otp")
   @Response<ErrorResponse>(400, "Invalid or expired code")
   public async verifyOtp(@Body() body: VerifyOtpRequest): Promise<VerifyOtpResponse> {
@@ -98,6 +118,11 @@ export class AuthController extends Controller {
     return { verified: true };
   }
 
+  /**
+   * Set a new password after successful OTP verification.
+   * Requires matching new_password and confirm_password fields.
+   * @summary Reset password
+   */
   @Post("reset-password")
   @Response<ErrorResponse>(400, "Validation error")
   public async resetPassword(@Body() body: ResetPasswordRequest): Promise<ResetPasswordResponse> {
@@ -122,6 +147,11 @@ export class AuthController extends Controller {
     return { message: "Password reset successful" };
   }
 
+  /**
+   * Change the password for the currently authenticated user.
+   * Requires the current password for verification.
+   * @summary Change password
+   */
   @Post("change-password")
   @Security("jwt")
   @Response<ErrorResponse>(400, "Validation error")
@@ -153,6 +183,11 @@ export class AuthController extends Controller {
     return { message: "Password changed" };
   }
 
+  /**
+   * Exchange a valid refresh token for a new access/refresh token pair.
+   * Use this to maintain sessions without re-authenticating.
+   * @summary Refresh tokens
+   */
   @Post("refresh")
   @Response<ErrorResponse>(401, "Invalid refresh token")
   public async refresh(@Body() body: RefreshRequest): Promise<RefreshResponse> {
@@ -179,6 +214,11 @@ export class AuthController extends Controller {
     return { token, refresh_token: refreshToken };
   }
 
+  /**
+   * Activate an invited admin account using the email and temporary password
+   * received in the invitation. Returns an activation token for profile setup.
+   * @summary Activate admin invitation
+   */
   @Post("activate")
   @Response<ErrorResponse>(400, "Invalid invitation")
   @Response<ErrorResponse>(401, "Invalid credentials")
@@ -186,6 +226,11 @@ export class AuthController extends Controller {
     return adminAuthService.activate(body.email, body.temporary_password);
   }
 
+  /**
+   * Complete admin onboarding by setting up the profile with name, phone,
+   * and a permanent password. Requires the activation token from /activate.
+   * @summary Setup admin profile
+   */
   @Post("setup-profile")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(400, "Validation error")

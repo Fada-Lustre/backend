@@ -13,6 +13,11 @@ import type { ListResponse, ErrorResponse } from "../types/common";
 @Tags("Bookings")
 @Security("jwt", ["customer"])
 export class BookingController extends Controller {
+  /**
+   * Create a new cleaning booking. Requires an address, service type, property details,
+   * and preferred date/time. The booking starts in 'unassigned' status.
+   * @summary Create booking
+   */
   @Post("/")
   @SuccessResponse(201, "Created")
   public async createBooking(
@@ -23,6 +28,11 @@ export class BookingController extends Controller {
     return bookingService.createBooking(req.user!.id, body);
   }
 
+  /**
+   * List the authenticated customer's bookings with optional status filter
+   * and pagination. Returns bookings sorted by scheduled date.
+   * @summary List my bookings
+   */
   @Get("/")
   public async listBookings(
     @Request() req: ExpressRequest,
@@ -36,6 +46,11 @@ export class BookingController extends Controller {
     return { data: result.data, meta: { total: result.total, page: p, limit: l } };
   }
 
+  /**
+   * Retrieve detailed information about a specific booking including
+   * cleaner info, payment status, and service details.
+   * @summary Get booking details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async get(
@@ -45,6 +60,11 @@ export class BookingController extends Controller {
     return bookingService.getBooking(req.user!.id, id, req.user!.role);
   }
 
+  /**
+   * Submit payment for a booking. Supports cash and card methods.
+   * Optional tip amount can be included.
+   * @summary Pay for booking
+   */
   @Post("{id}/pay")
   @Response<ErrorResponse>(409, "Already paid")
   public async pay(
@@ -55,6 +75,11 @@ export class BookingController extends Controller {
     return bookingService.payBooking(req.user!.id, id, body.method, body.tip ?? 0);
   }
 
+  /**
+   * Request changes to a booking's details (e.g. room count, additional info).
+   * Creates an amendment record for tracking.
+   * @summary Amend booking
+   */
   @Patch("{id}/amend")
   @Response<ErrorResponse>(409, "State conflict")
   public async amend(
@@ -65,6 +90,11 @@ export class BookingController extends Controller {
     return bookingService.amendBooking(req.user!.id, id, body);
   }
 
+  /**
+   * Reschedule a booking to a new date and time.
+   * Only allowed for bookings not yet started.
+   * @summary Reschedule booking
+   */
   @Patch("{id}/reschedule")
   @Response<ErrorResponse>(409, "State conflict")
   public async reschedule(
@@ -75,6 +105,11 @@ export class BookingController extends Controller {
     return bookingService.rescheduleBooking(req.user!.id, id, body.date, body.time);
   }
 
+  /**
+   * Cancel a booking. Refund eligibility depends on the cancellation timing
+   * relative to the scheduled date.
+   * @summary Cancel booking
+   */
   @Post("{id}/cancel")
   @Response<ErrorResponse>(409, "State conflict")
   public async cancelBooking(
@@ -84,6 +119,11 @@ export class BookingController extends Controller {
     return bookingService.cancelBooking(req.user!.id, id);
   }
 
+  /**
+   * Create a new booking by cloning a previously cancelled or completed booking.
+   * Copies the original service details and address.
+   * @summary Rebook previous booking
+   */
   @Post("{id}/rebook")
   @SuccessResponse(201, "Created")
   public async rebook(
@@ -94,6 +134,11 @@ export class BookingController extends Controller {
     return bookingService.rebookBooking(req.user!.id, id);
   }
 
+  /**
+   * Rate and review the cleaner after a completed booking.
+   * Rating must be 1-5. Only allowed for bookings with status 'done'.
+   * @summary Rate booking
+   */
   @Post("{id}/rate")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(409, "Already rated")
@@ -106,6 +151,11 @@ export class BookingController extends Controller {
     return bookingService.rateBooking(req.user!.id, id, body.rating, body.review);
   }
 
+  /**
+   * Request a different cleaner for a scheduled booking.
+   * The system attempts to find an available replacement.
+   * @summary Request cleaner change
+   */
   @Post("{id}/change-cleaner")
   public async changeCleaner(
     @Request() req: ExpressRequest,
@@ -114,6 +164,11 @@ export class BookingController extends Controller {
     return bookingService.changeCleaner(req.user!.id, id);
   }
 
+  /**
+   * Retrieve before/after images uploaded for a booking.
+   * Accessible by the customer, assigned cleaner, and admins.
+   * @summary Get booking images
+   */
   @Get("{id}/images")
   @Security("jwt", ["customer", "cleaner", "admin:bookings"])
   public async images(
@@ -124,6 +179,11 @@ export class BookingController extends Controller {
     return { data };
   }
 
+  /**
+   * Retrieve the receipt for a booking including service details,
+   * pricing breakdown, and payment status.
+   * @summary Get booking receipt
+   */
   @Get("{id}/receipt")
   public async receipt(
     @Request() req: ExpressRequest,

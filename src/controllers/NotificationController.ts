@@ -8,6 +8,11 @@ import type { ListResponse, ErrorResponse } from "../types/common";
 @Tags("Notifications")
 @Security("jwt", ["customer"])
 export class NotificationController extends Controller {
+  /**
+   * List notifications for the authenticated user with pagination.
+   * Returns both read and unread notifications.
+   * @summary List notifications
+   */
   @Get("/")
   public async listNotifications(
     @Request() req: ExpressRequest,
@@ -17,6 +22,10 @@ export class NotificationController extends Controller {
     return notificationService.list(req.user!.id, page ?? 1, limit ?? 20);
   }
 
+  /**
+   * Mark a specific notification as read. Returns 204 on success.
+   * @summary Mark notification read
+   */
   @Patch("{id}/read")
   @SuccessResponse(204, "Marked as read")
   @Response<ErrorResponse>(404, "Notification not found")

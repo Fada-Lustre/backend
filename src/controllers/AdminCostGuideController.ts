@@ -8,11 +8,19 @@ import type { ErrorResponse, IdStatusResponse } from "../types/common";
 @Tags("Admin Cost Guides")
 @Security("jwt", ["admin:services"])
 export class AdminCostGuideController extends Controller {
+  /**
+   * List all cost guides with stats (total, active, archived).
+   * @summary List cost guides
+   */
   @Get()
   public async listAdminCostGuides(@Request() _req: ExpressRequest): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
     return adminCostGuideService.listCostGuides();
   }
 
+  /**
+   * Create a new cost guide with title, description, and structured content blocks.
+   * @summary Create cost guide
+   */
   @Post()
   @SuccessResponse(201, "Created")
   public async createCostGuide(
@@ -23,6 +31,10 @@ export class AdminCostGuideController extends Controller {
     return adminCostGuideService.createCostGuide(req.user!.id, body.title, body.description, body.content_blocks);
   }
 
+  /**
+   * Retrieve a cost guide with full content blocks for editing.
+   * @summary Get cost guide details
+   */
   @Get("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async getAdminCostGuide(
@@ -32,6 +44,10 @@ export class AdminCostGuideController extends Controller {
     return adminCostGuideService.getCostGuide(id) as unknown as Promise<AdminCostGuideDetail>;
   }
 
+  /**
+   * Update a cost guide's title, description, or content blocks.
+   * @summary Update cost guide
+   */
   @Patch("{id}")
   @Response<ErrorResponse>(404, "Not found")
   public async updateCostGuide(
@@ -42,6 +58,10 @@ export class AdminCostGuideController extends Controller {
     return adminCostGuideService.updateCostGuide(req.user!.id, id, body) as unknown as Promise<AdminCostGuideDetail>;
   }
 
+  /**
+   * Archive a cost guide, hiding it from public listings.
+   * @summary Archive cost guide
+   */
   @Patch("{id}/archive")
   @Response<ErrorResponse>(404, "Not found")
   public async archiveCostGuide(

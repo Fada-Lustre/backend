@@ -11,6 +11,10 @@ import type { ErrorResponse } from "../types/common";
 @Route("v1/contact-messages")
 @Tags("Contact")
 export class ContactController extends Controller {
+  /**
+   * Submit a contact form message from the website. No authentication required.
+   * @summary Submit contact message
+   */
   @Post("/")
   @Response<ErrorResponse>(400, "Validation error")
   public async submitContactMessage(
@@ -24,6 +28,11 @@ export class ContactController extends Controller {
 @Route("v1/service-requests")
 @Tags("Service Requests")
 export class ServiceRequestsController extends Controller {
+  /**
+   * Submit a custom service request from the website.
+   * Used when customers need a service outside standard offerings.
+   * @summary Submit service request
+   */
   @Post("/")
   @Response<ErrorResponse>(400, "Validation error")
   public async submitServiceRequest(
@@ -37,6 +46,11 @@ export class ServiceRequestsController extends Controller {
 @Route("v1/cleaner-applications")
 @Tags("Cleaner Applications")
 export class CleanerApplicationsController extends Controller {
+  /**
+   * Submit a new cleaner application. Captures personal details,
+   * experience, availability, and compliance declarations.
+   * @summary Submit cleaner application
+   */
   @Post("/")
   @SuccessResponse(201, "Created")
   @Response<ErrorResponse>(400, "Validation error")
@@ -47,6 +61,11 @@ export class CleanerApplicationsController extends Controller {
     return leadsService.submitCleanerApplication(body);
   }
 
+  /**
+   * Retrieve full details of a cleaner application by ID.
+   * Accessible by the applicant and admins.
+   * @summary Get application details
+   */
   @Get("{id}")
   @Security("jwt", ["customer", "admin:all_users"])
   @Response<ErrorResponse>(404, "Not found")
@@ -56,6 +75,11 @@ export class CleanerApplicationsController extends Controller {
     return leadsService.getCleanerApplication(id);
   }
 
+  /**
+   * Update a draft cleaner application before final submission.
+   * Only applications in 'draft' status can be modified.
+   * @summary Update application
+   */
   @Patch("{id}")
   @Security("jwt", ["customer"])
   @Response<ErrorResponse>(404, "Not found")
