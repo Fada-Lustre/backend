@@ -58,6 +58,8 @@ import { AdminServiceController } from './controllers/AdminServiceController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminRoleController } from './controllers/AdminRoleController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AdminProfileController } from './controllers/AdminProfileController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminDashboardController } from './controllers/AdminDashboardController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminCustomerController } from './controllers/AdminCustomerController';
@@ -1395,6 +1397,33 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"string","required":true},
             "status": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdminProfileResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "first_name": {"dataType":"string","required":true},
+            "last_name": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "email": {"dataType":"string","required":true},
+            "phone": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "profile_image_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "role": {"dataType":"nestedObjectLiteral","nestedProperties":{"permissions":{"dataType":"array","array":{"dataType":"string"},"required":true},"display_name":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+            "status": {"dataType":"string","required":true},
+            "created_at": {"dataType":"string","required":true},
+            "last_login_at": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateAdminProfileRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "first_name": {"dataType":"string"},
+            "last_name": {"dataType":"string"},
+            "phone": {"dataType":"string"},
         },
         "additionalProperties": true,
     },
@@ -4441,6 +4470,69 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'archiveRole',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminProfileController_getAdminProfile: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.get('/v1/admin/profile',
+            authenticateMiddleware([{"jwt":["admin:home"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminProfileController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminProfileController.prototype.getAdminProfile)),
+
+            async function AdminProfileController_getAdminProfile(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminProfileController_getAdminProfile, request, response });
+
+                const controller = new AdminProfileController();
+
+              await templateService.apiHandler({
+                methodName: 'getAdminProfile',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminProfileController_updateAdminProfile: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                body: {"in":"body","name":"body","required":true,"ref":"UpdateAdminProfileRequest"},
+        };
+        app.patch('/v1/admin/profile',
+            authenticateMiddleware([{"jwt":["admin:home"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminProfileController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminProfileController.prototype.updateAdminProfile)),
+
+            async function AdminProfileController_updateAdminProfile(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminProfileController_updateAdminProfile, request, response });
+
+                const controller = new AdminProfileController();
+
+              await templateService.apiHandler({
+                methodName: 'updateAdminProfile',
                 controller,
                 response,
                 next,

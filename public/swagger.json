@@ -3346,6 +3346,96 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"AdminProfileResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"profile_image_url": {
+						"type": "string",
+						"nullable": true
+					},
+					"role": {
+						"properties": {
+							"permissions": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"display_name": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"permissions",
+							"display_name",
+							"name",
+							"id"
+						],
+						"type": "object"
+					},
+					"status": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"last_login_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"first_name",
+					"last_name",
+					"email",
+					"phone",
+					"profile_image_url",
+					"role",
+					"status",
+					"created_at",
+					"last_login_at"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpdateAdminProfileRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": true
+			},
 			"Record_string.number_": {
 				"properties": {},
 				"additionalProperties": {
@@ -8825,6 +8915,94 @@
 						}
 					}
 				]
+			}
+		},
+		"/v1/admin/profile": {
+			"get": {
+				"operationId": "GetAdminProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieve the authenticated admin's profile including name, email,\nphone, role details, and assigned permissions.",
+				"summary": "Get admin profile",
+				"tags": [
+					"Admin Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": []
+			},
+			"patch": {
+				"operationId": "UpdateAdminProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminProfileResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Profile not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the admin's profile fields (name, phone).\nOnly provided fields are updated.",
+				"summary": "Update admin profile",
+				"tags": [
+					"Admin Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAdminProfileRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/v1/admin/dashboard": {
