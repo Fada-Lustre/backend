@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
-import fileUpload from "express-fileupload";
+import fileUpload, { UploadedFile } from "express-fileupload";
 import { ApplicationError } from "../errors";
 import { requireJwtScopes } from "../lib/auth-middleware";
 import * as adminServiceService from "../services/admin-service.service";
+import { uploadFile } from "../lib/r2";
 
 const router = Router();
 
@@ -18,8 +19,9 @@ router.post("/", requireJwtScopes("admin:services"), async (req: Request, res: R
     }
 
     let imageUrl: string | null = null;
-    if (req.files && req.files.image) {
-      imageUrl = "https://res.cloudinary.com/stub/services/" + Date.now();
+    if (req.files && (req.files as unknown as fileUpload.FileArray).image) {
+      const file = (req.files as unknown as fileUpload.FileArray).image as UploadedFile;
+      imageUrl = await uploadFile("services", file.data, file.mimetype, file.name);
     }
 
     const result = await adminServiceService.createService(req.user!.id, name, description, imageUrl);
@@ -37,8 +39,9 @@ router.patch("/:id", requireJwtScopes("admin:services"), async (req: Request, re
     if (req.body.name) updates.name = req.body.name;
     if (req.body.description) updates.description = req.body.description;
 
-    if (req.files && req.files.image) {
-      updates.imageUrl = "https://res.cloudinary.com/stub/services/" + Date.now();
+    if (req.files && (req.files as unknown as fileUpload.FileArray).image) {
+      const file = (req.files as unknown as fileUpload.FileArray).image as UploadedFile;
+      updates.imageUrl = await uploadFile("services", file.data, file.mimetype, file.name);
     }
 
     const result = await adminServiceService.updateService(req.user!.id, serviceId, updates);

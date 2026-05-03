@@ -6,6 +6,7 @@ import * as inviteRepo from "../repositories/admin-invitation.repository";
 import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import { blockUserByRole } from "./user-actions.service";
+import { sendEmail, adminInvitationHtml } from "../lib/email";
 import type { AdminProfileResponse } from "../types/admin-profile";
 
 export async function listAdminUsers(
@@ -46,6 +47,12 @@ export async function inviteAdmin(
   const inv = await inviteRepo.create({ email, role_id: roleId, temp_password_hash: tempHash, invited_by: actorId });
 
   await logActivity(actorId, `Invited new admin user - ${firstName} ${lastName}`, "admin_invitation", inv.id);
+
+  const activateUrl = `https://admin.fadalustre.com/activate?email=${encodeURIComponent(email)}`;
+  const html = adminInvitationHtml(firstName, email, tempPassword, activateUrl);
+  await sendEmail(email, "You've been invited to Fada Lustre Admin", html).catch((err) => {
+    console.error("Failed to send invitation email:", err);
+  });
 
   return { id: inv.id, message: "Invitation email sent" };
 }

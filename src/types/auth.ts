@@ -77,3 +77,22 @@ export interface RefreshResponse {
   token: string;
   refresh_token: string;
 }
+
+export interface AdminForgotPasswordRequest {
+  email: string;
+}
+
+export interface AdminForgotPasswordResponse {
+  message: string;
+}
+
+export interface AdminResetPasswordRequest {
+  email: string;
+  code: string;
+  new_password: string;
+  confirm_password: string;
+}
+
+export interface AdminResetPasswordResponse {
+  message: string;
+}

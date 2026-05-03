@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { Request as ExpressRequest } from "express";
 import { ApplicationError } from "../errors";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../lib/jwt";
+import { blacklistToken } from "../lib/token-blacklist";
 import { validatePassword } from "../lib/validation";
 import * as otpService from "../services/otp.service";
 import * as userRepo from "../repositories/user.repository";
@@ -14,7 +15,10 @@ import type {
   ResetPasswordRequest, ResetPasswordResponse,
   ChangePasswordRequest, ChangePasswordResponse,
   RefreshRequest, RefreshResponse,
+  AdminForgotPasswordRequest, AdminForgotPasswordResponse,
+  AdminResetPasswordRequest, AdminResetPasswordResponse,
 } from "../types/auth";
+import { sendEmail, passwordResetHtml } from "../lib/email";
 import type { ActivateRequest, ActivateResponse, SetupProfileRequest, SetupProfileResponse } from "../types/admin-auth";
 import type { ErrorResponse } from "../types/common";
 import * as adminAuthService from "../services/admin-auth.service";
@@ -215,6 +219,56 @@ export class AuthController extends Controller {
   }
 
   /**
+   * Request a password reset for an admin account via email.
+   * Sends a 6-digit reset code to the admin's email address.
+   * @summary Admin forgot password
+   */
+  @Post("admin/forgot-password")
+  public async adminForgotPassword(
+    @Body() body: AdminForgotPasswordRequest
+  ): Promise<AdminForgotPasswordResponse> {
+    const user = await userRepo.findByEmailAndRole(body.email, "admin");
+
+    if (user) {
+      const code = await otpService.createOtp(body.email, "password_reset", user.id);
+      const html = passwordResetHtml(user.first_name, code);
+      await sendEmail(body.email, "Password Reset - Fada Lustre Admin", html).catch((err) => {
+        console.error("Failed to send reset email:", err);
+      });
+    }
+
+    return { message: "If an admin account exists with this email, a reset code has been sent." };
+  }
+
+  /**
+   * Reset an admin's password using the code sent via email.
+   * @summary Admin reset password
+   */
+  @Post("admin/reset-password")
+  @Response<ErrorResponse>(400, "Validation error")
+  public async adminResetPassword(
+    @Body() body: AdminResetPasswordRequest
+  ): Promise<AdminResetPasswordResponse> {
+    if (body.new_password !== body.confirm_password) {
+      throw new ApplicationError(400, "Passwords do not match", "VALIDATION_ERROR");
+    }
+
+    validatePassword(body.new_password);
+
+    await otpService.verifyOtp(body.email, body.code, "password_reset");
+
+    const user = await userRepo.findByEmailAndRole(body.email, "admin");
+    if (!user) {
+      throw new ApplicationError(404, "Admin account not found", "NOT_FOUND");
+    }
+
+    const hash = await bcrypt.hash(body.new_password, 10);
+    await userRepo.updatePasswordHashById(user.id, hash);
+
+    return { message: "Password reset successful" };
+  }
+
+  /**
    * Activate an invited admin account using the email and temporary password
    * received in the invitation. Returns an activation token for profile setup.
    * @summary Activate admin invitation
@@ -253,5 +307,23 @@ export class AuthController extends Controller {
       body.password,
       body.confirm_password
     );
+  }
+
+  /**
+   * Invalidate the current access token, effectively logging the user out.
+   * The token is added to an in-memory blacklist until it expires naturally.
+   * @summary Logout
+   */
+  @Post("logout")
+  @Security("jwt")
+  @SuccessResponse(204, "Logged out")
+  public async logout(@Request() req: ExpressRequest): Promise<void> {
+    const header = req.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      const token = header.slice(7);
+      const exp = req.user?.exp ?? Math.floor(Date.now() / 1000) + 3600;
+      blacklistToken(token, exp);
+    }
+    this.setStatus(204);
   }
 }

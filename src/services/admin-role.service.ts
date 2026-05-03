@@ -3,8 +3,8 @@ import * as userRepo from "../repositories/user.repository";
 import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 
-export async function listRoles(): Promise<Record<string, unknown>[]> {
-  return roleRepo.listWithPermissions() as unknown as Record<string, unknown>[];
+export async function listRoles(status: "active" | "archived" | "all" = "active"): Promise<Record<string, unknown>[]> {
+  return roleRepo.listWithPermissions(status) as unknown as Record<string, unknown>[];
 }
 
 export async function createRole(

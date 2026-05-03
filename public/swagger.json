@@ -2749,6 +2749,66 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"AdminForgotPasswordResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminForgotPasswordRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminResetPasswordResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminResetPasswordRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					},
+					"new_password": {
+						"type": "string"
+					},
+					"confirm_password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"code",
+					"new_password",
+					"confirm_password"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"ActivateResponse": {
 				"properties": {
 					"activation_token": {
@@ -7866,6 +7926,84 @@
 				}
 			}
 		},
+		"/v1/auth/admin/forgot-password": {
+			"post": {
+				"operationId": "AdminForgotPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminForgotPasswordResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Request a password reset for an admin account via email.\nSends a 6-digit reset code to the admin's email address.",
+				"summary": "Admin forgot password",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminForgotPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/admin/reset-password": {
+			"post": {
+				"operationId": "AdminResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminResetPasswordResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Validation error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Reset an admin's password using the code sent via email.",
+				"summary": "Admin reset password",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v1/auth/activate": {
 			"post": {
 				"operationId": "Activate",
@@ -7972,6 +8110,27 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/auth/logout": {
+			"post": {
+				"operationId": "Logout",
+				"responses": {
+					"204": {
+						"description": "Logged out"
+					}
+				},
+				"description": "Invalidate the current access token, effectively logging the user out.\nThe token is added to an in-memory blacklist until it expires naturally.",
+				"summary": "Logout",
+				"tags": [
+					"Auth"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/v1/admin/users": {
@@ -8736,7 +8895,7 @@
 						}
 					}
 				},
-				"description": "List all admin roles with their assigned permissions.",
+				"description": "List admin roles with their assigned permissions.\nFilter by status: 'active' (default), 'archived', or 'all'.",
 				"summary": "List roles",
 				"tags": [
 					"Admin Roles"
@@ -8748,7 +8907,21 @@
 						]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"active",
+								"archived",
+								"all"
+							]
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "CreateRole",

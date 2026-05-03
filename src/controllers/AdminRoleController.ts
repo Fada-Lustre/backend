@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Route, Tags, Security, Request, Path, Body, Response, SuccessResponse } from "tsoa";
+import { Controller, Get, Post, Patch, Query, Route, Tags, Security, Request, Path, Body, Response, SuccessResponse } from "tsoa";
 import { Request as ExpressRequest } from "express";
 import * as adminRoleService from "../services/admin-role.service";
 import type { RoleListResponse, RoleListItem, CreateRoleRequest, CreateRoleResponse, UpdateRoleRequest, ArchiveRoleResponse } from "../types/admin-role";
@@ -9,12 +9,16 @@ import type { ErrorResponse } from "../types/common";
 @Security("jwt", ["admin:control_permissions"])
 export class AdminRoleController extends Controller {
   /**
-   * List all admin roles with their assigned permissions.
+   * List admin roles with their assigned permissions.
+   * Filter by status: 'active' (default), 'archived', or 'all'.
    * @summary List roles
    */
   @Get()
-  public async listRoles(@Request() _req: ExpressRequest): Promise<RoleListResponse> {
-    const data = await adminRoleService.listRoles();
+  public async listRoles(
+    @Request() _req: ExpressRequest,
+    @Query() status?: "active" | "archived" | "all"
+  ): Promise<RoleListResponse> {
+    const data = await adminRoleService.listRoles(status ?? "active");
     return { data } as unknown as RoleListResponse;
   }
 

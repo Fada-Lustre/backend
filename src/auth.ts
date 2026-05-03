@@ -1,6 +1,7 @@
 import { Request } from "express";
 import { ApplicationError } from "./errors";
 import { verifyAccessToken } from "./lib/jwt";
+import { isBlacklisted } from "./lib/token-blacklist";
 import * as userRepo from "./repositories/user.repository";
 
 interface JwtPayload {
@@ -34,6 +35,10 @@ export async function expressAuthentication(
   }
 
   const token = header.slice(7);
+
+  if (isBlacklisted(token)) {
+    throw new ApplicationError(401, "Token has been revoked", "AUTH_REVOKED");
+  }
 
   let decoded: JwtPayload;
   try {

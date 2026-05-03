@@ -24,7 +24,7 @@ export async function createOtp(
   phone: string,
   purpose: OtpPurpose,
   userId?: string
-): Promise<void> {
+): Promise<string> {
   const code = generateCode();
   const codeHash = await bcrypt.hash(code, 4);
   const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
@@ -32,6 +32,8 @@ export async function createOtp(
   await otpRepo.create(phone, purpose, codeHash, expiresAt, userId);
 
   await smsProvider.send(phone, `Your Fada Lustre verification code is: ${code}`);
+
+  return code;
 }
 
 export async function verifyOtp(

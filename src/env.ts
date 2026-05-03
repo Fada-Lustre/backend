@@ -20,9 +20,15 @@ const EnvironmentVariableSchema = z.object({
   DB_SSL: z.preprocess((arg) => arg === "true", z.boolean()).default(false),
   JWT_SECRET: z.string().min(32),
   JWT_REFRESH_SECRET: z.string().min(32),
-  CLOUDINARY_CLOUD_NAME: z.string().optional().default(""),
-  CLOUDINARY_API_KEY: z.string().optional().default(""),
-  CLOUDINARY_API_SECRET: z.string().optional().default(""),
+  AWS_REGION: z.string().optional().default("eu-west-2"),
+  AWS_ACCESS_KEY_ID: z.string().optional().default(""),
+  AWS_SECRET_ACCESS_KEY: z.string().optional().default(""),
+  SES_FROM_EMAIL: z.string().optional().default("noreply@fadalustre.com"),
+  R2_ACCOUNT_ID: z.string().optional().default(""),
+  R2_ACCESS_KEY_ID: z.string().optional().default(""),
+  R2_SECRET_ACCESS_KEY: z.string().optional().default(""),
+  R2_BUCKET_NAME: z.string().optional().default("fada-lustre-staging"),
+  R2_PUBLIC_URL: z.string().optional().default(""),
   ALLOWED_ORIGINS: z.preprocess(
     (arg) => {
       if (typeof arg === "string" && arg.length > 0) return arg.split(",");

@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
-import fileUpload from "express-fileupload";
+import fileUpload, { UploadedFile } from "express-fileupload";
 import { requireJwtScopes } from "../lib/auth-middleware";
 import { ApplicationError } from "../errors";
 import * as bookingRepo from "../repositories/booking.repository";
+import { uploadFile } from "../lib/r2";
 
 const router = Router();
 
@@ -31,7 +32,8 @@ router.post(
         return;
       }
 
-      const files = Array.isArray(req.files.images) ? req.files.images : [req.files.images!];
+      const fileArray = req.files as unknown as fileUpload.FileArray;
+      const files = Array.isArray(fileArray.images) ? fileArray.images : [fileArray.images as UploadedFile];
       const allowedMimes = ["image/jpeg", "image/png", "image/webp"];
       for (const file of files) {
         if (!allowedMimes.includes(file.mimetype)) {
@@ -42,8 +44,8 @@ router.post(
 
       const uploaded: { id: string; url: string }[] = [];
       for (const file of files) {
-        const stubUrl = `https://res.cloudinary.com/demo/bookings/${bookingId}/${file.name}`;
-        const result = await bookingRepo.insertImage(bookingId, cleanerId, stubUrl);
+        const url = await uploadFile(`bookings/${bookingId}`, file.data, file.mimetype, file.name);
+        const result = await bookingRepo.insertImage(bookingId, cleanerId, url);
         uploaded.push(result);
       }
 

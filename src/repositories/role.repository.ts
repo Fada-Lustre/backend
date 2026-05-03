@@ -34,16 +34,22 @@ export async function existsById(id: string): Promise<boolean> {
 
 // ── List ───────────────────────────────────────────────────────────────
 
-export async function listWithPermissions(): Promise<RoleWithAccessRow[]> {
+export async function listWithPermissions(status: "active" | "archived" | "all" = "active"): Promise<RoleWithAccessRow[]> {
+  let whereClause: string;
+  if (status === "active") whereClause = "WHERE r.deleted_at IS NULL";
+  else if (status === "archived") whereClause = "WHERE r.deleted_at IS NOT NULL";
+  else whereClause = "";
+
   return await db.query(
     `SELECT r.id, r.name, r.display_name, r.is_system, r.created_at AS date_added,
+            r.deleted_at,
             COALESCE(
               (SELECT json_agg(rp.permission) FROM role_permissions rp WHERE rp.role_id = r.id),
               '[]'::json
             ) AS access,
             (SELECT COUNT(*)::int FROM users u WHERE u.admin_role_id = r.id AND u.deleted_at IS NULL) AS user_count
      FROM roles r
-     WHERE r.deleted_at IS NULL
+     ${whereClause}
      ORDER BY r.created_at`,
     []
   ) as RoleWithAccessRow[];
