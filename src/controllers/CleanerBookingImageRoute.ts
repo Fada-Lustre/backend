@@ -45,8 +45,8 @@ router.post(
       const uploaded: { id: string; url: string }[] = [];
       for (const file of files) {
         const { url, key } = await uploadFile(`bookings/${bookingId}`, file.data, file.mimetype, file.name);
-        const result = await bookingRepo.insertImage(bookingId, cleanerId, url, key);
-        uploaded.push(result);
+        const result = await bookingRepo.insertImage(bookingId, cleanerId, key, key);
+        uploaded.push({ id: result.id, url });
       }
 
       res.status(201).json({ images: uploaded });

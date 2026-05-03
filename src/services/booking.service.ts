@@ -4,6 +4,7 @@ import * as txRepo from "../repositories/transaction.repository";
 import * as addressRepo from "../repositories/address.repository";
 import { ApplicationError } from "../errors";
 import { assertOwnership } from "../middleware/ownership";
+import { signUrl } from "../lib/r2";
 import type {
   CreateBookingRequest, BookingListItem, BookingDetail,
   AmendBookingRequest, RescheduleBookingRequest, RateBookingRequest,
@@ -249,7 +250,10 @@ export async function getImages(
   if (role === "customer") assertOwnership(booking.customer_id, userId);
   else if (role === "cleaner" && booking.cleaner_id) assertOwnership(booking.cleaner_id, userId);
 
-  return await bookingRepo.listImagesByBooking(bookingId);
+  const images = await bookingRepo.listImagesByBooking(bookingId);
+  return Promise.all(
+    images.map(async (img) => ({ ...img, url: (await signUrl(img.url)) ?? img.url }))
+  );
 }
 
 export async function getReceipt(userId: string, bookingId: string): Promise<ReceiptResponse> {

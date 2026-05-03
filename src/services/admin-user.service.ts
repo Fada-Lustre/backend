@@ -7,6 +7,7 @@ import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import { blockUserByRole } from "./user-actions.service";
 import { sendEmail, adminInvitationHtml } from "../lib/email";
+import { signUrl } from "../lib/r2";
 import type { AdminProfileResponse } from "../types/admin-profile";
 
 export async function listAdminUsers(
@@ -84,7 +85,7 @@ export async function getAdminProfile(userId: string): Promise<AdminProfileRespo
     last_name: user.last_name,
     email: user.email,
     phone: user.phone,
-    profile_image_url: user.profile_image_url,
+    profile_image_url: await signUrl(user.profile_image_url),
     role,
     status: user.status,
     created_at: user.created_at,

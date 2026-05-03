@@ -4,6 +4,7 @@ import * as addressRepo from "../repositories/address.repository";
 import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import { addSearchFilter, firstOr404 } from "../lib/query-helpers";
+import { signUrl } from "../lib/r2";
 import type { AdminBookingListItem, AdminBookingDetail, AdminCreateBookingRequest } from "../types/admin-booking";
 import type { AdminListResponse } from "../types/admin-common";
 
@@ -20,7 +21,10 @@ export async function getBooking(bookingId: string): Promise<AdminBookingDetail>
   const raw = await bookingRepo.findAdminDetail(bookingId);
   if (!raw) throw new ApplicationError(404, "Booking not found", "NOT_FOUND");
 
-  const images = await bookingRepo.listImagesByBooking(bookingId);
+  const rawImages = await bookingRepo.listImagesByBooking(bookingId);
+  const images = await Promise.all(
+    rawImages.map(async (img) => ({ ...img, url: (await signUrl(img.url)) ?? img.url }))
+  );
 
   const detail = raw as Record<string, unknown>;
   return {

@@ -1,12 +1,14 @@
 import * as userRepo from "../repositories/user.repository";
 import { ApplicationError } from "../errors";
 import * as otpService from "./otp.service";
+import { signUrl } from "../lib/r2";
 import type { ProfileResponse, UpdateProfileRequest, UpdatePhoneResponse } from "../types/profile";
 
-function toProfileResponse(user: userRepo.UserRow): ProfileResponse {
+async function toProfileResponse(user: userRepo.UserRow): Promise<ProfileResponse> {
   return {
     id: user.id, first_name: user.first_name, last_name: user.last_name,
-    phone: user.phone, email: user.email, profile_image_url: user.profile_image_url,
+    phone: user.phone, email: user.email,
+    profile_image_url: await signUrl(user.profile_image_url),
     rating: user.rating_avg,
   } as unknown as ProfileResponse;
 }
@@ -14,7 +16,7 @@ function toProfileResponse(user: userRepo.UserRow): ProfileResponse {
 export async function getProfile(userId: string): Promise<ProfileResponse> {
   const user = await userRepo.findById(userId);
   if (!user) throw new ApplicationError(404, "Profile not found", "NOT_FOUND");
-  return toProfileResponse(user);
+  return await toProfileResponse(user);
 }
 
 export async function updateProfile(
@@ -31,7 +33,7 @@ export async function updateProfile(
   });
 
   if (!updated) throw new ApplicationError(404, "Profile not found", "NOT_FOUND");
-  return toProfileResponse(updated);
+  return await toProfileResponse(updated);
 }
 
 export async function requestPhoneUpdate(

@@ -1,14 +1,23 @@
 import * as contentRepo from "../repositories/content.repository";
 import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
+import { signUrl } from "../lib/r2";
 
 export async function listServices() {
-  return contentRepo.listServicesAdmin();
+  const result = await contentRepo.listServicesAdmin();
+  result.data = await Promise.all(
+    result.data.map(async (s) => {
+      if (s.image_url) s.image_url = await signUrl(s.image_url as string);
+      return s;
+    })
+  );
+  return result;
 }
 
 export async function getService(serviceId: string): Promise<Record<string, unknown>> {
   const service = await contentRepo.getServiceAdmin(serviceId);
   if (!service) throw new ApplicationError(404, "Service not found", "NOT_FOUND");
+  if (service.image_url) service.image_url = await signUrl(service.image_url as string);
   return service;
 }
 
@@ -42,6 +51,7 @@ export async function updateService(
   if (Object.keys(fields).length === 0) throw new ApplicationError(400, "No fields to update", "VALIDATION_ERROR");
   const result = await contentRepo.updateService(serviceId, fields);
   if (!result) throw new ApplicationError(404, "Service not found", "NOT_FOUND");
+  if (result.image_url) result.image_url = await signUrl(result.image_url as string);
   await logActivity(actorId, `Updated service - ${result.name}`, "service", serviceId);
   return result;
 }

@@ -23,11 +23,13 @@ router.post("/", requireJwtScopes("admin:services"), async (req: Request, res: R
     const fileArray = req.files as unknown as fileUpload.FileArray | undefined;
     if (fileArray?.image) {
       const file = fileArray.image as UploadedFile;
-      imageUrl = (await uploadFile("services", file.data, file.mimetype, file.name)).url;
+      const upload = await uploadFile("services", file.data, file.mimetype, file.name);
+      imageUrl = upload.key;
     }
     if (fileArray?.icon) {
       const file = fileArray.icon as UploadedFile;
-      iconUrl = (await uploadFile("services/icons", file.data, file.mimetype, file.name)).url;
+      const iconUpload = await uploadFile("services/icons", file.data, file.mimetype, file.name);
+      iconUrl = iconUpload.key;
     }
 
     const result = await adminServiceService.createService(req.user!.id, name, description, imageUrl, iconUrl);
@@ -48,11 +50,11 @@ router.patch("/:id", requireJwtScopes("admin:services"), async (req: Request, re
     const fileArray = req.files as unknown as fileUpload.FileArray | undefined;
     if (fileArray?.image) {
       const file = fileArray.image as UploadedFile;
-      updates.imageUrl = (await uploadFile("services", file.data, file.mimetype, file.name)).url;
+      updates.imageUrl = (await uploadFile("services", file.data, file.mimetype, file.name)).key;
     }
     if (fileArray?.icon) {
       const file = fileArray.icon as UploadedFile;
-      updates.iconUrl = (await uploadFile("services/icons", file.data, file.mimetype, file.name)).url;
+      updates.iconUrl = (await uploadFile("services/icons", file.data, file.mimetype, file.name)).key;
     }
 
     const result = await adminServiceService.updateService(req.user!.id, serviceId, updates);

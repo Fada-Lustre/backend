@@ -29,8 +29,8 @@ router.patch(
         return;
       }
 
-      const { url } = await uploadFile("blog/covers", file.data, file.mimetype, file.name);
-      const updated = await contentRepo.updateBlogCoverImage(postId, url);
+      const { url, key } = await uploadFile("blog/covers", file.data, file.mimetype, file.name);
+      const updated = await contentRepo.updateBlogCoverImage(postId, key);
 
       if (!updated) {
         res.status(404).json({ code: "NOT_FOUND", message: "Blog post not found" });

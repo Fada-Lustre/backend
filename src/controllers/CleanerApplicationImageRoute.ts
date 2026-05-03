@@ -34,7 +34,7 @@ router.post(
       }
 
       const { url, key } = await uploadFile("applications", file.data, file.mimetype, file.name);
-      await leadsRepo.updateApplicationPhoto(appId, url, key);
+      await leadsRepo.updateApplicationPhoto(appId, key, key);
 
       res.json({ id: appId, photo_url: url });
     } catch (err) {

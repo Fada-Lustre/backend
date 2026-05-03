@@ -31,7 +31,7 @@ function createProfileImageRouter(scope: string): Router {
         }
 
         const { url, key } = await uploadFile(`profiles/${userId}`, file.data, file.mimetype, file.name);
-        await userRepo.updateProfileImage(userId, url, key);
+        await userRepo.updateProfileImage(userId, key, key);
 
         res.json({ profile_image_url: url });
       } catch (err) {

@@ -1,6 +1,7 @@
 import * as userRepo from "../repositories/user.repository";
 import { ApplicationError } from "../errors";
 import * as otpService from "./otp.service";
+import { signUrl } from "../lib/r2";
 import type {
   CleanerProfileResponse, UpdateCleanerProfileRequest,
   UpdateCleanerPhoneResponse, UpdateCleanerAddressRequest, UpdateCleanerAddressResponse,
@@ -14,7 +15,7 @@ export async function getProfile(userId: string): Promise<CleanerProfileResponse
 
   return {
     id: r.id, first_name: r.first_name, last_name: r.last_name,
-    phone: r.phone, email: r.email, profile_image_url: r.profile_image_url,
+    phone: r.phone, email: r.email, profile_image_url: await signUrl(r.profile_image_url),
     rating: r.rating ? parseFloat(r.rating) : null,
     completed_bookings: r.completed_bookings,
     location: r.home_street && r.home_postcode ? `${r.home_street}, ${r.home_postcode}` : null,
