@@ -19,12 +19,18 @@ router.post("/", requireJwtScopes("admin:services"), async (req: Request, res: R
     }
 
     let imageUrl: string | null = null;
-    if (req.files && (req.files as unknown as fileUpload.FileArray).image) {
-      const file = (req.files as unknown as fileUpload.FileArray).image as UploadedFile;
-      imageUrl = await uploadFile("services", file.data, file.mimetype, file.name);
+    let iconUrl: string | null = null;
+    const fileArray = req.files as unknown as fileUpload.FileArray | undefined;
+    if (fileArray?.image) {
+      const file = fileArray.image as UploadedFile;
+      imageUrl = (await uploadFile("services", file.data, file.mimetype, file.name)).url;
+    }
+    if (fileArray?.icon) {
+      const file = fileArray.icon as UploadedFile;
+      iconUrl = (await uploadFile("services/icons", file.data, file.mimetype, file.name)).url;
     }
 
-    const result = await adminServiceService.createService(req.user!.id, name, description, imageUrl);
+    const result = await adminServiceService.createService(req.user!.id, name, description, imageUrl, iconUrl);
     res.status(201).json(result);
   } catch (err) {
     next(err);
@@ -34,14 +40,19 @@ router.post("/", requireJwtScopes("admin:services"), async (req: Request, res: R
 router.patch("/:id", requireJwtScopes("admin:services"), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const serviceId = req.params.id as string;
-    const updates: { name?: string; description?: string; imageUrl?: string } = {};
+    const updates: { name?: string; description?: string; imageUrl?: string; iconUrl?: string } = {};
 
     if (req.body.name) updates.name = req.body.name;
     if (req.body.description) updates.description = req.body.description;
 
-    if (req.files && (req.files as unknown as fileUpload.FileArray).image) {
-      const file = (req.files as unknown as fileUpload.FileArray).image as UploadedFile;
-      updates.imageUrl = await uploadFile("services", file.data, file.mimetype, file.name);
+    const fileArray = req.files as unknown as fileUpload.FileArray | undefined;
+    if (fileArray?.image) {
+      const file = fileArray.image as UploadedFile;
+      updates.imageUrl = (await uploadFile("services", file.data, file.mimetype, file.name)).url;
+    }
+    if (fileArray?.icon) {
+      const file = fileArray.icon as UploadedFile;
+      updates.iconUrl = (await uploadFile("services/icons", file.data, file.mimetype, file.name)).url;
     }
 
     const result = await adminServiceService.updateService(req.user!.id, serviceId, updates);

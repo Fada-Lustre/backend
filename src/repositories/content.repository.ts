@@ -142,12 +142,13 @@ export async function createService(
   name: string,
   slug: string,
   description: string,
-  imageUrl: string | null
+  imageUrl: string | null,
+  iconUrl?: string | null
 ): Promise<{ id: string; name: string; status: string }> {
   const rows = await db.query(
-    `INSERT INTO services (title, slug, description, image_url, status)
-     VALUES ($1, $2, $3, $4, 'active') RETURNING id, title AS name, status`,
-    [name, slug, description, imageUrl]
+    `INSERT INTO services (title, slug, description, image_url, icon_url, status)
+     VALUES ($1, $2, $3, $4, $5, 'active') RETURNING id, title AS name, status`,
+    [name, slug, description, imageUrl, iconUrl ?? null]
   ) as { id: string; name: string; status: string }[];
   return rows[0]!;
 }
@@ -171,6 +172,17 @@ export async function updateService(
     `UPDATE services SET ${sets.join(", ")} WHERE id = $${idx} RETURNING id, title AS name, description, image_url, status`,
     params
   ) as Record<string, unknown>[];
+  return rows[0] ?? null;
+}
+
+export async function updateBlogCoverImage(
+  postId: string,
+  coverUrl: string
+): Promise<{ id: string } | null> {
+  const rows = await db.query(
+    `UPDATE blog_posts SET cover_image_url = $1 WHERE id = $2 AND deleted_at IS NULL RETURNING id`,
+    [coverUrl, postId]
+  ) as { id: string }[];
   return rows[0] ?? null;
 }
 

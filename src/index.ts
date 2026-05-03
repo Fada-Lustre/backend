@@ -12,6 +12,9 @@ import { ZodError } from "zod";
 import webhookRouter from "./controllers/WebhookController";
 import cleanerBookingImageRouter from "./controllers/CleanerBookingImageRoute";
 import adminServiceImageRouter from "./controllers/AdminServiceImageRoute";
+import { customerProfileImageRouter, cleanerProfileImageRouter, adminProfileImageRouter } from "./controllers/ProfileImageRoute";
+import adminBlogImageRouter from "./controllers/AdminBlogImageRoute";
+import cleanerApplicationImageRouter from "./controllers/CleanerApplicationImageRoute";
 
 const app = express();
 const PORT = env.PORT;
@@ -19,6 +22,11 @@ const PORT = env.PORT;
 app.use("/v1/payments", express.raw({ type: "application/json" }), webhookRouter);
 app.use("/v1/cleaner/bookings", cleanerBookingImageRouter);
 app.use("/v1/admin/services", adminServiceImageRouter);
+app.use("/v1/customer/profile", customerProfileImageRouter);
+app.use("/v1/cleaner/profile", cleanerProfileImageRouter);
+app.use("/v1/admin/profile", adminProfileImageRouter);
+app.use("/v1/admin/blog", adminBlogImageRouter);
+app.use("/v1/cleaner-applications", cleanerApplicationImageRouter);
 
 app.use(express.json({ limit: "1mb" }));
 

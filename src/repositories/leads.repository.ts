@@ -45,6 +45,18 @@ export async function insertCleanerApplicationLegacy(data: (string | number | bo
   return rows[0]!;
 }
 
+export async function updateApplicationPhoto(
+  id: string,
+  photoUrl: string,
+  publicId: string | null
+): Promise<void> {
+  await db.query(
+    `UPDATE cleaner_applications SET photo_url = $1, photo_public_id = $2
+     WHERE id = $3 AND deleted_at IS NULL`,
+    [photoUrl, publicId, id]
+  );
+}
+
 export async function findCleanerApplication(id: string): Promise<Record<string, unknown> | null> {
   const rows = await db.query(
     `SELECT id, first_name, last_name, email, phone_number, status, created_at

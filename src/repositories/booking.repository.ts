@@ -467,11 +467,13 @@ export async function listImagesByBooking(
 export async function insertImage(
   bookingId: string,
   uploadedBy: string,
-  imageUrl: string
+  imageUrl: string,
+  imagePublicId?: string
 ): Promise<{ id: string; url: string }> {
   const rows = await db.query(
-    `INSERT INTO booking_images (booking_id, uploaded_by, image_url) VALUES ($1, $2, $3) RETURNING id, image_url AS url`,
-    [bookingId, uploadedBy, imageUrl]
+    `INSERT INTO booking_images (booking_id, uploaded_by, image_url, image_public_id)
+     VALUES ($1, $2, $3, $4) RETURNING id, image_url AS url`,
+    [bookingId, uploadedBy, imageUrl, imagePublicId ?? null]
   ) as { id: string; url: string }[];
   return rows[0]!;
 }

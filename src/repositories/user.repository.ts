@@ -213,6 +213,18 @@ export async function updateById(
   return rows[0] ?? null;
 }
 
+export async function updateProfileImage(
+  id: string,
+  imageUrl: string,
+  publicId: string | null
+): Promise<void> {
+  await db.query(
+    `UPDATE users SET profile_image_url = $1, profile_image_public_id = $2, updated_at = NOW()
+     WHERE id = $3 AND deleted_at IS NULL`,
+    [imageUrl, publicId, id]
+  );
+}
+
 export async function updatePasswordHashById(id: string, hash: string): Promise<{ id: string } | null> {
   const rows = await db.query(
     `UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2 AND deleted_at IS NULL RETURNING id`,

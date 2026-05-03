@@ -11,18 +11,23 @@ const s3 = new S3Client({
       : undefined,
 });
 
+export interface UploadResult {
+  url: string;
+  key: string;
+}
+
 export async function uploadFile(
   folder: string,
   buffer: Buffer,
   contentType: string,
   originalName: string
-): Promise<string> {
+): Promise<UploadResult> {
   const ext = originalName.split(".").pop() || "bin";
   const key = `${folder}/${crypto.randomUUID()}.${ext}`;
 
   if (!env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY) {
     console.warn(`[R2 STUB] Would upload: ${key}`);
-    return `https://r2-stub.fadalustre.com/${key}`;
+    return { url: `https://r2-stub.fadalustre.com/${key}`, key };
   }
 
   await s3.send(
@@ -34,8 +39,9 @@ export async function uploadFile(
     })
   );
 
-  if (env.R2_PUBLIC_URL) {
-    return `${env.R2_PUBLIC_URL}/${env.R2_BUCKET_NAME}/${key}`;
-  }
-  return `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${env.R2_BUCKET_NAME}/${key}`;
+  const url = env.R2_PUBLIC_URL
+    ? `${env.R2_PUBLIC_URL}/${env.R2_BUCKET_NAME}/${key}`
+    : `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${env.R2_BUCKET_NAME}/${key}`;
+
+  return { url, key };
 }
