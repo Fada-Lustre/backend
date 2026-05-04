@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Route, Tags, Security, Request, Query, Path, Response } from "tsoa";
+import { Controller, Get, Post, Route, Tags, Security, Request, Query, Path, Response, SuccessResponse } from "tsoa";
 import { Request as ExpressRequest } from "express";
 import * as adminTransactionService from "../services/admin-transaction.service";
 import { clampPagination } from "../lib/validation";
@@ -22,10 +22,37 @@ export class AdminTransactionController extends Controller {
     @Query() limit: number = 10,
     @Query() period?: string,
     @Query() type?: string,
-    @Query() search?: string
+    @Query() search?: string,
+    @Query() location?: string,
+    @Query() service?: string
   ): Promise<AdminListResponse<Record<string, unknown>>> {
     const { page: p, limit: l } = clampPagination(page, limit);
-    return adminTransactionService.listTransactions(p, l, { period, type, search });
+    return adminTransactionService.listTransactions(p, l, { period, type, search, location, service });
+  }
+
+  /**
+   * Export transactions as a CSV file. Accepts the same filters as the list endpoint.
+   * @summary Export transactions CSV
+   */
+  @Get("export")
+  @SuccessResponse(200, "CSV file")
+  public async exportTransactionsCsv(
+    @Request() req: ExpressRequest,
+    @Query() period?: string,
+    @Query() type?: string,
+    @Query() search?: string,
+    @Query() location?: string,
+    @Query() service?: string
+  ): Promise<void> {
+    const { data } = await adminTransactionService.listTransactions(1, 10000, {
+      period, type, search, location, service,
+    });
+    const csv = adminTransactionService.buildTransactionCsv(data);
+
+    const res = (req as any).res as import("express").Response;
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment; filename=transactions.csv");
+    res.status(200).send(csv);
   }
 
   /**

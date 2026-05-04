@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Route, Tags, Security, Request, Query, Path, Body, Response, SuccessResponse } from "tsoa";
+import { Controller, Get, Post, Patch, Route, Tags, Security, Request, Query, Path, Body, Response, SuccessResponse } from "tsoa";
 import { Request as ExpressRequest } from "express";
 import * as adminUserService from "../services/admin-user.service";
 import { clampPagination } from "../lib/validation";
-import type { AdminUserListResponse, InviteAdminRequest, InviteAdminResponse } from "../types/admin-user";
+import type { AdminUserListResponse, InviteAdminRequest, InviteAdminResponse, EditAdminUserRequest } from "../types/admin-user";
 import type { ErrorResponse, IdStatusResponse } from "../types/common";
 
 @Route("v1/admin/users")
@@ -48,6 +48,20 @@ export class AdminUserController extends Controller {
   }
 
   /**
+   * Update an admin user's details (name, phone, role).
+   * @summary Edit admin user
+   */
+  @Patch("{id}")
+  @Response<ErrorResponse>(404, "Not found")
+  public async editAdminUser(
+    @Request() req: ExpressRequest,
+    @Path() id: string,
+    @Body() body: EditAdminUserRequest
+  ): Promise<IdStatusResponse> {
+    return adminUserService.editAdminUser(req.user!.id, id, body);
+  }
+
+  /**
    * Block an admin user, revoking their dashboard access.
    * Cannot block your own account.
    * @summary Block admin user
@@ -59,5 +73,18 @@ export class AdminUserController extends Controller {
     @Path() id: string
   ): Promise<IdStatusResponse> {
     return adminUserService.blockAdminUser(req.user!.id, id);
+  }
+
+  /**
+   * Restore a blocked admin user, re-enabling their dashboard access.
+   * @summary Unblock admin user
+   */
+  @Post("{id}/unblock")
+  @Response<ErrorResponse>(404, "Not found")
+  public async unblockAdminUser(
+    @Request() req: ExpressRequest,
+    @Path() id: string
+  ): Promise<IdStatusResponse> {
+    return adminUserService.unblockAdminUser(req.user!.id, id);
   }
 }

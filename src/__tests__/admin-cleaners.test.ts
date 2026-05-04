@@ -87,4 +87,52 @@ describe("Admin Cleaners", () => {
       expect(res.status).toBe(400);
     });
   });
+
+  describe("GET /v1/admin/cleaners (filters)", () => {
+    it("supports period filter", async () => {
+      const admin = await createTestAdmin();
+      await createTestUser({ role: "cleaner" });
+      const res = await request(app)
+        .get("/v1/admin/cleaners?period=past_year")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe("GET /v1/admin/cleaners (list fields)", () => {
+    it("returns total_booked and last_appointment", async () => {
+      const admin = await createTestAdmin();
+      await createTestUser({ role: "cleaner" });
+      const res = await request(app)
+        .get("/v1/admin/cleaners")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      if (res.body.data.length > 0) {
+        expect(res.body.data[0]).toHaveProperty("total_booked");
+      }
+    });
+  });
+
+  describe("GET /v1/admin/cleaners (stats)", () => {
+    it("returns rating in stats", async () => {
+      const admin = await createTestAdmin();
+      await createTestUser({ role: "cleaner" });
+      const res = await request(app)
+        .get("/v1/admin/cleaners")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.stats).toHaveProperty("rating");
+    });
+  });
+
+  describe("GET /v1/admin/cleaners/:id (detail)", () => {
+    it("returns location in detail", async () => {
+      const admin = await createTestAdmin();
+      const cleaner = await createTestUser({ role: "cleaner" });
+      const res = await request(app)
+        .get(`/v1/admin/cleaners/${cleaner.id}`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+  });
 });

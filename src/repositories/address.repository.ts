@@ -44,6 +44,16 @@ export async function listByUser(userId: string): Promise<AddressResponse[]> {
   ) as AddressResponse[];
 }
 
+export async function findById(
+  id: string
+): Promise<AddressResponse | null> {
+  const rows = await db.query(
+    `SELECT ${COLUMNS} FROM addresses WHERE id = $1 AND deleted_at IS NULL`,
+    [id]
+  ) as AddressResponse[];
+  return rows[0] ?? null;
+}
+
 // ── Mutations ──────────────────────────────────────────────────────────
 
 export async function create(

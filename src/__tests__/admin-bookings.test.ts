@@ -139,4 +139,63 @@ describe("Admin Bookings", () => {
       expect(res.body).toHaveProperty("status");
     });
   });
+
+  describe("GET /v1/admin/bookings/:id (location)", () => {
+    it("returns location from address", async () => {
+      const admin = await createTestAdmin();
+      const { bookingId } = await createBookingData();
+      const res = await request(app)
+        .get(`/v1/admin/bookings/${bookingId}`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.location).toBeTruthy();
+    });
+  });
+
+  describe("GET /v1/admin/bookings (filters)", () => {
+    it("supports location filter", async () => {
+      const admin = await createTestAdmin();
+      await createBookingData();
+      const res = await request(app)
+        .get("/v1/admin/bookings?location=Test")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.data.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe("GET /v1/admin/bookings (list fields)", () => {
+    it("returns created_at in booking list items", async () => {
+      const admin = await createTestAdmin();
+      await createBookingData();
+      const res = await request(app)
+        .get("/v1/admin/bookings")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      if (res.body.data.length > 0) {
+        expect(res.body.data[0]).toHaveProperty("created_at");
+      }
+    });
+  });
+
+  describe("GET /v1/admin/bookings/:id/images/download", () => {
+    it("returns image download URLs", async () => {
+      const admin = await createTestAdmin();
+      const { bookingId } = await createBookingData();
+      const res = await request(app)
+        .get(`/v1/admin/bookings/${bookingId}/images/download`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty("images");
+      expect(res.body.images).toBeInstanceOf(Array);
+    });
+
+    it("returns 404 for unknown booking", async () => {
+      const admin = await createTestAdmin();
+      const res = await request(app)
+        .get("/v1/admin/bookings/00000000-0000-0000-0000-000000000000/images/download")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(404);
+    });
+  });
 });

@@ -46,6 +46,19 @@ export class AdminBookingController extends Controller {
   }
 
   /**
+   * Get presigned download URLs for all images attached to a booking.
+   * @summary Get booking image download URLs
+   */
+  @Get("{id}/images/download")
+  @Response<ErrorResponse>(404, "Not found")
+  public async downloadBookingImages(
+    @Request() _req: ExpressRequest,
+    @Path() id: string
+  ): Promise<{ images: { filename: string; url: string }[] }> {
+    return adminBookingService.getImageDownloadUrls(id);
+  }
+
+  /**
    * Retrieve full booking details including customer/cleaner info,
    * property details, payment status, and uploaded images.
    * @summary Get booking details

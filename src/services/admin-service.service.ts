@@ -3,8 +3,8 @@ import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import { signUrl } from "../lib/r2";
 
-export async function listServices() {
-  const result = await contentRepo.listServicesAdmin();
+export async function listServices(filters?: { status?: string; period?: string; location?: string; search?: string }) {
+  const result = await contentRepo.listServicesAdmin(filters);
   result.data = await Promise.all(
     result.data.map(async (s) => {
       if (s.image_url) s.image_url = await signUrl(s.image_url as string);
@@ -64,4 +64,14 @@ export async function archiveService(
   if (!result) throw new ApplicationError(404, "Service not found or already archived", "NOT_FOUND");
   await logActivity(actorId, `Archived service - ${result.title}`, "service", serviceId);
   return { id: serviceId, status: "archived" };
+}
+
+export async function unarchiveService(
+  actorId: string,
+  serviceId: string
+): Promise<{ id: string; status: string }> {
+  const result = await contentRepo.unarchiveService(serviceId);
+  if (!result) throw new ApplicationError(404, "Service not found or not archived", "NOT_FOUND");
+  await logActivity(actorId, `Unarchived service - ${result.title}`, "service", serviceId);
+  return { id: serviceId, status: "active" };
 }

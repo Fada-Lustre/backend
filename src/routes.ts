@@ -1171,6 +1171,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdminVerifyOtpResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "verified": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdminVerifyOtpRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "email": {"dataType":"string","required":true},
+            "code": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AdminResetPasswordResponse": {
         "dataType": "refObject",
         "properties": {
@@ -1279,6 +1296,17 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"string","required":true},
             "status": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EditAdminUserRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "first_name": {"dataType":"string"},
+            "last_name": {"dataType":"string"},
+            "phone": {"dataType":"string"},
+            "role_id": {"dataType":"string"},
         },
         "additionalProperties": true,
     },
@@ -1459,6 +1487,7 @@ const models: TsoaRoute.Models = {
             "first_name": {"dataType":"string"},
             "last_name": {"dataType":"string"},
             "phone": {"dataType":"string"},
+            "email": {"dataType":"string"},
         },
         "additionalProperties": true,
     },
@@ -1474,11 +1503,11 @@ const models: TsoaRoute.Models = {
             "balance": {"dataType":"double","required":true},
             "pending": {"dataType":"double","required":true},
             "total_bookings": {"dataType":"double","required":true},
-            "top_clients": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
-            "top_cleaners": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
+            "top_clients": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"profile_image_url":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
+            "top_cleaners": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"profile_image_url":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
             "upcoming_bookings": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"total":{"dataType":"double","required":true},"pending":{"dataType":"double","required":true},"started":{"dataType":"double","required":true},"service":{"dataType":"string","required":true}}},"required":true},
             "service_counts": {"ref":"Record_string.number_","required":true},
-            "recent_transactions": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"status":{"dataType":"string","required":true},"time":{"dataType":"string","required":true},"date":{"dataType":"string","required":true},"amount":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"ref":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
+            "recent_transactions": {"dataType":"nestedObjectLiteral","nestedProperties":{"meta":{"dataType":"nestedObjectLiteral","nestedProperties":{"limit":{"dataType":"double","required":true},"page":{"dataType":"double","required":true},"total":{"dataType":"double","required":true}},"required":true},"data":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"status":{"dataType":"string","required":true},"time":{"dataType":"string","required":true},"date":{"dataType":"string","required":true},"amount":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"ref":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true}},"required":true},
         },
         "additionalProperties": true,
     },
@@ -1504,6 +1533,7 @@ const models: TsoaRoute.Models = {
             "joined": {"dataType":"string","required":true},
             "bookings_count": {"dataType":"double","required":true},
             "last_booked": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "location": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "reviews": {"dataType":"array","array":{"dataType":"refObject","ref":"ReviewSnippet"},"required":true},
         },
         "additionalProperties": true,
@@ -1530,6 +1560,7 @@ const models: TsoaRoute.Models = {
             "cleaning_address": {"dataType":"string","required":true},
             "additional_info": {"dataType":"string"},
             "use_same_cleaner": {"dataType":"boolean"},
+            "total_price": {"dataType":"double"},
         },
         "additionalProperties": true,
     },
@@ -1589,6 +1620,7 @@ const models: TsoaRoute.Models = {
             "phone": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "rating": {"dataType":"double","required":true},
             "joined": {"dataType":"string","required":true},
+            "location": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "reviews": {"dataType":"array","array":{"dataType":"refObject","ref":"ReviewSnippet"},"required":true},
         },
         "additionalProperties": true,
@@ -1627,6 +1659,7 @@ const models: TsoaRoute.Models = {
             "status": {"dataType":"string","required":true},
             "total_price": {"dataType":"double","required":true},
             "cleaner_name": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "created_at": {"dataType":"string","required":true},
         },
         "additionalProperties": true,
     },
@@ -1671,7 +1704,7 @@ const models: TsoaRoute.Models = {
             "rooms": {"dataType":"double","required":true},
             "bathrooms": {"dataType":"double","required":true},
             "customer": {"dataType":"union","subSchemas":[{"ref":"PersonDetail"},{"dataType":"enum","enums":[null]}],"required":true},
-            "cleaner": {"dataType":"union","subSchemas":[{"ref":"PersonSummary"},{"dataType":"enum","enums":[null]}],"required":true},
+            "cleaner": {"dataType":"union","subSchemas":[{"ref":"PersonDetail"},{"dataType":"enum","enums":[null]}],"required":true},
             "images": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"uploaded_at":{"dataType":"string","required":true},"url":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
         },
         "additionalProperties": true,
@@ -3930,6 +3963,36 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAuthController_verifyAdminOtp: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"AdminVerifyOtpRequest"},
+        };
+        app.post('/v1/auth/admin/verify-otp',
+            ...(fetchMiddlewares<RequestHandler>(AuthController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.verifyAdminOtp)),
+
+            async function AuthController_verifyAdminOtp(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAuthController_verifyAdminOtp, request, response });
+
+                const controller = new AuthController();
+
+              await templateService.apiHandler({
+                methodName: 'verifyAdminOtp',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAuthController_adminResetPassword: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"AdminResetPasswordRequest"},
         };
@@ -4119,6 +4182,39 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminUserController_editAdminUser: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                body: {"in":"body","name":"body","required":true,"ref":"EditAdminUserRequest"},
+        };
+        app.patch('/v1/admin/users/:id',
+            authenticateMiddleware([{"jwt":["admin:all_users"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminUserController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminUserController.prototype.editAdminUser)),
+
+            async function AdminUserController_editAdminUser(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminUserController_editAdminUser, request, response });
+
+                const controller = new AdminUserController();
+
+              await templateService.apiHandler({
+                methodName: 'editAdminUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminUserController_blockAdminUser: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
@@ -4151,6 +4247,38 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminUserController_unblockAdminUser: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.post('/v1/admin/users/:id/unblock',
+            authenticateMiddleware([{"jwt":["admin:all_users"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminUserController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminUserController.prototype.unblockAdminUser)),
+
+            async function AdminUserController_unblockAdminUser(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminUserController_unblockAdminUser, request, response });
+
+                const controller = new AdminUserController();
+
+              await templateService.apiHandler({
+                methodName: 'unblockAdminUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminTransactionController_listTransactions: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
@@ -4158,6 +4286,8 @@ export function RegisterRoutes(app: Router) {
                 period: {"in":"query","name":"period","dataType":"string"},
                 type: {"in":"query","name":"type","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
+                location: {"in":"query","name":"location","dataType":"string"},
+                service: {"in":"query","name":"service","dataType":"string"},
         };
         app.get('/v1/admin/transactions',
             authenticateMiddleware([{"jwt":["admin:transactions"]}]),
@@ -4181,6 +4311,42 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminTransactionController_exportTransactionsCsv: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                period: {"in":"query","name":"period","dataType":"string"},
+                type: {"in":"query","name":"type","dataType":"string"},
+                search: {"in":"query","name":"search","dataType":"string"},
+                location: {"in":"query","name":"location","dataType":"string"},
+                service: {"in":"query","name":"service","dataType":"string"},
+        };
+        app.get('/v1/admin/transactions/export',
+            authenticateMiddleware([{"jwt":["admin:transactions"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminTransactionController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminTransactionController.prototype.exportTransactionsCsv)),
+
+            async function AdminTransactionController_exportTransactionsCsv(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminTransactionController_exportTransactionsCsv, request, response });
+
+                const controller = new AdminTransactionController();
+
+              await templateService.apiHandler({
+                methodName: 'exportTransactionsCsv',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
@@ -4386,6 +4552,10 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminServiceController_listAdminServices: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                status: {"in":"query","name":"status","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"string"},
+                location: {"in":"query","name":"location","dataType":"string"},
+                search: {"in":"query","name":"search","dataType":"string"},
         };
         app.get('/v1/admin/services',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
@@ -4468,6 +4638,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'archiveService',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminServiceController_unarchiveService: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.patch('/v1/admin/services/:id/unarchive',
+            authenticateMiddleware([{"jwt":["admin:services"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminServiceController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminServiceController.prototype.unarchiveService)),
+
+            async function AdminServiceController_unarchiveService(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminServiceController_unarchiveService, request, response });
+
+                const controller = new AdminServiceController();
+
+              await templateService.apiHandler({
+                methodName: 'unarchiveService',
                 controller,
                 response,
                 next,
@@ -4673,6 +4875,12 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminDashboardController_getDashboard: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                period: {"in":"query","name":"period","dataType":"string"},
+                week_start: {"in":"query","name":"week_start","dataType":"string"},
+                week_end: {"in":"query","name":"week_end","dataType":"string"},
+                tx_page: {"in":"query","name":"tx_page","dataType":"double"},
+                tx_limit: {"in":"query","name":"tx_limit","dataType":"double"},
+                tx_type: {"in":"query","name":"tx_type","dataType":"string"},
         };
         app.get('/v1/admin/dashboard',
             authenticateMiddleware([{"jwt":["admin:home"]}]),
@@ -4710,6 +4918,7 @@ export function RegisterRoutes(app: Router) {
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"string"},
         };
         app.get('/v1/admin/customers',
             authenticateMiddleware([{"jwt":["admin:customers"]}]),
@@ -4838,6 +5047,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminCostGuideController_listAdminCostGuides: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                status: {"in":"query","name":"status","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"string"},
+                search: {"in":"query","name":"search","dataType":"string"},
         };
         app.get('/v1/admin/cost-guides',
             authenticateMiddleware([{"jwt":["admin:services"]}]),
@@ -4996,6 +5208,38 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminCostGuideController_unarchiveCostGuide: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.patch('/v1/admin/cost-guides/:id/unarchive',
+            authenticateMiddleware([{"jwt":["admin:services"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminCostGuideController.prototype.unarchiveCostGuide)),
+
+            async function AdminCostGuideController_unarchiveCostGuide(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminCostGuideController_unarchiveCostGuide, request, response });
+
+                const controller = new AdminCostGuideController();
+
+              await templateService.apiHandler({
+                methodName: 'unarchiveCostGuide',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminCleanerController_listCleaners: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
@@ -5004,6 +5248,7 @@ export function RegisterRoutes(app: Router) {
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"string"},
         };
         app.get('/v1/admin/cleaners',
             authenticateMiddleware([{"jwt":["admin:cleaners"]}]),
@@ -5194,6 +5439,38 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminBookingController_downloadBookingImages: Record<string, TsoaRoute.ParameterSchema> = {
+                _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.get('/v1/admin/bookings/:id/images/download',
+            authenticateMiddleware([{"jwt":["admin:bookings"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminBookingController.prototype.downloadBookingImages)),
+
+            async function AdminBookingController_downloadBookingImages(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminBookingController_downloadBookingImages, request, response });
+
+                const controller = new AdminBookingController();
+
+              await templateService.apiHandler({
+                methodName: 'downloadBookingImages',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
               });
             } catch (err) {
                 return next(err);

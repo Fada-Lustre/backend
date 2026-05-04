@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Route, Tags, Security, Request, Path, Response } from "tsoa";
+import { Controller, Get, Patch, Route, Tags, Security, Request, Path, Query, Response } from "tsoa";
 import { Request as ExpressRequest } from "express";
 import * as adminServiceService from "../services/admin-service.service";
 import type { AdminServiceDetail } from "../types/admin-service";
@@ -13,8 +13,14 @@ export class AdminServiceController extends Controller {
    * @summary List services
    */
   @Get()
-  public async listAdminServices(@Request() _req: ExpressRequest): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
-    return adminServiceService.listServices();
+  public async listAdminServices(
+    @Request() _req: ExpressRequest,
+    @Query() status?: string,
+    @Query() period?: string,
+    @Query() location?: string,
+    @Query() search?: string
+  ): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+    return adminServiceService.listServices({ status, period, location, search });
   }
 
   /**
@@ -42,5 +48,18 @@ export class AdminServiceController extends Controller {
     @Path() id: string
   ): Promise<IdStatusResponse> {
     return adminServiceService.archiveService(req.user!.id, id);
+  }
+
+  /**
+   * Unarchive a service, restoring it to public listings.
+   * @summary Unarchive service
+   */
+  @Patch("{id}/unarchive")
+  @Response<ErrorResponse>(404, "Not found")
+  public async unarchiveService(
+    @Request() req: ExpressRequest,
+    @Path() id: string
+  ): Promise<IdStatusResponse> {
+    return adminServiceService.unarchiveService(req.user!.id, id);
   }
 }

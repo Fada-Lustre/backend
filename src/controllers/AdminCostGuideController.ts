@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Route, Tags, Security, Request, Path, Body, Response, SuccessResponse } from "tsoa";
+import { Controller, Get, Post, Patch, Route, Tags, Security, Request, Path, Body, Query, Response, SuccessResponse } from "tsoa";
 import { Request as ExpressRequest } from "express";
 import * as adminCostGuideService from "../services/admin-cost-guide.service";
 import type { CreateCostGuideRequest, UpdateCostGuideRequest, AdminCostGuideDetail } from "../types/admin-cost-guide";
@@ -13,8 +13,13 @@ export class AdminCostGuideController extends Controller {
    * @summary List cost guides
    */
   @Get()
-  public async listAdminCostGuides(@Request() _req: ExpressRequest): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
-    return adminCostGuideService.listCostGuides();
+  public async listAdminCostGuides(
+    @Request() _req: ExpressRequest,
+    @Query() status?: string,
+    @Query() period?: string,
+    @Query() search?: string
+  ): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+    return adminCostGuideService.listCostGuides({ status, period, search });
   }
 
   /**
@@ -69,5 +74,18 @@ export class AdminCostGuideController extends Controller {
     @Path() id: string
   ): Promise<IdStatusResponse> {
     return adminCostGuideService.archiveCostGuide(req.user!.id, id);
+  }
+
+  /**
+   * Unarchive a cost guide, restoring it to public listings.
+   * @summary Unarchive cost guide
+   */
+  @Patch("{id}/unarchive")
+  @Response<ErrorResponse>(404, "Not found")
+  public async unarchiveCostGuide(
+    @Request() req: ExpressRequest,
+    @Path() id: string
+  ): Promise<IdStatusResponse> {
+    return adminCostGuideService.unarchiveCostGuide(req.user!.id, id);
   }
 }

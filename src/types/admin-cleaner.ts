@@ -17,6 +17,7 @@ export interface AdminCleanerDetail {
   phone: string | null;
   rating: number;
   joined: string;
+  location: string | null;
   reviews: ReviewSnippet[];
 }
 

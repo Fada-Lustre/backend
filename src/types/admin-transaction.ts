@@ -5,6 +5,8 @@ export interface AdminTransactionListItem {
   amount: number;
   status: string;
   created_at: string;
+  date?: string;
+  time?: string;
   name: string | null;
 }
 

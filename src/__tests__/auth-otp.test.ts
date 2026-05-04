@@ -41,4 +41,13 @@ describe("Auth OTP endpoints", () => {
       expect(res.status).toBe(400);
     });
   });
+
+  describe("POST /v1/auth/admin/verify-otp", () => {
+    it("returns 400 for invalid OTP", async () => {
+      const res = await request(app)
+        .post("/v1/auth/admin/verify-otp")
+        .send({ email: "admin@test.com", code: "000000", purpose: "password_reset" });
+      expect([400, 404]).toContain(res.status);
+    });
+  });
 });

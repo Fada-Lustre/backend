@@ -90,4 +90,68 @@ describe("Admin Services", () => {
       expect(res.body.status).toBe("archived");
     });
   });
+
+  describe("GET /v1/admin/services (filters)", () => {
+    it("supports status filter", async () => {
+      const admin = await createTestAdmin();
+      const res = await request(app)
+        .get("/v1/admin/services?status=active")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+
+    it("supports search filter", async () => {
+      const admin = await createTestAdmin();
+      await request(app)
+        .post("/v1/admin/services")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .field("name", "SearchableService")
+        .field("description", "Test");
+      const res = await request(app)
+        .get("/v1/admin/services?search=Searchable")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.data.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("supports period filter", async () => {
+      const admin = await createTestAdmin();
+      const res = await request(app)
+        .get("/v1/admin/services?period=past_year")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe("PATCH /v1/admin/services/:id/unarchive", () => {
+    it("unarchives a service", async () => {
+      const admin = await createTestAdmin();
+      const createRes = await request(app)
+        .post("/v1/admin/services")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .field("name", "Unarchive Me")
+        .field("description", "Will be unarchived");
+      await request(app)
+        .patch(`/v1/admin/services/${createRes.body.id}/archive`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      const res = await request(app)
+        .patch(`/v1/admin/services/${createRes.body.id}/unarchive`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("active");
+    });
+
+    it("returns 404 for non-archived service", async () => {
+      const admin = await createTestAdmin();
+      const createRes = await request(app)
+        .post("/v1/admin/services")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .field("name", "Already Active")
+        .field("description", "Test");
+      const res = await request(app)
+        .patch(`/v1/admin/services/${createRes.body.id}/unarchive`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(404);
+    });
+  });
 });

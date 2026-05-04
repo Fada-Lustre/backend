@@ -30,3 +30,10 @@ export interface InviteAdminResponse {
 }
 
 export type BlockAdminResponse = IdStatusResponse;
+
+export interface EditAdminUserRequest {
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  role_id?: string;
+}

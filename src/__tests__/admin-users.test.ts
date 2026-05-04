@@ -105,4 +105,51 @@ describe("Admin Users", () => {
       expect(res.status).toBe(400);
     });
   });
+
+  describe("PATCH /v1/admin/users/:id (edit)", () => {
+    it("edits an admin user", async () => {
+      const admin = await createTestAdmin();
+      const target = await createTestAdmin({ email: `edit-target-${Date.now()}@example.com` });
+      const res = await request(app)
+        .patch(`/v1/admin/users/${target.id}`)
+        .set("Authorization", `Bearer ${admin.token}`)
+        .send({ first_name: "Updated", phone: "07999999999" });
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("updated");
+    });
+
+    it("returns 404 for non-admin user", async () => {
+      const admin = await createTestAdmin();
+      const customer = await createTestUser();
+      const res = await request(app)
+        .patch(`/v1/admin/users/${customer.id}`)
+        .set("Authorization", `Bearer ${admin.token}`)
+        .send({ first_name: "NoUpdate" });
+      expect(res.status).toBe(404);
+    });
+  });
+
+  describe("POST /v1/admin/users/:id/unblock", () => {
+    it("unblocks a blocked admin", async () => {
+      const admin = await createTestAdmin();
+      const target = await createTestAdmin({ email: `unblock-${Date.now()}@example.com` });
+      await request(app)
+        .post(`/v1/admin/users/${target.id}/block`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      const res = await request(app)
+        .post(`/v1/admin/users/${target.id}/unblock`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("active");
+    });
+
+    it("returns 400 if user is not blocked", async () => {
+      const admin = await createTestAdmin();
+      const target = await createTestAdmin({ email: `active-${Date.now()}@example.com` });
+      const res = await request(app)
+        .post(`/v1/admin/users/${target.id}/unblock`)
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(400);
+    });
+  });
 });

@@ -3,8 +3,8 @@ import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import type { ContentBlock } from "../types/admin-cost-guide";
 
-export async function listCostGuides() {
-  return contentRepo.listCostGuidesAdmin();
+export async function listCostGuides(filters?: { status?: string; period?: string; search?: string }) {
+  return contentRepo.listCostGuidesAdmin(filters);
 }
 
 export async function getCostGuide(guideId: string): Promise<Record<string, unknown>> {
@@ -53,4 +53,14 @@ export async function archiveCostGuide(
   if (!result) throw new ApplicationError(404, "Cost guide not found or already archived", "NOT_FOUND");
   await logActivity(actorId, `Archived cost guide - ${result.title}`, "cost_guide", guideId);
   return { id: guideId, status: "archived" };
+}
+
+export async function unarchiveCostGuide(
+  actorId: string,
+  guideId: string
+): Promise<{ id: string; status: string }> {
+  const result = await contentRepo.unarchiveCostGuide(guideId);
+  if (!result) throw new ApplicationError(404, "Cost guide not found or not archived", "NOT_FOUND");
+  await logActivity(actorId, `Unarchived cost guide - ${result.title}`, "cost_guide", guideId);
+  return { id: guideId, status: "active" };
 }

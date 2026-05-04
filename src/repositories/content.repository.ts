@@ -116,16 +116,58 @@ export async function listLocations(): Promise<LocationRow[]> {
 
 // ── Admin Services CRUD ────────────────────────────────────────────────
 
-export async function listServicesAdmin(): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+export async function listServicesAdmin(
+  filters?: { status?: string; period?: string; location?: string; search?: string }
+): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+  const conditions: string[] = [];
+  const params: (string | number)[] = [];
+
+  if (filters?.status) {
+    params.push(filters.status);
+    conditions.push(`s.status = $${params.length}`);
+  }
+  if (filters?.search) {
+    params.push(`%${filters.search}%`);
+    conditions.push(`s.title ILIKE $${params.length}`);
+  }
+  if (filters?.period) {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[filters.period];
+    if (interval !== undefined) {
+      conditions.push(
+        filters.period === "today"
+          ? `s.created_at::date = CURRENT_DATE`
+          : `s.created_at >= NOW() - INTERVAL '${interval}'`
+      );
+    }
+  }
+  if (filters?.location) {
+    params.push(`%${filters.location}%`);
+    conditions.push(
+      `EXISTS (SELECT 1 FROM bookings b JOIN addresses a ON a.id = b.address_id WHERE b.service_type = s.title AND a.street ILIKE $${params.length})`
+    );
+  }
+
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
   const rows = await db.query(
-    `SELECT id, title AS name, image_url, status, created_at AS date_added FROM services ORDER BY display_order, created_at`
+    `SELECT s.id, s.title AS name, s.image_url, s.status, s.created_at AS date_added,
+            (SELECT COALESCE(AVG(r.rating), 0)::float FROM reviews r JOIN bookings b ON b.id = r.booking_id WHERE b.service_type = s.title) AS rating,
+            RANK() OVER (ORDER BY (SELECT COUNT(*) FROM bookings b WHERE b.service_type = s.title) DESC) AS popularity_rank
+     FROM services s ${where}
+     ORDER BY s.display_order, s.created_at`,
+    params
   ) as Record<string, unknown>[];
 
   const stats = await db.query(
     `SELECT COUNT(*)::int AS total,
-            COUNT(*) FILTER (WHERE status = 'active')::int AS active,
-            COUNT(*) FILTER (WHERE status = 'archived')::int AS archived
-     FROM services`
+            COUNT(*) FILTER (WHERE s.status = 'active')::int AS active,
+            COUNT(*) FILTER (WHERE s.status = 'archived')::int AS archived
+     FROM services s ${where}`,
+    params
   ) as { total: number; active: number; archived: number }[];
 
   return { data: rows, stats: stats[0]! };
@@ -194,18 +236,59 @@ export async function archiveService(id: string): Promise<{ id: string; title: s
   return rows[0] ?? null;
 }
 
+export async function unarchiveService(id: string): Promise<{ id: string; title: string } | null> {
+  const rows = await db.query(
+    `UPDATE services SET status = 'active' WHERE id = $1 AND status = 'archived' RETURNING id, title`,
+    [id]
+  ) as { id: string; title: string }[];
+  return rows[0] ?? null;
+}
+
 // ── Admin Cost Guides CRUD ─────────────────────────────────────────────
 
-export async function listCostGuidesAdmin(): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+export async function listCostGuidesAdmin(
+  filters?: { status?: string; period?: string; search?: string }
+): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {
+  const conditions: string[] = ["deleted_at IS NULL"];
+  const params: (string | number)[] = [];
+
+  if (filters?.status) {
+    params.push(filters.status);
+    conditions.push(`status = $${params.length}`);
+  }
+  if (filters?.search) {
+    params.push(`%${filters.search}%`);
+    conditions.push(`title ILIKE $${params.length}`);
+  }
+  if (filters?.period) {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[filters.period];
+    if (interval !== undefined) {
+      conditions.push(
+        filters.period === "today"
+          ? `created_at::date = CURRENT_DATE`
+          : `created_at >= NOW() - INTERVAL '${interval}'`
+      );
+    }
+  }
+
+  const where = conditions.join(" AND ");
+
   const rows = await db.query(
-    `SELECT id, title, status, created_at AS date_added FROM cost_guides WHERE deleted_at IS NULL ORDER BY created_at DESC`
+    `SELECT id, title, status, created_at AS date_added, updated_at AS last_edit
+     FROM cost_guides WHERE ${where} ORDER BY created_at DESC`,
+    params
   ) as Record<string, unknown>[];
 
   const stats = await db.query(
     `SELECT COUNT(*)::int AS total,
             COUNT(*) FILTER (WHERE status = 'active')::int AS active,
             COUNT(*) FILTER (WHERE status = 'archived')::int AS archived
-     FROM cost_guides WHERE deleted_at IS NULL`
+     FROM cost_guides WHERE ${where}`,
+    params
   ) as { total: number; active: number; archived: number }[];
 
   return { data: rows, stats: stats[0]! };
@@ -259,6 +342,14 @@ export async function updateCostGuide(
 export async function archiveCostGuide(id: string): Promise<{ id: string; title: string } | null> {
   const rows = await db.query(
     `UPDATE cost_guides SET status = 'archived' WHERE id = $1 AND status = 'active' AND deleted_at IS NULL RETURNING id, title`,
+    [id]
+  ) as { id: string; title: string }[];
+  return rows[0] ?? null;
+}
+
+export async function unarchiveCostGuide(id: string): Promise<{ id: string; title: string } | null> {
+  const rows = await db.query(
+    `UPDATE cost_guides SET status = 'active' WHERE id = $1 AND status = 'archived' AND deleted_at IS NULL RETURNING id, title`,
     [id]
   ) as { id: string; title: string }[];
   return rows[0] ?? null;

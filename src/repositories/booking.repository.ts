@@ -387,9 +387,9 @@ export async function findAdminDetail(
             b.time_end, b.additional_info, b.use_same_cleaner, b.booking_fee, b.charges,
             b.discount, b.total_price, b.tip_amount, b.payment_method, b.payment_status,
             b.status, b.created_at, b.assigned_at, b.started_at, b.completed_at,
-            b.cancelled_at, b.rebooked_from_id, b.transaction_ref,
+            b.cancelled_at, b.rebooked_from_id, b.transaction_ref, b.address_id,
             json_build_object('id', cu.id, 'name', CONCAT(cu.first_name, ' ', COALESCE(cu.last_name, '')), 'email', cu.email, 'phone', cu.phone) AS customer,
-            CASE WHEN cl.id IS NOT NULL THEN json_build_object('id', cl.id, 'name', CONCAT(cl.first_name, ' ', COALESCE(cl.last_name, ''))) ELSE NULL END AS cleaner
+            CASE WHEN cl.id IS NOT NULL THEN json_build_object('id', cl.id, 'name', CONCAT(cl.first_name, ' ', COALESCE(cl.last_name, '')), 'phone', cl.phone, 'email', cl.email) ELSE NULL END AS cleaner
      FROM bookings b
      JOIN users cu ON cu.id = b.customer_id
      LEFT JOIN users cl ON cl.id = b.cleaner_id
@@ -401,22 +401,50 @@ export async function findAdminDetail(
 
 // ── Dashboard / stats ──────────────────────────────────────────────────
 
-export async function countTotal(): Promise<number> {
+export async function countTotal(period?: string): Promise<number> {
+  let dateFilter = "";
+  if (period && period !== "all_time") {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[period];
+    if (interval !== undefined) {
+      dateFilter = period === "today"
+        ? ` WHERE created_at::date = CURRENT_DATE`
+        : ` WHERE created_at >= NOW() - INTERVAL '${interval}'`;
+    }
+  }
+
   const rows = await db.query(
-    `SELECT COUNT(*)::int AS total FROM bookings`
+    `SELECT COUNT(*)::int AS total FROM bookings${dateFilter}`
   ) as { total: number }[];
   return rows[0]!.total;
 }
 
-export async function upcomingByService(): Promise<{ service: string; started: number; pending: number; total: number }[]> {
+export async function upcomingByService(weekStart?: string, weekEnd?: string): Promise<{ service: string; started: number; pending: number; total: number }[]> {
+  const params: string[] = [];
+  let dateCondition: string;
+
+  if (weekStart && weekEnd) {
+    params.push(weekStart, weekEnd);
+    dateCondition = `scheduled_date BETWEEN $1 AND $2`;
+  } else if (weekStart) {
+    params.push(weekStart);
+    dateCondition = `scheduled_date >= $1`;
+  } else {
+    dateCondition = `scheduled_date >= CURRENT_DATE`;
+  }
+
   return await db.query(
     `SELECT service_type AS service,
             COUNT(*) FILTER (WHERE status IN ('ongoing','on_the_way'))::int AS started,
             COUNT(*) FILTER (WHERE status IN ('unassigned','scheduled'))::int AS pending,
             COUNT(*)::int AS total
      FROM bookings
-     WHERE scheduled_date >= CURRENT_DATE AND status NOT IN ('done','cancelled')
-     GROUP BY service_type`
+     WHERE ${dateCondition} AND status NOT IN ('done','cancelled')
+     GROUP BY service_type`,
+    params
   ) as { service: string; started: number; pending: number; total: number }[];
 }
 
@@ -539,10 +567,17 @@ export async function listAdmin(
     idx = state.idx;
   }
 
+  let addressJoin = "";
+  if (filters.location) {
+    addressJoin = `JOIN addresses a ON a.id = b.address_id`;
+    conditions.push(`a.street ILIKE $${idx++}`);
+    params.push(`%${filters.location}%`);
+  }
+
   const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const countRows = await db.query(
-    `SELECT COUNT(*)::int AS total FROM bookings b JOIN users cu ON cu.id = b.customer_id ${where}`, params
+    `SELECT COUNT(*)::int AS total FROM bookings b JOIN users cu ON cu.id = b.customer_id ${addressJoin} ${where}`, params
   ) as { total: number }[];
 
   const statsRows = await db.query(
@@ -551,7 +586,7 @@ export async function listAdmin(
        COUNT(*)::int AS total,
        COUNT(*) FILTER (WHERE b.status IN ('ongoing','on_the_way'))::int AS in_progress,
        COUNT(*) FILTER (WHERE b.status = 'unassigned')::int AS unassigned
-     FROM bookings b JOIN users cu ON cu.id = b.customer_id ${where}`, params
+     FROM bookings b JOIN users cu ON cu.id = b.customer_id ${addressJoin} ${where}`, params
   ) as { income: number; total: number; in_progress: number; unassigned: number }[];
 
   const offset = (page - 1) * limit;
@@ -560,10 +595,12 @@ export async function listAdmin(
             CONCAT(cu.first_name, ' ', COALESCE(cu.last_name, '')) AS customer_name,
             cu.home_street AS customer_location,
             b.service_type, b.scheduled_date, b.time_start, b.time_end, b.status, b.total_price::float,
-            CASE WHEN cl.id IS NOT NULL THEN CONCAT(cl.first_name, ' ', COALESCE(cl.last_name, '')) ELSE NULL END AS cleaner_name
+            CASE WHEN cl.id IS NOT NULL THEN CONCAT(cl.first_name, ' ', COALESCE(cl.last_name, '')) ELSE NULL END AS cleaner_name,
+            b.created_at
      FROM bookings b
      JOIN users cu ON cu.id = b.customer_id
      LEFT JOIN users cl ON cl.id = b.cleaner_id
+     ${addressJoin}
      ${where}
      ORDER BY b.scheduled_date DESC, b.created_at DESC
      LIMIT $${idx++} OFFSET $${idx++}`,

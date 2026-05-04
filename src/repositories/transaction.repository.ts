@@ -82,11 +82,25 @@ export async function updateStatusByBookingId(
 
 // ── Dashboard ──────────────────────────────────────────────────────────
 
-export async function balanceSummary(): Promise<{ balance: number; pending: number }> {
+export async function balanceSummary(period?: string): Promise<{ balance: number; pending: number }> {
+  let dateFilter = "";
+  if (period && period !== "all_time") {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[period];
+    if (interval !== undefined) {
+      dateFilter = period === "today"
+        ? ` AND created_at::date = CURRENT_DATE`
+        : ` AND created_at >= NOW() - INTERVAL '${interval}'`;
+    }
+  }
+
   const rows = await db.query(
     `SELECT COALESCE(SUM(CASE WHEN status = 'successful' THEN amount ELSE 0 END), 0)::float AS balance,
             COALESCE(SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END), 0)::float AS pending
-     FROM transactions WHERE type = 'booking'`
+     FROM transactions WHERE type = 'booking'${dateFilter}`
   ) as { balance: number; pending: number }[];
   return rows[0]!;
 }
@@ -154,7 +168,7 @@ export async function cleanerBalance(cleanerId: string): Promise<number> {
 // ── Admin list / detail ────────────────────────────────────────────────
 
 export async function listAdmin(
-  filters: { period?: string; type?: string; search?: string },
+  filters: { period?: string; type?: string; search?: string; location?: string; service?: string },
   page: number,
   limit: number
 ): Promise<{ data: Record<string, unknown>[]; stats: Record<string, unknown>; total: number }> {
@@ -189,6 +203,16 @@ export async function listAdmin(
     idx = state.idx;
   }
 
+  if (filters.location) {
+    conditions.push(`EXISTS (SELECT 1 FROM bookings b JOIN addresses a ON a.id = b.address_id WHERE b.id = t.booking_id AND a.street ILIKE $${idx++})`);
+    params.push(`%${filters.location}%`);
+  }
+
+  if (filters.service) {
+    conditions.push(`EXISTS (SELECT 1 FROM bookings b WHERE b.id = t.booking_id AND b.service_type = $${idx++})`);
+    params.push(filters.service);
+  }
+
   const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const countRows = await db.query(
@@ -208,6 +232,8 @@ export async function listAdmin(
   const offset = (page - 1) * limit;
   const data = await db.query(
     `SELECT t.id, t.ref_number AS ref, t.type, t.amount::float, t.status, t.created_at,
+            t.created_at::date::text AS date,
+            to_char(t.created_at, 'HH:MI AM') AS time,
             COALESCE(
               CONCAT(COALESCE(pu.first_name,''), ' ', COALESCE(pu.last_name,'')),
               CONCAT(COALESCE(pe.first_name,''), ' ', COALESCE(pe.last_name,''))

@@ -20,6 +20,7 @@ export interface AdminCustomerDetail {
   joined: string;
   bookings_count: number;
   last_booked: string | null;
+  location: string | null;
   reviews: ReviewSnippet[];
 }
 

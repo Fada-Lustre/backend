@@ -82,4 +82,49 @@ describe("Admin Transactions", () => {
       expect(res.body.message).toBe("Receipt sent");
     });
   });
+
+  describe("GET /v1/admin/transactions (new filters)", () => {
+    it("supports location filter", async () => {
+      const admin = await createTestAdmin();
+      await seedTransaction();
+      const res = await request(app)
+        .get("/v1/admin/transactions?location=Test")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+
+    it("supports service filter", async () => {
+      const admin = await createTestAdmin();
+      await seedTransaction();
+      const res = await request(app)
+        .get("/v1/admin/transactions?service=domestic")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+
+    it("returns date and time fields", async () => {
+      const admin = await createTestAdmin();
+      await seedTransaction();
+      const res = await request(app)
+        .get("/v1/admin/transactions")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      if (res.body.data.length > 0) {
+        expect(res.body.data[0]).toHaveProperty("date");
+        expect(res.body.data[0]).toHaveProperty("time");
+      }
+    });
+  });
+
+  describe("GET /v1/admin/transactions/export", () => {
+    it("returns CSV data", async () => {
+      const admin = await createTestAdmin();
+      await seedTransaction();
+      const res = await request(app)
+        .get("/v1/admin/transactions/export")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.headers["content-type"]).toContain("text/csv");
+    });
+  });
 });

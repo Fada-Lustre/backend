@@ -1,4 +1,4 @@
-import type { PersonSummary, PersonDetail } from "./common";
+import type { PersonDetail } from "./common";
 
 export interface AdminBookingListItem {
   id: string;
@@ -11,6 +11,7 @@ export interface AdminBookingListItem {
   status: string;
   total_price: number;
   cleaner_name: string | null;
+  created_at: string;
 }
 
 export interface AdminBookingDetail {
@@ -30,7 +31,7 @@ export interface AdminBookingDetail {
   rooms: number;
   bathrooms: number;
   customer: PersonDetail | null;
-  cleaner: PersonSummary | null;
+  cleaner: PersonDetail | null;
   images: { id: string; url: string; uploaded_at: string }[];
 }
 
@@ -53,6 +54,7 @@ export interface AdminCreateBookingRequest {
   cleaning_address: string;
   additional_info?: string;
   use_same_cleaner?: boolean;
+  total_price?: number;
 }
 
 export interface AdminAssignRequest {

@@ -27,6 +27,18 @@ export async function getBooking(bookingId: string): Promise<AdminBookingDetail>
   );
 
   const detail = raw as Record<string, unknown>;
+
+  let location: string | null = null;
+  const addressId = detail.address_id as string | null;
+  if (addressId) {
+    const address = await addressRepo.findById(addressId);
+    if (address) {
+      location = [address.street, address.floor_number, address.door_number]
+        .filter(Boolean)
+        .join(", ") || null;
+    }
+  }
+
   return {
     id: detail.id as string,
     service_type: detail.service_type as string,
@@ -36,7 +48,7 @@ export async function getBooking(bookingId: string): Promise<AdminBookingDetail>
       time_start: detail.time_start as string,
       time_end: (detail.time_end as string) || null,
     },
-    location: null,
+    location,
     price: parseFloat((detail.total_price as string) ?? "0"),
     payment_method: detail.payment_method as string | null,
     status: detail.status as string,
@@ -48,7 +60,7 @@ export async function getBooking(bookingId: string): Promise<AdminBookingDetail>
     rooms: detail.rooms as number,
     bathrooms: detail.bathrooms as number,
     customer: detail.customer as { id: string; name: string; email: string; phone?: string | null } | null,
-    cleaner: detail.cleaner as { id: string; name: string } | null,
+    cleaner: detail.cleaner as { id: string; name: string; email: string; phone?: string | null } | null,
     images,
   } as AdminBookingDetail;
 }
@@ -83,10 +95,37 @@ export async function createBooking(
     bathrooms: data.bathrooms, add_ons: JSON.stringify(data.add_ons ?? []),
     scheduled_date: data.date, time_start: data.time_start, time_end: data.time_end,
     additional_info: data.additional_info, use_same_cleaner: data.use_same_cleaner,
-    booking_fee: 0, total_price: 0, created_by: actorId, status: 'unassigned',
+    booking_fee: 0, total_price: data.total_price ?? 0, created_by: actorId, status: 'unassigned',
   });
 
   await logActivity(actorId, `Created booking on behalf of customer`, "booking", booking.id);
+
+  return { id: booking.id, price: parseFloat(booking.total_price ?? "0"), status: booking.status };
+}
+
+export async function createBookingForCustomer(
+  actorId: string,
+  customerId: string,
+  data: AdminCreateBookingRequest
+): Promise<{ id: string; price: number; status: string }> {
+  const customer = await userRepo.findByIdAndRole(customerId, 'customer');
+  if (!customer) {
+    throw new ApplicationError(404, "Customer not found", "NOT_FOUND");
+  }
+
+  const addr = await addressRepo.createSimple(customerId, data.cleaning_address, 'booking');
+
+  const booking = await bookingRepo.create({
+    customer_id: customerId, address_id: addr.id, service_type: data.service_type,
+    condition: data.condition, property_type: data.property_type,
+    total_sq_metres: data.total_sq_metres, rooms: data.rooms, floors: data.floors ?? 1,
+    bathrooms: data.bathrooms, add_ons: JSON.stringify(data.add_ons ?? []),
+    scheduled_date: data.date, time_start: data.time_start, time_end: data.time_end,
+    additional_info: data.additional_info, use_same_cleaner: data.use_same_cleaner,
+    booking_fee: 0, total_price: data.total_price ?? 0, created_by: actorId, status: 'unassigned',
+  });
+
+  await logActivity(actorId, `Created booking for customer ${customer.first_name}`, "booking", booking.id);
 
   return { id: booking.id, price: parseFloat(booking.total_price ?? "0"), status: booking.status };
 }
@@ -146,6 +185,26 @@ export async function cancelBooking(
   await logActivity(actorId, `Cancelled booking`, "booking", bookingId);
 
   return { id: result.id, status: result.status, notifications_sent: notified };
+}
+
+export async function getImageDownloadUrls(
+  bookingId: string
+): Promise<{ images: { filename: string; url: string }[] }> {
+  const exists = await bookingRepo.existsById(bookingId);
+  if (!exists) {
+    throw new ApplicationError(404, "Booking not found", "NOT_FOUND");
+  }
+
+  const rawImages = await bookingRepo.listImagesByBooking(bookingId);
+  const images = await Promise.all(
+    rawImages.map(async (img, idx) => {
+      const ext = img.url.split(".").pop() || "jpg";
+      const signed = (await signUrl(img.url)) ?? img.url;
+      return { filename: `image_${idx + 1}.${ext}`, url: signed };
+    })
+  );
+
+  return { images };
 }
 
 export async function sendReceipt(

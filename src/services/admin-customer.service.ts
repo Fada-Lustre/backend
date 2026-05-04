@@ -8,7 +8,7 @@ import { blockUserByRole } from "./user-actions.service";
 export async function listCustomers(
   page: number,
   limit: number,
-  filters: { status?: string; location?: string; service?: string; search?: string }
+  filters: { status?: string; location?: string; service?: string; search?: string; period?: string }
 ): Promise<{ data: Record<string, unknown>[]; stats: Record<string, unknown>; meta: { total: number; page: number; limit: number } }> {
   const result = await userRepo.listCustomersAdmin(filters, page, limit);
   return { data: result.data as unknown as Record<string, unknown>[], stats: result.stats, meta: { total: result.total, page, limit } };

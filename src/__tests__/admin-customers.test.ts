@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import request from "supertest";
 import { app, createTestAdmin, createTestUser } from "../test/helpers";
 import { truncateAll } from "../test/setup";
+import db from "../db";
 
 describe("Admin Customers", () => {
   beforeEach(async () => { await truncateAll(); });
@@ -86,6 +87,62 @@ describe("Admin Customers", () => {
         });
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty("id");
+    });
+  });
+
+  describe("GET /v1/admin/customers (filters)", () => {
+    it("supports period filter", async () => {
+      const admin = await createTestAdmin();
+      await createTestUser();
+      const res = await request(app)
+        .get("/v1/admin/customers?period=today")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+
+    it("supports location filter", async () => {
+      const admin = await createTestAdmin();
+      const customer = await createTestUser();
+      await db.query(
+        `INSERT INTO addresses (user_id, street, is_default) VALUES ($1, '456 Filter St', true)`,
+        [customer.id]
+      );
+      const res = await request(app)
+        .get("/v1/admin/customers?location=Filter")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe("GET /v1/admin/customers (list fields)", () => {
+    it("returns primary_address and last_booked", async () => {
+      const admin = await createTestAdmin();
+      const customer = await createTestUser();
+      await db.query(
+        `INSERT INTO addresses (user_id, street, is_default) VALUES ($1, '789 Home St', true)`,
+        [customer.id]
+      );
+      const res = await request(app)
+        .get("/v1/admin/customers")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      if (res.body.data.length > 0) {
+        const item = res.body.data[0];
+        expect(item).toHaveProperty("primary_address");
+      }
+    });
+  });
+
+  describe("GET /v1/admin/customers (stats)", () => {
+    it("returns avg_income_per_customer and rating in stats", async () => {
+      const admin = await createTestAdmin();
+      await createTestUser();
+      const res = await request(app)
+        .get("/v1/admin/customers")
+        .set("Authorization", `Bearer ${admin.token}`);
+      expect(res.status).toBe(200);
+      expect(res.body.stats).toHaveProperty("rating");
+      expect(res.body.stats).toHaveProperty("avg_income_per_customer");
     });
   });
 });

@@ -96,3 +96,13 @@ export interface AdminResetPasswordRequest {
 export interface AdminResetPasswordResponse {
   message: string;
 }
+
+export interface AdminVerifyOtpRequest {
+  email: string;
+  /** 6-digit numeric code */
+  code: string;
+}
+
+export interface AdminVerifyOtpResponse {
+  verified: boolean;
+}

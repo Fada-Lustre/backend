@@ -1,30 +1,20 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { Resend } from "resend";
 import { env } from "../env";
 
-const ses = new SESClient({
-  region: env.AWS_REGION,
-  credentials:
-    env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY
-      ? { accessKeyId: env.AWS_ACCESS_KEY_ID, secretAccessKey: env.AWS_SECRET_ACCESS_KEY }
-      : undefined,
-});
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 
 export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
-  if (!env.AWS_ACCESS_KEY_ID || !env.AWS_SECRET_ACCESS_KEY) {
+  if (!resend) {
     console.warn(`[EMAIL STUB] To: ${to} | Subject: ${subject}`);
     return;
   }
 
-  await ses.send(
-    new SendEmailCommand({
-      Source: env.SES_FROM_EMAIL,
-      Destination: { ToAddresses: [to] },
-      Message: {
-        Subject: { Data: subject, Charset: "UTF-8" },
-        Body: { Html: { Data: html, Charset: "UTF-8" } },
-      },
-    })
-  );
+  await resend.emails.send({
+    from: env.RESEND_FROM_EMAIL,
+    to,
+    subject,
+    html,
+  });
 }
 
 export function adminInvitationHtml(firstName: string, email: string, tempPassword: string, activateUrl: string): string {

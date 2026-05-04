@@ -2773,6 +2773,35 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"AdminVerifyOtpResponse": {
+				"properties": {
+					"verified": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"verified"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminVerifyOtpRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string",
+						"description": "6-digit numeric code"
+					}
+				},
+				"required": [
+					"email",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"AdminResetPasswordResponse": {
 				"properties": {
 					"message": {
@@ -3025,6 +3054,24 @@
 					"id",
 					"status"
 				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"EditAdminUserRequest": {
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"role_id": {
+						"type": "string"
+					}
+				},
 				"type": "object",
 				"additionalProperties": true
 			},
@@ -3491,6 +3538,9 @@
 					},
 					"phone": {
 						"type": "string"
+					},
+					"email": {
+						"type": "string"
 					}
 				},
 				"type": "object",
@@ -3522,6 +3572,10 @@
 					"top_clients": {
 						"items": {
 							"properties": {
+								"profile_image_url": {
+									"type": "string",
+									"nullable": true
+								},
 								"rating": {
 									"type": "number",
 									"format": "double"
@@ -3534,6 +3588,7 @@
 								}
 							},
 							"required": [
+								"profile_image_url",
 								"rating",
 								"name",
 								"id"
@@ -3545,6 +3600,10 @@
 					"top_cleaners": {
 						"items": {
 							"properties": {
+								"profile_image_url": {
+									"type": "string",
+									"nullable": true
+								},
 								"rating": {
 									"type": "number",
 									"format": "double"
@@ -3557,6 +3616,7 @@
 								}
 							},
 							"required": [
+								"profile_image_url",
 								"rating",
 								"name",
 								"id"
@@ -3598,47 +3658,78 @@
 						"$ref": "#/components/schemas/Record_string.number_"
 					},
 					"recent_transactions": {
-						"items": {
-							"properties": {
-								"status": {
-									"type": "string"
+						"properties": {
+							"meta": {
+								"properties": {
+									"limit": {
+										"type": "number",
+										"format": "double"
+									},
+									"page": {
+										"type": "number",
+										"format": "double"
+									},
+									"total": {
+										"type": "number",
+										"format": "double"
+									}
 								},
-								"time": {
-									"type": "string"
-								},
-								"date": {
-									"type": "string"
-								},
-								"amount": {
-									"type": "number",
-									"format": "double"
-								},
-								"type": {
-									"type": "string"
-								},
-								"name": {
-									"type": "string"
-								},
-								"ref": {
-									"type": "string"
-								},
-								"id": {
-									"type": "string"
-								}
+								"required": [
+									"limit",
+									"page",
+									"total"
+								],
+								"type": "object"
 							},
-							"required": [
-								"status",
-								"time",
-								"date",
-								"amount",
-								"type",
-								"name",
-								"ref",
-								"id"
-							],
-							"type": "object"
+							"data": {
+								"items": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"time": {
+											"type": "string"
+										},
+										"date": {
+											"type": "string"
+										},
+										"amount": {
+											"type": "number",
+											"format": "double"
+										},
+										"type": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"ref": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"time",
+										"date",
+										"amount",
+										"type",
+										"name",
+										"ref",
+										"id"
+									],
+									"type": "object"
+								},
+								"type": "array"
+							}
 						},
-						"type": "array"
+						"required": [
+							"meta",
+							"data"
+						],
+						"type": "object"
 					}
 				},
 				"required": [
@@ -3706,6 +3797,10 @@
 						"type": "string",
 						"nullable": true
 					},
+					"location": {
+						"type": "string",
+						"nullable": true
+					},
 					"reviews": {
 						"items": {
 							"$ref": "#/components/schemas/ReviewSnippet"
@@ -3722,6 +3817,7 @@
 					"joined",
 					"bookings_count",
 					"last_booked",
+					"location",
 					"reviews"
 				],
 				"type": "object",
@@ -3789,6 +3885,10 @@
 					},
 					"use_same_cleaner": {
 						"type": "boolean"
+					},
+					"total_price": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -3957,6 +4057,10 @@
 					"joined": {
 						"type": "string"
 					},
+					"location": {
+						"type": "string",
+						"nullable": true
+					},
 					"reviews": {
 						"items": {
 							"$ref": "#/components/schemas/ReviewSnippet"
@@ -3971,6 +4075,7 @@
 					"phone",
 					"rating",
 					"joined",
+					"location",
 					"reviews"
 				],
 				"type": "object",
@@ -4053,6 +4158,9 @@
 					"cleaner_name": {
 						"type": "string",
 						"nullable": true
+					},
+					"created_at": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -4065,7 +4173,8 @@
 					"time_end",
 					"status",
 					"total_price",
-					"cleaner_name"
+					"cleaner_name",
+					"created_at"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -4203,7 +4312,7 @@
 					"cleaner": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/PersonSummary"
+								"$ref": "#/components/schemas/PersonDetail"
 							}
 						],
 						"nullable": true
@@ -7960,6 +8069,50 @@
 				}
 			}
 		},
+		"/v1/auth/admin/verify-otp": {
+			"post": {
+				"operationId": "VerifyAdminOtp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminVerifyOtpResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid or expired code",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Verify an OTP code sent during the admin password reset flow.\nUse this to validate the code before showing the new-password form.",
+				"summary": "Verify admin OTP",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminVerifyOtpRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v1/auth/admin/reset-password": {
 			"post": {
 				"operationId": "AdminResetPassword",
@@ -8248,6 +8401,65 @@
 				}
 			}
 		},
+		"/v1/admin/users/{id}": {
+			"patch": {
+				"operationId": "EditAdminUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update an admin user's details (name, phone, role).",
+				"summary": "Edit admin user",
+				"tags": [
+					"Admin Users"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditAdminUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v1/admin/users/{id}/block": {
 			"post": {
 				"operationId": "BlockAdminUser",
@@ -8275,6 +8487,55 @@
 				},
 				"description": "Block an admin user, revoking their dashboard access.\nCannot block your own account.",
 				"summary": "Block admin user",
+				"tags": [
+					"Admin Users"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:all_users"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/users/{id}/unblock": {
+			"post": {
+				"operationId": "UnblockAdminUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Restore a blocked admin user, re-enabling their dashboard access.",
+				"summary": "Unblock admin user",
 				"tags": [
 					"Admin Users"
 				],
@@ -8364,6 +8625,86 @@
 					{
 						"in": "query",
 						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "service",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/transactions/export": {
+			"get": {
+				"operationId": "ExportTransactionsCsv",
+				"responses": {
+					"200": {
+						"description": "CSV file"
+					}
+				},
+				"description": "Export transactions as a CSV file. Accepts the same filters as the list endpoint.",
+				"summary": "Export transactions CSV",
+				"tags": [
+					"Admin Transactions"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:transactions"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "type",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "service",
 						"required": false,
 						"schema": {
 							"type": "string"
@@ -8779,7 +9120,40 @@
 						]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "location",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/admin/services/{id}": {
@@ -8858,6 +9232,55 @@
 				},
 				"description": "Archive a service, hiding it from public listings.\nExisting bookings for this service are not affected.",
 				"summary": "Archive service",
+				"tags": [
+					"Admin Services"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/services/{id}/unarchive": {
+			"patch": {
+				"operationId": "UnarchiveService",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Unarchive a service, restoring it to public listings.",
+				"summary": "Unarchive service",
 				"tags": [
 					"Admin Services"
 				],
@@ -9205,7 +9628,58 @@
 						]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "week_start",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "week_end",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "tx_page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "tx_limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "tx_type",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/admin/customers": {
@@ -9283,6 +9757,14 @@
 					{
 						"in": "query",
 						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "period",
 						"required": false,
 						"schema": {
 							"type": "string"
@@ -9516,7 +9998,32 @@
 						]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "CreateCostGuide",
@@ -9728,6 +10235,55 @@
 				]
 			}
 		},
+		"/v1/admin/cost-guides/{id}/unarchive": {
+			"patch": {
+				"operationId": "UnarchiveCostGuide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IdStatusResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Unarchive a cost guide, restoring it to public listings.",
+				"summary": "Unarchive cost guide",
+				"tags": [
+					"Admin Cost Guides"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/v1/admin/cleaners": {
 			"get": {
 				"operationId": "ListCleaners",
@@ -9803,6 +10359,14 @@
 					{
 						"in": "query",
 						"name": "search",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "period",
 						"required": false,
 						"schema": {
 							"type": "string"
@@ -10112,6 +10676,78 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/admin/bookings/{id}/images/download": {
+			"get": {
+				"operationId": "DownloadBookingImages",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"images": {
+											"items": {
+												"properties": {
+													"url": {
+														"type": "string"
+													},
+													"filename": {
+														"type": "string"
+													}
+												},
+												"required": [
+													"url",
+													"filename"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"images"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get presigned download URLs for all images attached to a booking.",
+				"summary": "Get booking image download URLs",
+				"tags": [
+					"Admin Bookings"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:bookings"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/admin/bookings/{id}": {

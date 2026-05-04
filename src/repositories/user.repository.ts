@@ -76,6 +76,7 @@ export interface TopRatedRow {
   id: string;
   name: string;
   rating: number;
+  profile_image_url: string | null;
 }
 
 // ── Core lookups ───────────────────────────────────────────────────────
@@ -257,7 +258,7 @@ export async function blockByIdAndRole(
 // ── Admin list / detail queries ────────────────────────────────────────
 
 export async function listCustomersAdmin(
-  filters: { status?: string; search?: string },
+  filters: { status?: string; search?: string; location?: string; service?: string; period?: string },
   page: number,
   limit: number
 ): Promise<{ data: AdminPersonListRow[]; stats: AdminPersonStats; total: number }> {
@@ -271,6 +272,31 @@ export async function listCustomersAdmin(
   addSearchFilter(state, ["u.first_name", "u.last_name", "u.email"], filters.search);
   idx = state.idx;
 
+  if (filters.location) {
+    conditions.push(`EXISTS (SELECT 1 FROM addresses a WHERE a.user_id = u.id AND a.deleted_at IS NULL AND a.street ILIKE $${idx++})`);
+    params.push(`%${filters.location}%`);
+  }
+
+  if (filters.service) {
+    conditions.push(`EXISTS (SELECT 1 FROM bookings b WHERE b.customer_id = u.id AND b.service_type = $${idx++})`);
+    params.push(filters.service);
+  }
+
+  if (filters.period && filters.period !== 'all_time') {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[filters.period];
+    if (interval !== undefined) {
+      if (filters.period === 'today') {
+        conditions.push(`u.created_at::date = CURRENT_DATE`);
+      } else {
+        conditions.push(`u.created_at >= NOW() - INTERVAL '${interval}'`);
+      }
+    }
+  }
+
   const where = conditions.join(" AND ");
 
   const countRows = await db.query(
@@ -280,7 +306,13 @@ export async function listCustomersAdmin(
   const statsRows = await db.query(
     `SELECT COUNT(*)::int AS total,
             COUNT(*) FILTER (WHERE u.status = 'active')::int AS active,
-            0 AS churn_rate
+            ROUND(COUNT(*) FILTER (WHERE u.status = 'inactive')::numeric / NULLIF(COUNT(*), 0)::numeric * 100, 1) AS churn_rate,
+            COALESCE(AVG(u.rating_avg), 0)::float AS rating,
+            COALESCE(
+              (SELECT SUM(b.total_price) FROM bookings b JOIN users cu ON cu.id = b.customer_id WHERE cu.role = 'customer' AND cu.deleted_at IS NULL)::float
+              / NULLIF(COUNT(*)::float, 0),
+              0
+            ) AS avg_income_per_customer
      FROM users u WHERE ${where}`, params
   ) as AdminPersonStats[];
 
@@ -288,8 +320,10 @@ export async function listCustomersAdmin(
   const data = await db.query(
     `SELECT u.id, CONCAT(u.first_name, ' ', COALESCE(u.last_name, '')) AS name,
             u.email, u.phone, COALESCE(u.rating_avg, 0)::float AS rating,
-            (SELECT COUNT(*)::int FROM bookings b WHERE b.customer_id = u.id) AS bookings_count,
-            u.status, u.created_at AS joined
+            u.status, u.created_at AS joined,
+            (SELECT a.street FROM addresses a WHERE a.user_id = u.id AND a.is_default = true AND a.deleted_at IS NULL LIMIT 1) AS primary_address,
+            (SELECT AVG(b3.total_price)::float FROM bookings b3 WHERE b3.customer_id = u.id) AS avg_income,
+            (SELECT CONCAT(b2.scheduled_date::text, ' ', b2.time_start, COALESCE(' - ' || b2.time_end, '')) FROM bookings b2 WHERE b2.customer_id = u.id ORDER BY b2.scheduled_date DESC, b2.created_at DESC LIMIT 1) AS last_booked
      FROM users u WHERE ${where}
      ORDER BY u.created_at DESC
      LIMIT $${idx++} OFFSET $${idx++}`,
@@ -307,7 +341,8 @@ export async function getCustomerAdmin(
             u.email, u.phone, COALESCE(u.rating_avg, 0)::float AS rating,
             u.created_at AS joined,
             (SELECT COUNT(*)::int FROM bookings b WHERE b.customer_id = u.id) AS bookings_count,
-            (SELECT MAX(b.scheduled_date)::text FROM bookings b WHERE b.customer_id = u.id) AS last_booked
+            (SELECT a.street FROM addresses a WHERE a.user_id = u.id AND a.is_default = true AND a.deleted_at IS NULL LIMIT 1) AS location,
+            (SELECT CONCAT(b.scheduled_date::text, ' ', b.time_start, COALESCE(' - ' || b.time_end, '')) FROM bookings b WHERE b.customer_id = u.id ORDER BY b.scheduled_date DESC LIMIT 1) AS last_booked
      FROM users u
      WHERE u.id = $1 AND u.role = 'customer' AND u.deleted_at IS NULL`,
     [id]
@@ -316,7 +351,7 @@ export async function getCustomerAdmin(
 }
 
 export async function listCleanersAdmin(
-  filters: { status?: string; search?: string },
+  filters: { status?: string; search?: string; location?: string; service?: string; period?: string },
   page: number,
   limit: number
 ): Promise<{ data: AdminPersonListRow[]; stats: AdminPersonStats; total: number }> {
@@ -330,6 +365,31 @@ export async function listCleanersAdmin(
   addSearchFilter(state, ["u.first_name", "u.last_name", "u.email"], filters.search);
   idx = state.idx;
 
+  if (filters.location) {
+    conditions.push(`EXISTS (SELECT 1 FROM addresses a WHERE a.user_id = u.id AND a.deleted_at IS NULL AND a.street ILIKE $${idx++})`);
+    params.push(`%${filters.location}%`);
+  }
+
+  if (filters.service) {
+    conditions.push(`EXISTS (SELECT 1 FROM bookings b WHERE b.cleaner_id = u.id AND b.service_type = $${idx++})`);
+    params.push(filters.service);
+  }
+
+  if (filters.period && filters.period !== 'all_time') {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[filters.period];
+    if (interval !== undefined) {
+      if (filters.period === 'today') {
+        conditions.push(`u.created_at::date = CURRENT_DATE`);
+      } else {
+        conditions.push(`u.created_at >= NOW() - INTERVAL '${interval}'`);
+      }
+    }
+  }
+
   const where = conditions.join(" AND ");
 
   const countRows = await db.query(
@@ -339,7 +399,8 @@ export async function listCleanersAdmin(
   const statsRows = await db.query(
     `SELECT COUNT(*)::int AS total,
             COUNT(*) FILTER (WHERE u.status = 'active')::int AS active,
-            COUNT(*) FILTER (WHERE u.status = 'inactive')::int AS inactive
+            COUNT(*) FILTER (WHERE u.status = 'inactive')::int AS inactive,
+            COALESCE(AVG(u.rating_avg), 0)::float AS rating
      FROM users u WHERE ${where}`, params
   ) as AdminPersonStats[];
 
@@ -347,7 +408,12 @@ export async function listCleanersAdmin(
   const data = await db.query(
     `SELECT u.id, CONCAT(u.first_name, ' ', COALESCE(u.last_name, '')) AS name,
             u.email, u.phone, COALESCE(u.rating_avg, 0)::float AS rating,
-            u.status, u.created_at AS joined
+            (SELECT COUNT(*)::int FROM reviews r JOIN bookings rb ON rb.id = r.booking_id WHERE rb.cleaner_id = u.id) AS reviews_count,
+            u.status, u.created_at AS joined,
+            (SELECT ARRAY_AGG(DISTINCT b.service_type) FROM bookings b WHERE b.cleaner_id = u.id) AS services,
+            (SELECT a.street FROM addresses a WHERE a.user_id = u.id AND a.is_default = true AND a.deleted_at IS NULL LIMIT 1) AS address,
+            (SELECT COUNT(*)::int FROM bookings b WHERE b.cleaner_id = u.id) AS total_booked,
+            (SELECT CONCAT(b3.scheduled_date::text, ' ', b3.time_start, COALESCE(' - ' || b3.time_end, '')) FROM bookings b3 WHERE b3.cleaner_id = u.id ORDER BY b3.scheduled_date DESC, b3.created_at DESC LIMIT 1) AS last_appointment
      FROM users u WHERE ${where}
      ORDER BY u.created_at DESC
      LIMIT $${idx++} OFFSET $${idx++}`,
@@ -361,7 +427,8 @@ export async function getCleanerAdmin(id: string): Promise<Record<string, unknow
   const rows = await db.query(
     `SELECT u.id, CONCAT(u.first_name, ' ', COALESCE(u.last_name, '')) AS name,
             u.email, u.phone, COALESCE(u.rating_avg, 0)::float AS rating,
-            u.created_at AS joined
+            u.created_at AS joined,
+            (SELECT a.street FROM addresses a WHERE a.user_id = u.id AND a.is_default = true AND a.deleted_at IS NULL LIMIT 1) AS location
      FROM users u
      WHERE u.id = $1 AND u.role = 'cleaner' AND u.deleted_at IS NULL`,
     [id]
@@ -416,12 +483,27 @@ export async function countByAdminRole(roleId: string): Promise<number> {
 
 // ── Dashboard ──────────────────────────────────────────────────────────
 
-export async function topByRating(role: string, limit: number): Promise<TopRatedRow[]> {
+export async function topByRating(role: string, limit: number, period?: string): Promise<TopRatedRow[]> {
+  let dateFilter = "";
+  if (period && period !== "all_time") {
+    const intervals: Record<string, string> = {
+      today: "0 days", this_month: "1 month",
+      past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
+    };
+    const interval = intervals[period];
+    if (interval !== undefined) {
+      const bookingDateCond = period === "today"
+        ? `b.created_at::date = CURRENT_DATE`
+        : `b.created_at >= NOW() - INTERVAL '${interval}'`;
+      dateFilter = ` AND u.id IN (SELECT ${role === 'customer' ? 'customer_id' : 'cleaner_id'} FROM bookings b WHERE ${bookingDateCond})`;
+    }
+  }
+
   return await db.query(
     `SELECT u.id, CONCAT(u.first_name, ' ', COALESCE(u.last_name, '')) AS name,
-            COALESCE(u.rating_avg, 0)::float AS rating
+            COALESCE(u.rating_avg, 0)::float AS rating, u.profile_image_url
      FROM users u
-     WHERE u.role = $1 AND u.deleted_at IS NULL
+     WHERE u.role = $1 AND u.deleted_at IS NULL${dateFilter}
      ORDER BY u.rating_avg DESC NULLS LAST LIMIT $2`,
     [role, limit]
   ) as TopRatedRow[];
@@ -504,7 +586,7 @@ export async function getCleanerEnrichment(cleanerId: string): Promise<{
     `SELECT
        (SELECT COUNT(*)::int FROM bookings WHERE cleaner_id = u.id) AS bookings_count,
        (SELECT COALESCE(SUM(t.amount), 0)::float FROM transactions t WHERE t.payee_id = u.id AND t.type = 'payout' AND t.status = 'successful') AS total_earned,
-       (SELECT MAX(b.scheduled_date)::text FROM bookings b WHERE b.cleaner_id = u.id) AS last_booked,
+       (SELECT CONCAT(b.scheduled_date::text, ' ', b.time_start, COALESCE(' - ' || b.time_end, '')) FROM bookings b WHERE b.cleaner_id = u.id ORDER BY b.scheduled_date DESC LIMIT 1) AS last_booked,
        u.status,
        CASE WHEN ca.accept_bookings = false THEN 'Not accepting bookings' WHEN ca.mode = 'custom' THEN 'Custom schedule' ELSE CONCAT(ca.mode, ': ', COALESCE(ca.default_start, ''), ' – ', COALESCE(ca.default_end, '')) END AS unavailable_window,
        CASE WHEN u.home_street IS NOT NULL THEN CONCAT(u.home_street, ', ', COALESCE(u.home_postcode, '')) ELSE NULL END AS home_address,

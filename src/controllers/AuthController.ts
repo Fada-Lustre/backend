@@ -17,6 +17,7 @@ import type {
   RefreshRequest, RefreshResponse,
   AdminForgotPasswordRequest, AdminForgotPasswordResponse,
   AdminResetPasswordRequest, AdminResetPasswordResponse,
+  AdminVerifyOtpRequest, AdminVerifyOtpResponse,
 } from "../types/auth";
 import { sendEmail, passwordResetHtml } from "../lib/email";
 import type { ActivateRequest, ActivateResponse, SetupProfileRequest, SetupProfileResponse } from "../types/admin-auth";
@@ -238,6 +239,20 @@ export class AuthController extends Controller {
     }
 
     return { message: "If an admin account exists with this email, a reset code has been sent." };
+  }
+
+  /**
+   * Verify an OTP code sent during the admin password reset flow.
+   * Use this to validate the code before showing the new-password form.
+   * @summary Verify admin OTP
+   */
+  @Post("admin/verify-otp")
+  @Response<ErrorResponse>(400, "Invalid or expired code")
+  public async verifyAdminOtp(
+    @Body() body: AdminVerifyOtpRequest
+  ): Promise<AdminVerifyOtpResponse> {
+    await otpService.verifyOtp(body.email, body.code, "password_reset");
+    return { verified: true };
   }
 
   /**

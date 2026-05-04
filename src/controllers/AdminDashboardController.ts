@@ -14,7 +14,15 @@ export class AdminDashboardController extends Controller {
    * @summary Get dashboard overview
    */
   @Get()
-  public async getDashboard(@Request() _req: ExpressRequest): Promise<DashboardResponse> {
-    return adminDashboardService.getDashboard();
+  public async getDashboard(
+    @Request() _req: ExpressRequest,
+    @Query() period?: string,
+    @Query() week_start?: string,
+    @Query() week_end?: string,
+    @Query() tx_page?: number,
+    @Query() tx_limit?: number,
+    @Query() tx_type?: string
+  ): Promise<DashboardResponse> {
+    return adminDashboardService.getDashboard({ period, week_start, week_end, tx_page, tx_limit, tx_type });
   }
 }

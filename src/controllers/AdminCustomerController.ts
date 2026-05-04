@@ -25,10 +25,11 @@ export class AdminCustomerController extends Controller {
     @Query() status?: string,
     @Query() location?: string,
     @Query() service?: string,
-    @Query() search?: string
+    @Query() search?: string,
+    @Query() period?: string
   ): Promise<AdminListResponse<Record<string, unknown>>> {
     const { page: p, limit: l } = clampPagination(page, limit);
-    return adminCustomerService.listCustomers(p, l, { status, location, service, search });
+    return adminCustomerService.listCustomers(p, l, { status, location, service, search, period });
   }
 
   /**
@@ -70,6 +71,6 @@ export class AdminCustomerController extends Controller {
     @Body() body: AdminCreateBookingRequest
   ): Promise<{ id: string; price: number; status: string }> {
     this.setStatus(201);
-    return adminBookingService.createBooking(req.user!.id, body);
+    return adminBookingService.createBookingForCustomer(req.user!.id, id, body);
   }
 }

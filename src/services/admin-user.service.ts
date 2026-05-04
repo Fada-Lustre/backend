@@ -58,11 +58,68 @@ export async function inviteAdmin(
   return { id: inv.id, message: "Invitation email sent" };
 }
 
+export async function editAdminUser(
+  actorId: string,
+  targetId: string,
+  data: { first_name?: string; last_name?: string; phone?: string; role_id?: string }
+): Promise<{ id: string; status: string }> {
+  const user = await userRepo.findByIdAndRole(targetId, "admin");
+  if (!user) {
+    throw new ApplicationError(404, "Admin user not found", "NOT_FOUND");
+  }
+
+  if (data.role_id) {
+    const roleExists = await roleRepo.existsById(data.role_id);
+    if (!roleExists) {
+      throw new ApplicationError(400, "Invalid role_id", "VALIDATION_ERROR");
+    }
+  }
+
+  const fields: Record<string, string | null> = {};
+  if (data.first_name !== undefined) fields.first_name = data.first_name;
+  if (data.last_name !== undefined) fields.last_name = data.last_name;
+  if (data.phone !== undefined) fields.phone = data.phone;
+  if (data.role_id !== undefined) fields.admin_role_id = data.role_id;
+
+  if (Object.keys(fields).length > 0) {
+    await userRepo.updateById(targetId, fields);
+  }
+
+  await logActivity(actorId, `Edited admin user - ${user.first_name} ${user.last_name ?? ""}`.trim(), "user", targetId);
+
+  return { id: targetId, status: "updated" };
+}
+
 export async function blockAdminUser(
   actorId: string,
   targetId: string
 ): Promise<{ id: string; status: string }> {
   return blockUserByRole(actorId, targetId, "admin", { selfBlockGuard: true });
+}
+
+export async function unblockAdminUser(
+  actorId: string,
+  targetId: string
+): Promise<{ id: string; status: string }> {
+  const user = await userRepo.findByIdAndRole(targetId, "admin");
+  if (!user) {
+    throw new ApplicationError(404, "Admin user not found", "NOT_FOUND");
+  }
+
+  if (user.status !== "blocked") {
+    throw new ApplicationError(400, "User is not blocked", "VALIDATION_ERROR");
+  }
+
+  await userRepo.updateById(targetId, { status: "active" });
+
+  await logActivity(
+    actorId,
+    `Unblocked admin user - ${user.first_name} ${user.last_name ?? ""}`.trim(),
+    "user",
+    targetId
+  );
+
+  return { id: targetId, status: "active" };
 }
 
 export async function getAdminProfile(userId: string): Promise<AdminProfileResponse> {
@@ -95,17 +152,25 @@ export async function getAdminProfile(userId: string): Promise<AdminProfileRespo
 
 export async function updateAdminProfile(
   userId: string,
-  updates: { first_name?: string; last_name?: string; phone?: string }
+  updates: { first_name?: string; last_name?: string; phone?: string; email?: string }
 ): Promise<AdminProfileResponse> {
   const user = await userRepo.findById(userId);
   if (!user || user.role !== "admin") {
     throw new ApplicationError(404, "Admin profile not found", "NOT_FOUND");
   }
 
+  if (updates.email !== undefined) {
+    const existing = await userRepo.findByEmail(updates.email);
+    if (existing && existing.id !== userId) {
+      throw new ApplicationError(409, "A user with this email already exists", "DUPLICATE");
+    }
+  }
+
   const fields: Record<string, string> = {};
   if (updates.first_name !== undefined) fields.first_name = updates.first_name;
   if (updates.last_name !== undefined) fields.last_name = updates.last_name;
   if (updates.phone !== undefined) fields.phone = updates.phone;
+  if (updates.email !== undefined) fields.email = updates.email;
 
   if (Object.keys(fields).length > 0) {
     await userRepo.updateById(userId, fields);

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { app, createTestUser } from "../test/helpers";
+import { app, createTestUser, createTestAdmin } from "../test/helpers";
 import db from "../db";
 
 describe("Profile endpoints", () => {
@@ -160,6 +160,21 @@ describe("Support endpoints", () => {
         .get(`/v1/support/tickets/${created.body.id}`)
         .set("Authorization", `Bearer ${user2.token}`);
       expect(res.status).toBe(403);
+    });
+  });
+});
+
+describe("Admin Profile", () => {
+  describe("PATCH /v1/admin/profile", () => {
+    it("updates admin profile with email", async () => {
+      const admin = await createTestAdmin();
+      const newEmail = `updated-${Date.now()}@example.com`;
+      const res = await request(app)
+        .patch("/v1/admin/profile")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .send({ email: newEmail });
+      expect(res.status).toBe(200);
+      expect(res.body.email).toBe(newEmail);
     });
   });
 });
