@@ -14,6 +14,13 @@ export class AdminBookingController extends Controller {
    * List all bookings with filters for date, location, service type, and status.
    * Includes aggregate stats (total, scheduled, completed, cancelled).
    * @summary List all bookings
+   * @param page Page number (default: 1)
+   * @param limit Items per page (default: 10)
+   * @param date Filter by scheduled date (YYYY-MM-DD)
+   * @param location Filter by address (partial match)
+   * @param service Filter by service type
+   * @param status Filter by booking status
+   * @param search Search by customer name or reference
    */
   @Get()
   public async adminListBookings(

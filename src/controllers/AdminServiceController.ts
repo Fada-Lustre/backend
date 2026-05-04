@@ -11,6 +11,10 @@ export class AdminServiceController extends Controller {
   /**
    * List all cleaning services with stats (total, active, archived).
    * @summary List services
+   * @param status Filter by status: active, archived
+   * @param period Filter by creation date: today, this_month, past_3_months, past_6_months, past_year, all_time
+   * @param location Filter by booking location (partial match)
+   * @param search Search by service name
    */
   @Get()
   public async listAdminServices(

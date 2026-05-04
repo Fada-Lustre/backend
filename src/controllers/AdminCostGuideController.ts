@@ -11,6 +11,9 @@ export class AdminCostGuideController extends Controller {
   /**
    * List all cost guides with stats (total, active, archived).
    * @summary List cost guides
+   * @param status Filter by status: active, archived
+   * @param period Filter by creation date: today, this_month, past_3_months, past_6_months, past_year, all_time
+   * @param search Search by title
    */
   @Get()
   public async listAdminCostGuides(

@@ -8315,6 +8315,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Page number (default: 1)",
 						"in": "query",
 						"name": "page",
 						"required": false,
@@ -8325,6 +8326,7 @@
 						}
 					},
 					{
+						"description": "Items per page (default: 10)",
 						"in": "query",
 						"name": "limit",
 						"required": false,
@@ -8335,6 +8337,7 @@
 						}
 					},
 					{
+						"description": "Filter by status: active, blocked, pending",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -8343,6 +8346,7 @@
 						}
 					},
 					{
+						"description": "Search by name or email",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -8587,6 +8591,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Page number (default: 1)",
 						"in": "query",
 						"name": "page",
 						"required": false,
@@ -8597,6 +8602,7 @@
 						}
 					},
 					{
+						"description": "Items per page (default: 10)",
 						"in": "query",
 						"name": "limit",
 						"required": false,
@@ -8607,6 +8613,7 @@
 						}
 					},
 					{
+						"description": "Filter by date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -8615,6 +8622,7 @@
 						}
 					},
 					{
+						"description": "Filter by type: booking, payout",
 						"in": "query",
 						"name": "type",
 						"required": false,
@@ -8623,6 +8631,7 @@
 						}
 					},
 					{
+						"description": "Search by reference or name",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -8631,6 +8640,7 @@
 						}
 					},
 					{
+						"description": "Filter by booking address (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -8639,6 +8649,7 @@
 						}
 					},
 					{
+						"description": "Filter by service type",
 						"in": "query",
 						"name": "service",
 						"required": false,
@@ -8671,6 +8682,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Filter by date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -8679,6 +8691,7 @@
 						}
 					},
 					{
+						"description": "Filter by type: booking, payout",
 						"in": "query",
 						"name": "type",
 						"required": false,
@@ -8687,6 +8700,7 @@
 						}
 					},
 					{
+						"description": "Search by reference or name",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -8695,6 +8709,7 @@
 						}
 					},
 					{
+						"description": "Filter by booking address (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -8703,6 +8718,7 @@
 						}
 					},
 					{
+						"description": "Filter by service type",
 						"in": "query",
 						"name": "service",
 						"required": false,
@@ -9122,6 +9138,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Filter by status: active, archived",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -9130,6 +9147,7 @@
 						}
 					},
 					{
+						"description": "Filter by creation date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -9138,6 +9156,7 @@
 						}
 					},
 					{
+						"description": "Filter by booking location (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -9146,6 +9165,7 @@
 						}
 					},
 					{
+						"description": "Search by service name",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -9630,6 +9650,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Filter stats by time period: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -9638,6 +9659,7 @@
 						}
 					},
 					{
+						"description": "ISO date for upcoming bookings week start (default: current Monday)",
 						"in": "query",
 						"name": "week_start",
 						"required": false,
@@ -9646,6 +9668,7 @@
 						}
 					},
 					{
+						"description": "ISO date for upcoming bookings week end (default: current Sunday)",
 						"in": "query",
 						"name": "week_end",
 						"required": false,
@@ -9654,6 +9677,7 @@
 						}
 					},
 					{
+						"description": "Page number for recent transactions (default: 1)",
 						"in": "query",
 						"name": "tx_page",
 						"required": false,
@@ -9663,6 +9687,7 @@
 						}
 					},
 					{
+						"description": "Items per page for recent transactions (default: 10)",
 						"in": "query",
 						"name": "tx_limit",
 						"required": false,
@@ -9672,6 +9697,7 @@
 						}
 					},
 					{
+						"description": "Filter transactions: all, booking, payout",
 						"in": "query",
 						"name": "tx_type",
 						"required": false,
@@ -9711,6 +9737,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Page number (default: 1)",
 						"in": "query",
 						"name": "page",
 						"required": false,
@@ -9721,6 +9748,7 @@
 						}
 					},
 					{
+						"description": "Items per page (default: 10)",
 						"in": "query",
 						"name": "limit",
 						"required": false,
@@ -9731,6 +9759,7 @@
 						}
 					},
 					{
+						"description": "Filter by status: active, inactive, blocked",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -9739,6 +9768,7 @@
 						}
 					},
 					{
+						"description": "Filter by address (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -9747,6 +9777,7 @@
 						}
 					},
 					{
+						"description": "Filter by service type booked",
 						"in": "query",
 						"name": "service",
 						"required": false,
@@ -9755,6 +9786,7 @@
 						}
 					},
 					{
+						"description": "Search by name, email, or phone",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -9763,6 +9795,7 @@
 						}
 					},
 					{
+						"description": "Filter by join date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -10000,6 +10033,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Filter by status: active, archived",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -10008,6 +10042,7 @@
 						}
 					},
 					{
+						"description": "Filter by creation date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -10016,6 +10051,7 @@
 						}
 					},
 					{
+						"description": "Search by title",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -10313,6 +10349,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Page number (default: 1)",
 						"in": "query",
 						"name": "page",
 						"required": false,
@@ -10323,6 +10360,7 @@
 						}
 					},
 					{
+						"description": "Items per page (default: 10)",
 						"in": "query",
 						"name": "limit",
 						"required": false,
@@ -10333,6 +10371,7 @@
 						}
 					},
 					{
+						"description": "Filter by status: active, inactive, blocked",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -10341,6 +10380,7 @@
 						}
 					},
 					{
+						"description": "Filter by address (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -10349,6 +10389,7 @@
 						}
 					},
 					{
+						"description": "Filter by service type",
 						"in": "query",
 						"name": "service",
 						"required": false,
@@ -10357,6 +10398,7 @@
 						}
 					},
 					{
+						"description": "Search by name, email, or phone",
 						"in": "query",
 						"name": "search",
 						"required": false,
@@ -10365,6 +10407,7 @@
 						}
 					},
 					{
+						"description": "Filter by join date: today, this_month, past_3_months, past_6_months, past_year, all_time",
 						"in": "query",
 						"name": "period",
 						"required": false,
@@ -10561,6 +10604,7 @@
 				],
 				"parameters": [
 					{
+						"description": "Page number (default: 1)",
 						"in": "query",
 						"name": "page",
 						"required": false,
@@ -10571,6 +10615,7 @@
 						}
 					},
 					{
+						"description": "Items per page (default: 10)",
 						"in": "query",
 						"name": "limit",
 						"required": false,
@@ -10581,6 +10626,7 @@
 						}
 					},
 					{
+						"description": "Filter by scheduled date (YYYY-MM-DD)",
 						"in": "query",
 						"name": "date",
 						"required": false,
@@ -10589,6 +10635,7 @@
 						}
 					},
 					{
+						"description": "Filter by address (partial match)",
 						"in": "query",
 						"name": "location",
 						"required": false,
@@ -10597,6 +10644,7 @@
 						}
 					},
 					{
+						"description": "Filter by service type",
 						"in": "query",
 						"name": "service",
 						"required": false,
@@ -10605,6 +10653,7 @@
 						}
 					},
 					{
+						"description": "Filter by booking status",
 						"in": "query",
 						"name": "status",
 						"required": false,
@@ -10613,6 +10662,7 @@
 						}
 					},
 					{
+						"description": "Search by customer name or reference",
 						"in": "query",
 						"name": "search",
 						"required": false,

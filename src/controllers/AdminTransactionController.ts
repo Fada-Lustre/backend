@@ -14,6 +14,13 @@ export class AdminTransactionController extends Controller {
    * List all financial transactions with filters for period, type,
    * and text search. Includes aggregate stats.
    * @summary List transactions
+   * @param page Page number (default: 1)
+   * @param limit Items per page (default: 10)
+   * @param period Filter by date: today, this_month, past_3_months, past_6_months, past_year, all_time
+   * @param type Filter by type: booking, payout
+   * @param search Search by reference or name
+   * @param location Filter by booking address (partial match)
+   * @param service Filter by service type
    */
   @Get()
   public async listTransactions(
@@ -33,6 +40,11 @@ export class AdminTransactionController extends Controller {
   /**
    * Export transactions as a CSV file. Accepts the same filters as the list endpoint.
    * @summary Export transactions CSV
+   * @param period Filter by date: today, this_month, past_3_months, past_6_months, past_year, all_time
+   * @param type Filter by type: booking, payout
+   * @param search Search by reference or name
+   * @param location Filter by booking address (partial match)
+   * @param service Filter by service type
    */
   @Get("export")
   @SuccessResponse(200, "CSV file")

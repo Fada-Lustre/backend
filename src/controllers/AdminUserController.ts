@@ -12,6 +12,10 @@ export class AdminUserController extends Controller {
   /**
    * List all admin users with filters for status and text search.
    * @summary List admin users
+   * @param page Page number (default: 1)
+   * @param limit Items per page (default: 10)
+   * @param status Filter by status: active, blocked, pending
+   * @param search Search by name or email
    */
   @Get()
   public async listAdminUsers(

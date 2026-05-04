@@ -16,6 +16,13 @@ export class AdminCustomerController extends Controller {
    * List all customers with filters for status, location, service type,
    * and text search. Includes aggregate stats.
    * @summary List customers
+   * @param page Page number (default: 1)
+   * @param limit Items per page (default: 10)
+   * @param status Filter by status: active, inactive, blocked
+   * @param location Filter by address (partial match)
+   * @param service Filter by service type booked
+   * @param search Search by name, email, or phone
+   * @param period Filter by join date: today, this_month, past_3_months, past_6_months, past_year, all_time
    */
   @Get()
   public async listCustomers(

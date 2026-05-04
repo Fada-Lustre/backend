@@ -12,6 +12,12 @@ export class AdminDashboardController extends Controller {
    * total bookings, top clients/cleaners, upcoming bookings by service,
    * service counts, and recent transactions.
    * @summary Get dashboard overview
+   * @param period Filter stats by time period: today, this_month, past_3_months, past_6_months, past_year, all_time
+   * @param week_start ISO date for upcoming bookings week start (default: current Monday)
+   * @param week_end ISO date for upcoming bookings week end (default: current Sunday)
+   * @param tx_page Page number for recent transactions (default: 1)
+   * @param tx_limit Items per page for recent transactions (default: 10)
+   * @param tx_type Filter transactions: all, booking, payout
    */
   @Get()
   public async getDashboard(
