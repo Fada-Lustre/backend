@@ -22,12 +22,12 @@ export class AdminDashboardController extends Controller {
   @Get()
   public async getDashboard(
     @Request() _req: ExpressRequest,
-    @Query() period?: string,
+    @Query() period?: "today" | "this_month" | "past_3_months" | "past_6_months" | "past_year" | "all_time",
     @Query() week_start?: string,
     @Query() week_end?: string,
     @Query() tx_page?: number,
     @Query() tx_limit?: number,
-    @Query() tx_type?: string
+    @Query() tx_type?: "all" | "booking" | "payout"
   ): Promise<DashboardResponse> {
     return adminDashboardService.getDashboard({ period, week_start, week_end, tx_page, tx_limit, tx_type });
   }

@@ -4119,7 +4119,7 @@ export function RegisterRoutes(app: Router) {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
-                status: {"in":"query","name":"status","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["active"]},{"dataType":"enum","enums":["blocked"]},{"dataType":"enum","enums":["pending"]}]},
                 search: {"in":"query","name":"search","dataType":"string"},
         };
         app.get('/v1/admin/users',
@@ -4283,8 +4283,8 @@ export function RegisterRoutes(app: Router) {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
-                period: {"in":"query","name":"period","dataType":"string"},
-                type: {"in":"query","name":"type","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
+                type: {"in":"query","name":"type","dataType":"union","subSchemas":[{"dataType":"enum","enums":["booking"]},{"dataType":"enum","enums":["payout"]}]},
                 search: {"in":"query","name":"search","dataType":"string"},
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
@@ -4319,8 +4319,8 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminTransactionController_exportTransactionsCsv: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                period: {"in":"query","name":"period","dataType":"string"},
-                type: {"in":"query","name":"type","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
+                type: {"in":"query","name":"type","dataType":"union","subSchemas":[{"dataType":"enum","enums":["booking"]},{"dataType":"enum","enums":["payout"]}]},
                 search: {"in":"query","name":"search","dataType":"string"},
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
@@ -4552,8 +4552,8 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminServiceController_listAdminServices: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
-                status: {"in":"query","name":"status","dataType":"string"},
-                period: {"in":"query","name":"period","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["active"]},{"dataType":"enum","enums":["archived"]}]},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
                 location: {"in":"query","name":"location","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
         };
@@ -4875,12 +4875,12 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminDashboardController_getDashboard: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
-                period: {"in":"query","name":"period","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
                 week_start: {"in":"query","name":"week_start","dataType":"string"},
                 week_end: {"in":"query","name":"week_end","dataType":"string"},
                 tx_page: {"in":"query","name":"tx_page","dataType":"double"},
                 tx_limit: {"in":"query","name":"tx_limit","dataType":"double"},
-                tx_type: {"in":"query","name":"tx_type","dataType":"string"},
+                tx_type: {"in":"query","name":"tx_type","dataType":"union","subSchemas":[{"dataType":"enum","enums":["all"]},{"dataType":"enum","enums":["booking"]},{"dataType":"enum","enums":["payout"]}]},
         };
         app.get('/v1/admin/dashboard',
             authenticateMiddleware([{"jwt":["admin:home"]}]),
@@ -4914,11 +4914,11 @@ export function RegisterRoutes(app: Router) {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
-                status: {"in":"query","name":"status","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["active"]},{"dataType":"enum","enums":["inactive"]},{"dataType":"enum","enums":["blocked"]}]},
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
-                period: {"in":"query","name":"period","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
         };
         app.get('/v1/admin/customers',
             authenticateMiddleware([{"jwt":["admin:customers"]}]),
@@ -5047,8 +5047,8 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAdminCostGuideController_listAdminCostGuides: Record<string, TsoaRoute.ParameterSchema> = {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
-                status: {"in":"query","name":"status","dataType":"string"},
-                period: {"in":"query","name":"period","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["active"]},{"dataType":"enum","enums":["archived"]}]},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
                 search: {"in":"query","name":"search","dataType":"string"},
         };
         app.get('/v1/admin/cost-guides',
@@ -5244,11 +5244,11 @@ export function RegisterRoutes(app: Router) {
                 _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
                 page: {"default":1,"in":"query","name":"page","dataType":"double"},
                 limit: {"default":10,"in":"query","name":"limit","dataType":"double"},
-                status: {"in":"query","name":"status","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["active"]},{"dataType":"enum","enums":["inactive"]},{"dataType":"enum","enums":["blocked"]}]},
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
                 search: {"in":"query","name":"search","dataType":"string"},
-                period: {"in":"query","name":"period","dataType":"string"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
         };
         app.get('/v1/admin/cleaners',
             authenticateMiddleware([{"jwt":["admin:cleaners"]}]),
@@ -5382,7 +5382,7 @@ export function RegisterRoutes(app: Router) {
                 date: {"in":"query","name":"date","dataType":"string"},
                 location: {"in":"query","name":"location","dataType":"string"},
                 service: {"in":"query","name":"service","dataType":"string"},
-                status: {"in":"query","name":"status","dataType":"string"},
+                status: {"in":"query","name":"status","dataType":"union","subSchemas":[{"dataType":"enum","enums":["unassigned"]},{"dataType":"enum","enums":["scheduled"]},{"dataType":"enum","enums":["in_progress"]},{"dataType":"enum","enums":["done"]},{"dataType":"enum","enums":["cancelled"]}]},
                 search: {"in":"query","name":"search","dataType":"string"},
         };
         app.get('/v1/admin/bookings',

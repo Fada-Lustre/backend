@@ -30,7 +30,7 @@ export class AdminBookingController extends Controller {
     @Query() date?: string,
     @Query() location?: string,
     @Query() service?: string,
-    @Query() status?: string,
+    @Query() status?: "unassigned" | "scheduled" | "in_progress" | "done" | "cancelled",
     @Query() search?: string
   ): Promise<AdminListResponse<AdminBookingListItem>> {
     const { page: p, limit: l } = clampPagination(page, limit);

@@ -27,8 +27,8 @@ export class AdminTransactionController extends Controller {
     @Request() _req: ExpressRequest,
     @Query() page: number = 1,
     @Query() limit: number = 10,
-    @Query() period?: string,
-    @Query() type?: string,
+    @Query() period?: "today" | "this_month" | "past_3_months" | "past_6_months" | "past_year" | "all_time",
+    @Query() type?: "booking" | "payout",
     @Query() search?: string,
     @Query() location?: string,
     @Query() service?: string
@@ -50,8 +50,8 @@ export class AdminTransactionController extends Controller {
   @SuccessResponse(200, "CSV file")
   public async exportTransactionsCsv(
     @Request() req: ExpressRequest,
-    @Query() period?: string,
-    @Query() type?: string,
+    @Query() period?: "today" | "this_month" | "past_3_months" | "past_6_months" | "past_year" | "all_time",
+    @Query() type?: "booking" | "payout",
     @Query() search?: string,
     @Query() location?: string,
     @Query() service?: string

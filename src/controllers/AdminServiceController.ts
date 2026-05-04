@@ -19,8 +19,8 @@ export class AdminServiceController extends Controller {
   @Get()
   public async listAdminServices(
     @Request() _req: ExpressRequest,
-    @Query() status?: string,
-    @Query() period?: string,
+    @Query() status?: "active" | "archived",
+    @Query() period?: "today" | "this_month" | "past_3_months" | "past_6_months" | "past_year" | "all_time",
     @Query() location?: string,
     @Query() search?: string
   ): Promise<{ data: Record<string, unknown>[]; stats: { total: number; active: number; archived: number } }> {

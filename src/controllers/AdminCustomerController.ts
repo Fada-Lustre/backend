@@ -29,11 +29,11 @@ export class AdminCustomerController extends Controller {
     @Request() _req: ExpressRequest,
     @Query() page: number = 1,
     @Query() limit: number = 10,
-    @Query() status?: string,
+    @Query() status?: "active" | "inactive" | "blocked",
     @Query() location?: string,
     @Query() service?: string,
     @Query() search?: string,
-    @Query() period?: string
+    @Query() period?: "today" | "this_month" | "past_3_months" | "past_6_months" | "past_year" | "all_time"
   ): Promise<AdminListResponse<Record<string, unknown>>> {
     const { page: p, limit: l } = clampPagination(page, limit);
     return adminCustomerService.listCustomers(p, l, { status, location, service, search, period });

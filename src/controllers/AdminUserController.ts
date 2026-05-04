@@ -22,7 +22,7 @@ export class AdminUserController extends Controller {
     @Request() _req: ExpressRequest,
     @Query() page: number = 1,
     @Query() limit: number = 10,
-    @Query() status?: string,
+    @Query() status?: "active" | "blocked" | "pending",
     @Query() search?: string
   ): Promise<AdminUserListResponse> {
     const { page: p, limit: l } = clampPagination(page, limit);

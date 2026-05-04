@@ -8342,7 +8342,12 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"active",
+								"blocked",
+								"pending"
+							]
 						}
 					},
 					{
@@ -8618,7 +8623,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					},
 					{
@@ -8627,7 +8640,11 @@
 						"name": "type",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"booking",
+								"payout"
+							]
 						}
 					},
 					{
@@ -8687,7 +8704,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					},
 					{
@@ -8696,7 +8721,11 @@
 						"name": "type",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"booking",
+								"payout"
+							]
 						}
 					},
 					{
@@ -9143,7 +9172,11 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"active",
+								"archived"
+							]
 						}
 					},
 					{
@@ -9152,7 +9185,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					},
 					{
@@ -9655,7 +9696,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					},
 					{
@@ -9702,7 +9751,12 @@
 						"name": "tx_type",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"all",
+								"booking",
+								"payout"
+							]
 						}
 					}
 				]
@@ -9764,7 +9818,12 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"active",
+								"inactive",
+								"blocked"
+							]
 						}
 					},
 					{
@@ -9800,7 +9859,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					}
 				]
@@ -10038,7 +10105,11 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"active",
+								"archived"
+							]
 						}
 					},
 					{
@@ -10047,7 +10118,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					},
 					{
@@ -10376,7 +10455,12 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"active",
+								"inactive",
+								"blocked"
+							]
 						}
 					},
 					{
@@ -10412,7 +10496,15 @@
 						"name": "period",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
 						}
 					}
 				]
@@ -10658,7 +10750,14 @@
 						"name": "status",
 						"required": false,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"unassigned",
+								"scheduled",
+								"in_progress",
+								"done",
+								"cancelled"
+							]
 						}
 					},
 					{
