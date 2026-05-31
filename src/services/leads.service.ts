@@ -1,5 +1,6 @@
 import * as leadsRepo from "../repositories/leads.repository";
 import { ApplicationError } from "../errors";
+import { signUrl } from "../lib/r2";
 import type {
   ContactMessageRequest, ContactMessageResponse,
   ServiceRequestBody, ServiceRequestResponse,
@@ -51,6 +52,8 @@ export async function getCleanerApplication(applicationId: string): Promise<Clea
   if (!row) {
     throw new ApplicationError(404, "Application not found", "NOT_FOUND");
   }
+
+  if (row.photo_url) row.photo_url = await signUrl(row.photo_url as string);
 
   return row as unknown as CleanerApplicationDetail;
 }

@@ -3,22 +3,22 @@ import { ApplicationError } from "../errors";
 import { logActivity } from "./activity-log.service";
 import { signUrl } from "../lib/r2";
 
+async function signServiceImages(row: Record<string, unknown>): Promise<Record<string, unknown>> {
+  if (row.image_url) row.image_url = await signUrl(row.image_url as string);
+  if (row.icon_url) row.icon_url = await signUrl(row.icon_url as string);
+  return row;
+}
+
 export async function listServices(filters?: { status?: string; period?: string; location?: string; search?: string }) {
   const result = await contentRepo.listServicesAdmin(filters);
-  result.data = await Promise.all(
-    result.data.map(async (s) => {
-      if (s.image_url) s.image_url = await signUrl(s.image_url as string);
-      return s;
-    })
-  );
+  result.data = await Promise.all(result.data.map(signServiceImages));
   return result;
 }
 
 export async function getService(serviceId: string): Promise<Record<string, unknown>> {
   const service = await contentRepo.getServiceAdmin(serviceId);
   if (!service) throw new ApplicationError(404, "Service not found", "NOT_FOUND");
-  if (service.image_url) service.image_url = await signUrl(service.image_url as string);
-  return service;
+  return signServiceImages(service);
 }
 
 export async function createService(
@@ -51,7 +51,7 @@ export async function updateService(
   if (Object.keys(fields).length === 0) throw new ApplicationError(400, "No fields to update", "VALIDATION_ERROR");
   const result = await contentRepo.updateService(serviceId, fields);
   if (!result) throw new ApplicationError(404, "Service not found", "NOT_FOUND");
-  if (result.image_url) result.image_url = await signUrl(result.image_url as string);
+  await signServiceImages(result);
   await logActivity(actorId, `Updated service - ${result.name}`, "service", serviceId);
   return result;
 }

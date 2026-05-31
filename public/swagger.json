@@ -195,6 +195,11 @@
 					"hours_added": {
 						"type": "number",
 						"format": "double"
+					},
+					"image_url": {
+						"type": "string",
+						"nullable": true,
+						"description": "Presigned URL for the add-on image (null if none uploaded)"
 					}
 				},
 				"required": [
@@ -951,6 +956,15 @@
 					},
 					"created_at": {
 						"type": "string"
+					},
+					"photo_url": {
+						"type": "string",
+						"nullable": true,
+						"description": "Presigned URL for the applicant's photo (null if none uploaded)"
+					},
+					"photo_public_id": {
+						"type": "string",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -3299,6 +3313,10 @@
 						"type": "string",
 						"nullable": true
 					},
+					"icon_url": {
+						"type": "string",
+						"nullable": true
+					},
 					"status": {
 						"type": "string"
 					},
@@ -3311,6 +3329,7 @@
 					"name",
 					"description",
 					"image_url",
+					"icon_url",
 					"status",
 					"date_added"
 				],
@@ -4390,6 +4409,60 @@
 				"required": [
 					"date",
 					"start_time"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"AdminAddOn": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"slug": {
+						"$ref": "#/components/schemas/AddOnSlug"
+					},
+					"hours_added": {
+						"type": "number",
+						"format": "double"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"image_url": {
+						"type": "string",
+						"nullable": true,
+						"description": "Presigned URL for the add-on image (null if none uploaded)"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug",
+					"hours_added",
+					"active",
+					"image_url"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"ListResponse_AdminAddOn_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/AdminAddOn"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -11234,6 +11307,36 @@
 						}
 					}
 				]
+			}
+		},
+		"/v1/admin/add-ons": {
+			"get": {
+				"operationId": "ListAddOns",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_AdminAddOn_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all add-ons (active and inactive) with presigned image URLs.\nUse the id from this list with POST /v1/admin/add-ons/{id}/image to upload artwork.",
+				"summary": "List add-ons",
+				"tags": [
+					"Admin Add-ons"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:services"
+						]
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/v1/admin/activity-log": {

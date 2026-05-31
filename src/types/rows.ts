@@ -10,6 +10,8 @@ export interface AddOnRow {
   name: string;
   slug: string;
   hours_added: string;
+  image_url?: string | null;
+  active?: boolean;
 }
 
 export interface ServiceRow {

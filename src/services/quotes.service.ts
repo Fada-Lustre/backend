@@ -1,5 +1,6 @@
 import * as quoteRepo from "../repositories/quote.repository";
 import { ApplicationError } from "../errors";
+import { signUrl } from "../lib/r2";
 import type { PricingConfig, QuoteRequest, QuoteResponse, QuoteScheduleResponse, AddOnSlug } from "../types/quotes";
 
 const VALID_HOURS = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0];
@@ -34,13 +35,22 @@ async function loadPricingConfig(): Promise<Record<string, number>> {
 export async function getPricingConfig(): Promise<PricingConfig> {
   const config = await loadPricingConfig();
   const addOns = await quoteRepo.listActiveAddOns();
+  const signedAddOns = await Promise.all(
+    addOns.map(async (a) => ({
+      id: a.id,
+      name: a.name,
+      slug: a.slug as AddOnSlug,
+      hours_added: parseFloat(a.hours_added),
+      image_url: await signUrl(a.image_url),
+    }))
+  );
   return {
     hourly_rate: config["hourly_rate"] ?? 22.5,
     cleaning_products_fee: config["cleaning_products_fee"] ?? 6.0,
     service_fee: config["service_fee"] ?? 2.5,
     weekend_surcharge: config["weekend_surcharge"] ?? 10.0,
     currency: "GBP",
-    add_ons: addOns.map((a) => ({ id: a.id, name: a.name, slug: a.slug as AddOnSlug, hours_added: parseFloat(a.hours_added) })),
+    add_ons: signedAddOns,
     frequencies: ["one-off", "2-3-times-a-week", "every-week", "every-2-weeks"],
     cleaning_products_note: "We can provide sprays and cloths NOT mops, buckets or vacuums",
   };

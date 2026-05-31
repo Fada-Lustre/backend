@@ -154,7 +154,7 @@ export async function listServicesAdmin(
   const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const rows = await db.query(
-    `SELECT s.id, s.title AS name, s.image_url, s.status, s.created_at AS date_added,
+    `SELECT s.id, s.title AS name, s.image_url, s.icon_url, s.status, s.created_at AS date_added,
             (SELECT COALESCE(AVG(r.rating), 0)::float FROM reviews r JOIN bookings b ON b.id = r.booking_id WHERE b.service_type = s.title) AS rating,
             RANK() OVER (ORDER BY (SELECT COUNT(*) FROM bookings b WHERE b.service_type = s.title) DESC) AS popularity_rank
      FROM services s ${where}
@@ -175,7 +175,7 @@ export async function listServicesAdmin(
 
 export async function getServiceAdmin(id: string): Promise<Record<string, unknown> | null> {
   const rows = await db.query(
-    `SELECT id, title AS name, description, image_url, status, created_at AS date_added FROM services WHERE id = $1`, [id]
+    `SELECT id, title AS name, description, image_url, icon_url, status, created_at AS date_added FROM services WHERE id = $1`, [id]
   ) as Record<string, unknown>[];
   return rows[0] ?? null;
 }
@@ -211,7 +211,7 @@ export async function updateService(
   if (sets.length === 0) return null;
   params.push(id);
   const rows = await db.query(
-    `UPDATE services SET ${sets.join(", ")} WHERE id = $${idx} RETURNING id, title AS name, description, image_url, status`,
+    `UPDATE services SET ${sets.join(", ")} WHERE id = $${idx} RETURNING id, title AS name, description, image_url, icon_url, status`,
     params
   ) as Record<string, unknown>[];
   return rows[0] ?? null;

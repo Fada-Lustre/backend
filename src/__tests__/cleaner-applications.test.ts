@@ -47,6 +47,25 @@ describe("Cleaner Applications", () => {
       expect(res.body.first_name).toBe("Jane");
     });
 
+    it("returns a signed photo_url after a photo is uploaded", async () => {
+      const created = await request(app)
+        .post("/v1/cleaner-applications")
+        .send({ ...validApplication, email: `photo-${Date.now()}@test.com` });
+
+      await request(app)
+        .post(`/v1/cleaner-applications/${created.body.id}/photo`)
+        .attach("photo", Buffer.from([0xff, 0xd8, 0xff]), { filename: "me.png", contentType: "image/png" });
+
+      const user = await createTestUser();
+      const res = await request(app)
+        .get(`/v1/cleaner-applications/${created.body.id}`)
+        .set("Authorization", `Bearer ${user.token}`);
+
+      expect(res.status).toBe(200);
+      expect(typeof res.body.photo_url).toBe("string");
+      expect(res.body.photo_url).toContain("applications");
+    });
+
     it("rejects unauthenticated request", async () => {
       const res = await request(app).get("/v1/cleaner-applications/00000000-0000-0000-0000-000000000000");
       expect(res.status).toBe(401);
