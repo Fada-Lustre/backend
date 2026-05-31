@@ -6,7 +6,24 @@ export async function loadPricingConfig(): Promise<PricingConfigRow[]> {
 }
 
 export async function listActiveAddOns(): Promise<AddOnRow[]> {
-  return await db.query("SELECT id, name, slug, hours_added FROM add_ons WHERE active = true ORDER BY name ASC") as AddOnRow[];
+  return await db.query("SELECT id, name, slug, hours_added, image_url FROM add_ons WHERE active = true ORDER BY name ASC") as AddOnRow[];
+}
+
+export async function listAllAddOns(): Promise<AddOnRow[]> {
+  return await db.query("SELECT id, name, slug, hours_added, image_url, active FROM add_ons ORDER BY name ASC") as AddOnRow[];
+}
+
+export async function findAddOnById(id: string): Promise<AddOnRow | null> {
+  const rows = await db.query("SELECT id, name, slug, hours_added, image_url, active FROM add_ons WHERE id = $1", [id]) as AddOnRow[];
+  return rows[0] ?? null;
+}
+
+export async function updateAddOnImage(id: string, imageKey: string): Promise<AddOnRow | null> {
+  const rows = await db.query(
+    "UPDATE add_ons SET image_url = $1 WHERE id = $2 RETURNING id, name, slug, hours_added, image_url, active",
+    [imageKey, id]
+  ) as AddOnRow[];
+  return rows[0] ?? null;
 }
 
 export async function create(data: (string | number | boolean | null)[]): Promise<QuoteIdRow> {

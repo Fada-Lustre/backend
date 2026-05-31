@@ -15,6 +15,7 @@ import adminServiceImageRouter from "./controllers/AdminServiceImageRoute";
 import { customerProfileImageRouter, cleanerProfileImageRouter, adminProfileImageRouter } from "./controllers/ProfileImageRoute";
 import adminBlogImageRouter from "./controllers/AdminBlogImageRoute";
 import cleanerApplicationImageRouter from "./controllers/CleanerApplicationImageRoute";
+import adminAddOnImageRouter from "./controllers/AdminAddOnImageRoute";
 
 const app = express();
 const PORT = env.PORT;
@@ -22,6 +23,7 @@ const PORT = env.PORT;
 app.use("/v1/payments", express.raw({ type: "application/json" }), webhookRouter);
 app.use("/v1/cleaner/bookings", cleanerBookingImageRouter);
 app.use("/v1/admin/services", adminServiceImageRouter);
+app.use("/v1/admin/add-ons", adminAddOnImageRouter);
 app.use("/v1/customer/profile", customerProfileImageRouter);
 app.use("/v1/cleaner/profile", cleanerProfileImageRouter);
 app.use("/v1/admin/profile", adminProfileImageRouter);

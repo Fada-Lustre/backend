@@ -63,6 +63,24 @@ describe("Admin Services", () => {
       expect(res.body.name).toBe("Detail Service");
     });
 
+    it("returns a signed icon_url when an icon was uploaded", async () => {
+      const admin = await createTestAdmin();
+      const createRes = await request(app)
+        .post("/v1/admin/services")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .field("name", "Iconic Service")
+        .field("description", "Has an icon")
+        .attach("icon", Buffer.from([0xff, 0xd8, 0xff]), { filename: "icon.png", contentType: "image/png" });
+
+      const res = await request(app)
+        .get(`/v1/admin/services/${createRes.body.id}`)
+        .set("Authorization", `Bearer ${admin.token}`);
+
+      expect(res.status).toBe(200);
+      expect(typeof res.body.icon_url).toBe("string");
+      expect(res.body.icon_url).toContain("services/icons");
+    });
+
     it("returns 404 for unknown service", async () => {
       const admin = await createTestAdmin();
       const res = await request(app)

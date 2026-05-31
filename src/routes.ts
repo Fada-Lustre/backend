@@ -70,6 +70,8 @@ import { AdminCleanerController } from './controllers/AdminCleanerController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminBookingController } from './controllers/AdminBookingController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AdminAddOnController } from './controllers/AdminAddOnController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminActivityLogController } from './controllers/AdminActivityLogController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AddressController } from './controllers/AddressController';
@@ -155,6 +157,7 @@ const models: TsoaRoute.Models = {
             "name": {"dataType":"string","required":true},
             "slug": {"ref":"AddOnSlug","required":true},
             "hours_added": {"dataType":"double","required":true},
+            "image_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": true,
     },
@@ -436,6 +439,8 @@ const models: TsoaRoute.Models = {
             "phone_number": {"dataType":"string","required":true},
             "status": {"dataType":"string","required":true},
             "created_at": {"dataType":"string","required":true},
+            "photo_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+            "photo_public_id": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": true,
     },
@@ -1397,6 +1402,7 @@ const models: TsoaRoute.Models = {
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "image_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "icon_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "status": {"dataType":"string","required":true},
             "date_added": {"dataType":"string","required":true},
         },
@@ -1724,6 +1730,28 @@ const models: TsoaRoute.Models = {
             "date": {"dataType":"string","required":true},
             "start_time": {"dataType":"string","required":true},
             "end_time": {"dataType":"string"},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdminAddOn": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "slug": {"ref":"AddOnSlug","required":true},
+            "hours_added": {"dataType":"double","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "image_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ListResponse_AdminAddOn_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"AdminAddOn"},"required":true},
+            "meta": {"ref":"PaginationMeta","required":true},
         },
         "additionalProperties": true,
     },
@@ -5628,6 +5656,37 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'sendBookingReceipt',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminAddOnController_listAddOns: Record<string, TsoaRoute.ParameterSchema> = {
+                _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+        };
+        app.get('/v1/admin/add-ons',
+            authenticateMiddleware([{"jwt":["admin:services"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminAddOnController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminAddOnController.prototype.listAddOns)),
+
+            async function AdminAddOnController_listAddOns(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminAddOnController_listAddOns, request, response });
+
+                const controller = new AdminAddOnController();
+
+              await templateService.apiHandler({
+                methodName: 'listAddOns',
                 controller,
                 response,
                 next,

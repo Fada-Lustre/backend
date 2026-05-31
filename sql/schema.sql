@@ -139,7 +139,8 @@ CREATE TABLE IF NOT EXISTS add_ons (
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   hours_added NUMERIC(4, 2) NOT NULL DEFAULT 0.5,
-  active BOOLEAN NOT NULL DEFAULT true
+  active BOOLEAN NOT NULL DEFAULT true,
+  image_url TEXT
 );
 
 INSERT INTO add_ons (name, slug, hours_added) VALUES

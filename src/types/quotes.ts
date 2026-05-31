@@ -11,6 +11,8 @@ export interface AddOn {
   name: string;
   slug: AddOnSlug;
   hours_added: number;
+  /** Presigned URL for the add-on image (null if none uploaded) */
+  image_url?: string | null;
 }
 
 export interface PricingConfig {

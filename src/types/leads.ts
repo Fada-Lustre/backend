@@ -73,6 +73,9 @@ export interface CleanerApplicationDetail {
   phone_number: string;
   status: string;
   created_at: string;
+  /** Presigned URL for the applicant's photo (null if none uploaded) */
+  photo_url?: string | null;
+  photo_public_id?: string | null;
 }
 
 export interface UpdateCleanerApplicationRequest {
