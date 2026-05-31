@@ -1,0 +1,37 @@
+name: Socket Security
+
+# Supply-chain attack protection at install time.
+# Socket Firewall (sfw) wraps the package manager and aborts the install if a
+# package (or any transitive dependency) matches Socket's malware / risk signals.
+# `firewall-free` mode needs no API token. For richer PR-level CVE reporting,
+# install the Socket GitHub App (see socket.yml / SECURITY.md).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  socket-firewall:
+    name: Socket Firewall (install scan)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Installs the Socket Firewall CLI (`sfw`). Free mode — no token required.
+      - uses: SocketDev/action@v1.3.1
+        with:
+          mode: firewall-free
+          job-summary: all
+
+      # Reproducible install, gated by Socket Firewall. Fails the job if Socket
+      # blocks a malicious / high-risk package.
+      - run: sfw npm ci

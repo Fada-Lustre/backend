@@ -1,0 +1,26 @@
+# Socket.dev configuration — https://docs.socket.dev/docs/socket-yml
+#
+# This file is read by the Socket Security GitHub App and the Socket CLI.
+# It must live at the repository root.
+#
+# To actually CONNECT this repo to Socket.dev you must install the GitHub App
+# (a one-time web step a repo/org admin performs):
+#   https://github.com/apps/socket-security  →  select this repository.
+# Once installed, the App reads the settings below and comments on pull requests
+# that add or change dependencies, flagging supply-chain risks (install scripts,
+# obfuscated code, shell/network/filesystem access, known malware, typo-squats…).
+version: 2
+
+# Paths Socket should not treat as project source when scanning.
+projectIgnorePaths:
+  - dist
+  - docs
+  - "**/*.test.ts"
+
+githubApp:
+  # Master switch for the Socket GitHub App on this repository.
+  enabled: true
+  # Comment on pull requests that introduce risky or changed dependencies.
+  pullRequestAlertsEnabled: true
+  # Publish full project health / security reports.
+  projectReportsEnabled: true
