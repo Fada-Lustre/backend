@@ -1,0 +1,42 @@
+name: Dependency Audit
+
+# Known-CVE gate for the dependency tree.
+# - PRs/pushes: fail only on HIGH/CRITICAL CVEs in PRODUCTION dependencies
+#   (currently 0). Dev/build-only advisories — the @vercel/node tooling chain —
+#   are tracked separately and documented in SECURITY.md, so they don't block CI.
+# - A weekly run surfaces newly disclosed CVEs even when no code changes.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  npm-audit:
+    name: npm audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      # Gate: production dependencies only. Fails on high/critical CVEs.
+      - name: Audit production dependencies (high+)
+        run: npm audit --omit=dev --audit-level=high
+
+      # Visibility: full tree (incl. dev). Non-blocking — reports the known
+      # @vercel/node build-chain advisories without failing the build.
+      - name: Audit full tree (report-only)
+        if: always()
+        run: npm audit || true
