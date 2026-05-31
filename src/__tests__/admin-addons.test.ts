@@ -87,5 +87,14 @@ describe("Admin Add-ons", () => {
         .set("Authorization", `Bearer ${admin.token}`);
       expect(res.status).toBe(400);
     });
+
+    it("returns 400 for a malformed (non-UUID) add-on id", async () => {
+      const admin = await createTestAdmin();
+      const res = await request(app)
+        .post("/v1/admin/add-ons/not-a-uuid/image")
+        .set("Authorization", `Bearer ${admin.token}`)
+        .attach("image", PNG, { filename: "addon.png", contentType: "image/png" });
+      expect(res.status).toBe(400);
+    });
   });
 });

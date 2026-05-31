@@ -3,6 +3,7 @@ import fileUpload, { UploadedFile } from "express-fileupload";
 import { ApplicationError } from "../errors";
 import { requireJwtScopes } from "../lib/auth-middleware";
 import { uploadFile } from "../lib/r2";
+import { isUuid } from "../lib/validation";
 import * as adminAddOnService from "../services/admin-addon.service";
 
 const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp"];
@@ -14,6 +15,9 @@ router.use(fileUpload({ limits: { fileSize: 5 * 1024 * 1024, files: 1 }, abortOn
 router.post("/:id/image", requireJwtScopes("admin:services"), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id = req.params.id as string;
+    if (!isUuid(id)) {
+      throw new ApplicationError(400, "Invalid add-on ID format", "VALIDATION_ERROR");
+    }
 
     const existing = await adminAddOnService.findAddOn(id);
     if (!existing) {
