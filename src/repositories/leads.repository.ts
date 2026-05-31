@@ -59,7 +59,7 @@ export async function updateApplicationPhoto(
 
 export async function findCleanerApplication(id: string): Promise<Record<string, unknown> | null> {
   const rows = await db.query(
-    `SELECT id, first_name, last_name, email, phone_number, status, created_at
+    `SELECT id, first_name, last_name, email, phone_number, status, created_at, photo_url, photo_public_id
      FROM cleaner_applications WHERE id = $1 AND deleted_at IS NULL`, [id]
   ) as Record<string, unknown>[];
   return rows[0] ?? null;
