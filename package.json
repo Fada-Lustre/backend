@@ -15,7 +15,8 @@
     "test:docker:up": "docker compose -f docker-compose.test.yml up -d --wait",
     "test:docker:down": "docker compose -f docker-compose.test.yml down",
     "typecheck": "tsc --noEmit",
-    "migrate": "ts-node ./sql/migrate.ts"
+    "migrate": "ts-node ./sql/migrate.ts",
+    "cleanup:otp": "node ./dist/scripts/cleanup-otp.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",
@@ -45,7 +46,6 @@
     "@types/pg": "^8.10.2",
     "@types/supertest": "^7.2.0",
     "@types/swagger-ui-express": "^4.1.8",
-    "@vercel/node": "^5.7.12",
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.0",

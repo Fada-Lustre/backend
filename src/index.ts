@@ -114,7 +114,7 @@ app.use(
   }
 );
 
-if (!process.env.VERCEL && process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`Fada Lustre API running on port ${PORT}`);
     console.log(`Swagger UI: http://localhost:${PORT}/docs`);
