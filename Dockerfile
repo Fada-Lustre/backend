@@ -25,6 +25,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/public ./public
 
+# Run as the image's built-in non-root user (least privilege).
+USER node
+
 EXPOSE 3000
 # Standalone server entry (npm start === node ./dist/index.js).
 CMD ["node", "dist/index.js"]

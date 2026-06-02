@@ -7,6 +7,13 @@ The API is a standalone Express server (`npm start` → `dist/index.js`) that li
 > publishes `dist/` would only serve the compiled files as static assets and nothing would
 > listen. App Runner is the right fit: it runs the process and gives you an HTTPS URL.
 
+> ⚠️ **App Runner availability:** AWS now states App Runner is **no longer open to new
+> customers** ("Existing customers can continue to use the service as normal"). If this AWS
+> account hasn't used App Runner before, you may be unable to create a service — in that case
+> use **ECS Fargate**, **Elastic Beanstalk**, or **Lightsail Containers** instead. The
+> `Dockerfile` here works unchanged on any of them (ECS/Fargate and Lightsail both run the
+> same container image). Confirm App Runner access before committing to it.
+
 App Runner offers two source types. Pick **one**:
 
 | Route | Uses | When |
@@ -45,7 +52,8 @@ Then create the App Runner service from that image (console or CLI):
 
 Connect the GitHub repo in the App Runner console; it reads `apprunner.yaml` (managed Node 22,
 runs `npm ci && npm run build`, then `npm start`, port `3000`). Set the same env vars in the
-service config. Switch `runtime: nodejs22` → `nodejs20` if 22 isn't available in your region.
+service config. (`nodejs22` is App Runner's current managed Node runtime — Node 18 and earlier
+reached End of Support on 2025-12-01, so 22 is the correct choice, not 20.)
 
 ## Required environment variables (set in App Runner — use secrets for sensitive ones)
 
