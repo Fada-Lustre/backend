@@ -1,0 +1,22 @@
+# AWS App Runner config for the *source / GitHub* deploy route (managed Node runtime, no ECR).
+# App Runner reads this from the repo root when the service source is a connected GitHub repo.
+# (If you deploy via the *container* route instead, App Runner uses the Dockerfile and IGNORES this file.)
+#
+# Set all secrets (DB_*, JWT_*, RESEND_*, R2_*, ENCRYPTION_KEY) as runtime environment variables
+# or `secrets:` in the App Runner service config — NOT here. See DEPLOY.md.
+version: 1.0
+runtime: nodejs22 # if unavailable in your region, use nodejs20
+build:
+  commands:
+    build:
+      - npm ci
+      - npm run build
+run:
+  command: npm start
+  network:
+    port: 3000
+  env:
+    - name: NODE_ENV
+      value: production
+    - name: PORT
+      value: "3000"
