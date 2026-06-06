@@ -51,6 +51,11 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       imgSrc: ["'self'", "data:"],
       connectSrc: ["'self'"],
+      // TEMP: disabled until HTTPS is live on api.fadalustre-pro.co.uk — the default
+      // upgrade-insecure-requests directive forces browsers to fetch page assets over
+      // https, which 521s while the ALB has no :443 listener (white-screen /docs).
+      // Re-enable (remove this line) once the Cloudflare origin cert + 443 listener land.
+      upgradeInsecureRequests: null,
     },
   },
 }));
