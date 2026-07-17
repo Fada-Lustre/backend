@@ -40,6 +40,31 @@ export function firstOr404<T>(rows: T[], message: string): T {
   return rows[0]!;
 }
 
+/**
+ * Build a parameterized date-range filter fragment for a given column.
+ * Accepts ISO date strings (validate them first). Returns the SQL fragment
+ * (without a leading AND/WHERE) and the params to append, plus the next index.
+ */
+export function buildDateRange(
+  column: string,
+  from: string | undefined,
+  to: string | undefined,
+  startIdx: number
+): { clauses: string[]; params: string[]; nextIdx: number } {
+  const clauses: string[] = [];
+  const params: string[] = [];
+  let idx = startIdx;
+  if (from) {
+    clauses.push(`${column}::date >= $${idx++}`);
+    params.push(from);
+  }
+  if (to) {
+    clauses.push(`${column}::date <= $${idx++}`);
+    params.push(to);
+  }
+  return { clauses, params, nextIdx: idx };
+}
+
 export function appendPagination(
   params: (string | number)[],
   idx: number,

@@ -21,6 +21,15 @@ router.post(
         return;
       }
 
+      // Only allow attaching a photo while the application is still in an
+      // editable state. Once it has been processed (approved/rejected/etc.) the
+      // photo is locked, preventing anyone with the id from overwriting it.
+      const EDITABLE_STATUSES = ["draft", "submitted", "pending"];
+      if (!EDITABLE_STATUSES.includes(existing.status)) {
+        res.status(409).json({ code: "CONFLICT", message: "Application photo can no longer be changed" });
+        return;
+      }
+
       const fileArray = req.files as unknown as fileUpload.FileArray | undefined;
       if (!fileArray?.photo) {
         res.status(400).json({ code: "VALIDATION_ERROR", message: "Field 'photo' is required" });

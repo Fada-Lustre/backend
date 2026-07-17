@@ -9,6 +9,7 @@ import db from "./db";
 import { RegisterRoutes } from "./routes";
 import { authLimiter, generalLimiter } from "./middleware/rateLimiter";
 import { ZodError } from "zod";
+import { formatTsoaValidation } from "./lib/error-format";
 import webhookRouter from "./controllers/WebhookController";
 import cleanerBookingImageRouter from "./controllers/CleanerBookingImageRoute";
 import adminServiceImageRouter from "./controllers/AdminServiceImageRoute";
@@ -103,11 +104,12 @@ app.use(
     } else if (err instanceof WrapperError) {
       res.status(err.statusCode).json({ code: "WRAPPED_ERROR", message: err.message });
     } else if (typeof err === "object" && err !== null && "fields" in err) {
-      const tsoaErr = err as { status?: number; fields: unknown };
+      const tsoaErr = err as { status?: number; fields: Record<string, { message: string; value?: unknown }> };
+      const { message, details } = formatTsoaValidation(tsoaErr.fields);
       res.status(tsoaErr.status ?? 400).json({
         code: "VALIDATION_ERROR",
-        message: "Validation failed",
-        details: tsoaErr.fields,
+        message,
+        details,
       });
     } else if (typeof err === "object" && err !== null && "error" in err) {
       const wrapped = err as { status?: number; error: unknown };

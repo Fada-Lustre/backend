@@ -16,6 +16,13 @@ export async function listAdminUsers(
   status?: string,
   search?: string
 ): Promise<{ data: Record<string, unknown>[]; meta: { total: number; page: number; limit: number } }> {
+  // Pending "admins" are invitations that haven't been activated yet — they live in
+  // admin_invitations, not the users table, so they must be listed from there.
+  if (status === "pending") {
+    const invites = await inviteRepo.listPending({ search }, page, limit);
+    return { data: invites.data as unknown as Record<string, unknown>[], meta: { total: invites.total, page, limit } };
+  }
+
   const result = await userRepo.listAdminsAdmin({ status, search }, page, limit);
   return { data: result.data as unknown as Record<string, unknown>[], meta: { total: result.total, page, limit } };
 }
@@ -26,7 +33,7 @@ export async function inviteAdmin(
   lastName: string,
   email: string,
   roleId: string
-): Promise<{ id: string; message: string }> {
+): Promise<{ id: string; message: string; email_sent: boolean }> {
   const roleExists = await roleRepo.existsById(roleId);
   if (!roleExists) {
     throw new ApplicationError(400, "Invalid role_id", "VALIDATION_ERROR");
@@ -45,17 +52,30 @@ export async function inviteAdmin(
   const tempPassword = crypto.randomBytes(6).toString("hex");
   const tempHash = await bcrypt.hash(tempPassword, 10);
 
-  const inv = await inviteRepo.create({ email, role_id: roleId, temp_password_hash: tempHash, invited_by: actorId });
+  const inv = await inviteRepo.create({ email, first_name: firstName, last_name: lastName, role_id: roleId, temp_password_hash: tempHash, invited_by: actorId });
 
   await logActivity(actorId, `Invited new admin user - ${firstName} ${lastName}`, "admin_invitation", inv.id);
 
-  const activateUrl = `https://admin.fadalustre.com/activate?email=${encodeURIComponent(email)}`;
+  const activateUrl = `https://admin.fadalustre-pro.co.uk/activate?email=${encodeURIComponent(email)}`;
   const html = adminInvitationHtml(firstName, email, tempPassword, activateUrl);
-  await sendEmail(email, "You've been invited to Fada Lustre Admin", html).catch((err) => {
-    console.error("Failed to send invitation email:", err);
-  });
 
-  return { id: inv.id, message: "Invitation email sent" };
+  let emailSent = true;
+  try {
+    await sendEmail(email, "You've been invited to Fada Lustre Admin", html);
+  } catch (err) {
+    // Do not fail the whole invite if email delivery fails — the invitation record
+    // still exists — but report it honestly so the caller isn't misled.
+    emailSent = false;
+    console.error("Failed to send invitation email:", err);
+  }
+
+  return {
+    id: inv.id,
+    message: emailSent
+      ? "Invitation created and email sent"
+      : "Invitation created, but the email could not be sent. Please check email configuration or resend.",
+    email_sent: emailSent,
+  };
 }
 
 export async function editAdminUser(

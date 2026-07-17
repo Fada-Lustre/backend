@@ -1,5 +1,5 @@
 import db from "../db";
-import { addSearchFilter } from "../lib/query-helpers";
+import { addSearchFilter, buildDateRange } from "../lib/query-helpers";
 
 // ── Row types ──────────────────────────────────────────────────────────
 
@@ -82,9 +82,22 @@ export async function updateStatusByBookingId(
 
 // ── Dashboard ──────────────────────────────────────────────────────────
 
-export async function balanceSummary(period?: string): Promise<{ balance: number; pending: number }> {
+export async function balanceSummary(
+  period?: string,
+  from?: string,
+  to?: string
+): Promise<{ balance: number; pending: number }> {
   let dateFilter = "";
-  if (period && period !== "all_time") {
+  const params: string[] = [];
+
+  // Explicit from/to range takes precedence over the relative period enum.
+  if (from || to) {
+    const range = buildDateRange("created_at", from, to, 1);
+    if (range.clauses.length > 0) {
+      dateFilter = ` AND ${range.clauses.join(" AND ")}`;
+      params.push(...range.params);
+    }
+  } else if (period && period !== "all_time") {
     const intervals: Record<string, string> = {
       today: "0 days", this_month: "1 month",
       past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
@@ -100,7 +113,8 @@ export async function balanceSummary(period?: string): Promise<{ balance: number
   const rows = await db.query(
     `SELECT COALESCE(SUM(CASE WHEN status = 'successful' THEN amount ELSE 0 END), 0)::float AS balance,
             COALESCE(SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END), 0)::float AS pending
-     FROM transactions WHERE type = 'booking'${dateFilter}`
+     FROM transactions WHERE type = 'booking'${dateFilter}`,
+    params
   ) as { balance: number; pending: number }[];
   return rows[0]!;
 }
@@ -168,7 +182,7 @@ export async function cleanerBalance(cleanerId: string): Promise<number> {
 // ── Admin list / detail ────────────────────────────────────────────────
 
 export async function listAdmin(
-  filters: { period?: string; type?: string; search?: string; location?: string; service?: string },
+  filters: { period?: string; from?: string; to?: string; type?: string; search?: string; location?: string; service?: string },
   page: number,
   limit: number
 ): Promise<{ data: Record<string, unknown>[]; stats: Record<string, unknown>; total: number }> {
@@ -176,7 +190,13 @@ export async function listAdmin(
   const params: (string | number)[] = [];
   let idx = 1;
 
-  if (filters.period && filters.period !== "all_time") {
+  // Explicit from/to range takes precedence over the relative period enum.
+  if (filters.from || filters.to) {
+    const range = buildDateRange("t.created_at", filters.from, filters.to, idx);
+    conditions.push(...range.clauses);
+    params.push(...range.params);
+    idx = range.nextIdx;
+  } else if (filters.period && filters.period !== "all_time") {
     const intervals: Record<string, string> = {
       today: "0 days", this_month: "1 month",
       past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
@@ -191,10 +211,13 @@ export async function listAdmin(
     }
   }
 
+  // Accept both singular (booking/payout) and plural (bookings/payouts) type filters.
   if (filters.type && filters.type !== "all") {
-    if (filters.type === "bookings") conditions.push(`t.type = 'booking'`);
-    else if (filters.type === "payouts") conditions.push(`t.type = 'payout'`);
-    else { conditions.push(`t.type = $${idx++}`); params.push(filters.type); }
+    const normalized = filters.type === "bookings" ? "booking"
+      : filters.type === "payouts" ? "payout"
+      : filters.type;
+    conditions.push(`t.type = $${idx++}`);
+    params.push(normalized);
   }
 
   if (filters.search) {

@@ -59,7 +59,9 @@ describe("Admin Users", () => {
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty("id");
-      expect(res.body.message).toBe("Invitation email sent");
+      // Email is stubbed in tests (no RESEND_API_KEY), so it "sends" without throwing.
+      expect(res.body.email_sent).toBe(true);
+      expect(res.body.message).toBe("Invitation created and email sent");
     });
 
     it("returns 409 for duplicate invitation", async () => {
