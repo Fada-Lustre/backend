@@ -401,9 +401,18 @@ export async function findAdminDetail(
 
 // ── Dashboard / stats ──────────────────────────────────────────────────
 
-export async function countTotal(period?: string): Promise<number> {
+export async function countTotal(period?: string, from?: string, to?: string): Promise<number> {
   let dateFilter = "";
-  if (period && period !== "all_time") {
+  const params: string[] = [];
+
+  // Explicit from/to range takes precedence over the relative period enum.
+  if (from || to) {
+    const range = buildDateRange("created_at", from, to, 1);
+    if (range.clauses.length > 0) {
+      dateFilter = ` WHERE ${range.clauses.join(" AND ")}`;
+      params.push(...range.params);
+    }
+  } else if (period && period !== "all_time") {
     const intervals: Record<string, string> = {
       today: "0 days", this_month: "1 month",
       past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
@@ -417,7 +426,8 @@ export async function countTotal(period?: string): Promise<number> {
   }
 
   const rows = await db.query(
-    `SELECT COUNT(*)::int AS total FROM bookings${dateFilter}`
+    `SELECT COUNT(*)::int AS total FROM bookings${dateFilter}`,
+    params
   ) as { total: number }[];
   return rows[0]!.total;
 }
@@ -523,7 +533,7 @@ export async function insertAmendment(
 
 // ── Admin list (complex with filters) ──────────────────────────────────
 
-import { addSearchFilter } from "../lib/query-helpers";
+import { addSearchFilter, buildDateRange } from "../lib/query-helpers";
 import type { AdminBookingListItem, AdminBookingDetail } from "../types/admin-booking";
 
 export async function listAdmin(

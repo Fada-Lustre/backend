@@ -1,5 +1,5 @@
 import db from "../db";
-import { addSearchFilter } from "../lib/query-helpers";
+import { addSearchFilter, buildDateRange } from "../lib/query-helpers";
 
 // ── Row types ──────────────────────────────────────────────────────────
 
@@ -483,9 +483,25 @@ export async function countByAdminRole(roleId: string): Promise<number> {
 
 // ── Dashboard ──────────────────────────────────────────────────────────
 
-export async function topByRating(role: string, limit: number, period?: string): Promise<TopRatedRow[]> {
+export async function topByRating(
+  role: string,
+  limit: number,
+  period?: string,
+  from?: string,
+  to?: string
+): Promise<TopRatedRow[]> {
+  const idColumn = role === "customer" ? "customer_id" : "cleaner_id";
   let dateFilter = "";
-  if (period && period !== "all_time") {
+  const extraParams: string[] = [];
+
+  // Explicit from/to range takes precedence over the relative period enum.
+  if (from || to) {
+    const range = buildDateRange("b.created_at", from, to, 3); // $1=role, $2=limit
+    if (range.clauses.length > 0) {
+      dateFilter = ` AND u.id IN (SELECT ${idColumn} FROM bookings b WHERE ${range.clauses.join(" AND ")})`;
+      extraParams.push(...range.params);
+    }
+  } else if (period && period !== "all_time") {
     const intervals: Record<string, string> = {
       today: "0 days", this_month: "1 month",
       past_3_months: "3 months", past_6_months: "6 months", past_year: "1 year",
@@ -495,7 +511,7 @@ export async function topByRating(role: string, limit: number, period?: string):
       const bookingDateCond = period === "today"
         ? `b.created_at::date = CURRENT_DATE`
         : `b.created_at >= NOW() - INTERVAL '${interval}'`;
-      dateFilter = ` AND u.id IN (SELECT ${role === 'customer' ? 'customer_id' : 'cleaner_id'} FROM bookings b WHERE ${bookingDateCond})`;
+      dateFilter = ` AND u.id IN (SELECT ${idColumn} FROM bookings b WHERE ${bookingDateCond})`;
     }
   }
 
@@ -505,7 +521,7 @@ export async function topByRating(role: string, limit: number, period?: string):
      FROM users u
      WHERE u.role = $1 AND u.deleted_at IS NULL${dateFilter}
      ORDER BY u.rating_avg DESC NULLS LAST LIMIT $2`,
-    [role, limit]
+    [role, limit, ...extraParams]
   ) as TopRatedRow[];
 }
 

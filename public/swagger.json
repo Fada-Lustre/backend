@@ -3021,11 +3021,16 @@
 					},
 					"message": {
 						"type": "string"
+					},
+					"email_sent": {
+						"type": "boolean",
+						"description": "Whether the invitation email was actually delivered to the provider."
 					}
 				},
 				"required": [
 					"id",
-					"message"
+					"message",
+					"email_sent"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -3565,6 +3570,59 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"TopRatedPerson": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"profile_image_url": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"rating",
+					"profile_image_url"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"UpcomingBookingGroup": {
+				"properties": {
+					"service": {
+						"type": "string"
+					},
+					"started": {
+						"type": "number",
+						"format": "double"
+					},
+					"pending": {
+						"type": "number",
+						"format": "double"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"service",
+					"started",
+					"pending",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"Record_string.number_": {
 				"properties": {},
 				"additionalProperties": {
@@ -3573,6 +3631,47 @@
 				},
 				"type": "object",
 				"description": "Construct a type with a set of properties K of type T"
+			},
+			"DashboardTransactionItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"ref": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string"
+					},
+					"time": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"ref",
+					"name",
+					"type",
+					"amount",
+					"date",
+					"time",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": true
 			},
 			"DashboardResponse": {
 				"properties": {
@@ -3590,86 +3689,19 @@
 					},
 					"top_clients": {
 						"items": {
-							"properties": {
-								"profile_image_url": {
-									"type": "string",
-									"nullable": true
-								},
-								"rating": {
-									"type": "number",
-									"format": "double"
-								},
-								"name": {
-									"type": "string"
-								},
-								"id": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"profile_image_url",
-								"rating",
-								"name",
-								"id"
-							],
-							"type": "object"
+							"$ref": "#/components/schemas/TopRatedPerson"
 						},
 						"type": "array"
 					},
 					"top_cleaners": {
 						"items": {
-							"properties": {
-								"profile_image_url": {
-									"type": "string",
-									"nullable": true
-								},
-								"rating": {
-									"type": "number",
-									"format": "double"
-								},
-								"name": {
-									"type": "string"
-								},
-								"id": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"profile_image_url",
-								"rating",
-								"name",
-								"id"
-							],
-							"type": "object"
+							"$ref": "#/components/schemas/TopRatedPerson"
 						},
 						"type": "array"
 					},
 					"upcoming_bookings": {
 						"items": {
-							"properties": {
-								"total": {
-									"type": "number",
-									"format": "double"
-								},
-								"pending": {
-									"type": "number",
-									"format": "double"
-								},
-								"started": {
-									"type": "number",
-									"format": "double"
-								},
-								"service": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"total",
-								"pending",
-								"started",
-								"service"
-							],
-							"type": "object"
+							"$ref": "#/components/schemas/UpcomingBookingGroup"
 						},
 						"type": "array"
 					},
@@ -3702,44 +3734,7 @@
 							},
 							"data": {
 								"items": {
-									"properties": {
-										"status": {
-											"type": "string"
-										},
-										"time": {
-											"type": "string"
-										},
-										"date": {
-											"type": "string"
-										},
-										"amount": {
-											"type": "number",
-											"format": "double"
-										},
-										"type": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"ref": {
-											"type": "string"
-										},
-										"id": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"status",
-										"time",
-										"date",
-										"amount",
-										"type",
-										"name",
-										"ref",
-										"id"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/DashboardTransactionItem"
 								},
 								"type": "array"
 							}
@@ -3760,6 +3755,103 @@
 					"upcoming_bookings",
 					"service_counts",
 					"recent_transactions"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"DashboardStatsResponse": {
+				"description": "Aggregate stats block — filterable by an explicit date range (from/to) or a\nrelative period. This axis filters on record creation date (created_at).",
+				"properties": {
+					"balance": {
+						"type": "number",
+						"format": "double"
+					},
+					"pending": {
+						"type": "number",
+						"format": "double"
+					},
+					"total_bookings": {
+						"type": "number",
+						"format": "double"
+					},
+					"top_clients": {
+						"items": {
+							"$ref": "#/components/schemas/TopRatedPerson"
+						},
+						"type": "array"
+					},
+					"top_cleaners": {
+						"items": {
+							"$ref": "#/components/schemas/TopRatedPerson"
+						},
+						"type": "array"
+					},
+					"service_counts": {
+						"$ref": "#/components/schemas/Record_string.number_"
+					}
+				},
+				"required": [
+					"balance",
+					"pending",
+					"total_bookings",
+					"top_clients",
+					"top_cleaners",
+					"service_counts"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"DashboardUpcomingResponse": {
+				"description": "Upcoming bookings block — filtered by scheduled_date over a week/day range,\na genuinely different date axis from the stats block.",
+				"properties": {
+					"upcoming_bookings": {
+						"items": {
+							"$ref": "#/components/schemas/UpcomingBookingGroup"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"upcoming_bookings"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"DashboardTransactionsResponse": {
+				"description": "Transactions block — paginated, filterable by type (booking/payout) and date range.",
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/DashboardTransactionItem"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"properties": {
+							"limit": {
+								"type": "number",
+								"format": "double"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							},
+							"total": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"limit",
+							"page",
+							"total"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -9829,6 +9921,221 @@
 								"all",
 								"booking",
 								"payout"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/dashboard/stats": {
+			"get": {
+				"operationId": "GetStats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DashboardStatsResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Aggregate stats: balance, pending, total bookings, top clients/cleaners,\nservice counts. Filter by an explicit date range (from/to) OR a relative period.",
+				"summary": "Dashboard stats",
+				"tags": [
+					"Admin Dashboard"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "Relative period (ignored when from/to provided)",
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
+							]
+						}
+					},
+					{
+						"description": "ISO date range start (filters on created_at)",
+						"in": "query",
+						"name": "from",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "ISO date range end (filters on created_at)",
+						"in": "query",
+						"name": "to",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/dashboard/upcoming-bookings": {
+			"get": {
+				"operationId": "GetUpcoming",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DashboardUpcomingResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Upcoming bookings grouped by service, filtered by scheduled_date range.",
+				"summary": "Dashboard upcoming bookings",
+				"tags": [
+					"Admin Dashboard"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "ISO date for range start (filters on scheduled_date)",
+						"in": "query",
+						"name": "week_start",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "ISO date for range end (filters on scheduled_date)",
+						"in": "query",
+						"name": "week_end",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/admin/dashboard/transactions": {
+			"get": {
+				"operationId": "GetTransactions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DashboardTransactionsResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Paginated transactions, filterable by type (booking/payout) and date range.",
+				"summary": "Dashboard transactions",
+				"tags": [
+					"Admin Dashboard"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin:home"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "Filter transactions: all, booking, payout",
+						"in": "query",
+						"name": "tx_type",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"all",
+								"booking",
+								"payout"
+							]
+						}
+					},
+					{
+						"description": "ISO date range start (filters on created_at)",
+						"in": "query",
+						"name": "from",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "ISO date range end (filters on created_at)",
+						"in": "query",
+						"name": "to",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "Page number (default: 1)",
+						"in": "query",
+						"name": "tx_page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "Items per page (default: 10)",
+						"in": "query",
+						"name": "tx_limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "Relative period (ignored when from/to provided)",
+						"in": "query",
+						"name": "period",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"today",
+								"this_month",
+								"past_3_months",
+								"past_6_months",
+								"past_year",
+								"all_time"
 							]
 						}
 					}

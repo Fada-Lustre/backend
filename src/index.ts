@@ -9,6 +9,7 @@ import db from "./db";
 import { RegisterRoutes } from "./routes";
 import { authLimiter, generalLimiter } from "./middleware/rateLimiter";
 import { ZodError } from "zod";
+import { formatTsoaValidation } from "./lib/error-format";
 import webhookRouter from "./controllers/WebhookController";
 import cleanerBookingImageRouter from "./controllers/CleanerBookingImageRoute";
 import adminServiceImageRouter from "./controllers/AdminServiceImageRoute";
@@ -51,6 +52,11 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       imgSrc: ["'self'", "data:"],
       connectSrc: ["'self'"],
+      // TEMP: disabled until HTTPS is live on api.fadalustre-pro.co.uk — the default
+      // upgrade-insecure-requests directive forces browsers to fetch page assets over
+      // https, which 521s while the ALB has no :443 listener (white-screen /docs).
+      // Re-enable (remove this line) once the Cloudflare origin cert + 443 listener land.
+      upgradeInsecureRequests: null,
     },
   },
 }));
@@ -98,11 +104,12 @@ app.use(
     } else if (err instanceof WrapperError) {
       res.status(err.statusCode).json({ code: "WRAPPED_ERROR", message: err.message });
     } else if (typeof err === "object" && err !== null && "fields" in err) {
-      const tsoaErr = err as { status?: number; fields: unknown };
+      const tsoaErr = err as { status?: number; fields: Record<string, { message: string; value?: unknown }> };
+      const { message, details } = formatTsoaValidation(tsoaErr.fields);
       res.status(tsoaErr.status ?? 400).json({
         code: "VALIDATION_ERROR",
-        message: "Validation failed",
-        details: tsoaErr.fields,
+        message,
+        details,
       });
     } else if (typeof err === "object" && err !== null && "error" in err) {
       const wrapped = err as { status?: number; error: unknown };

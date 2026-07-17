@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.github
+.claude
+.env
+.env.*
+*.md
+docs
+coverage
+.npm
+src/__tests__
+docker-compose.test.yml
+vercel.json
+api

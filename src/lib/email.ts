@@ -9,12 +9,18 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
     return;
   }
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: env.RESEND_FROM_EMAIL,
     to,
     subject,
     html,
   });
+
+  // The Resend SDK does not throw on API errors — it returns them. Surface it so
+  // callers can react (e.g. unverified sending domain, invalid recipient).
+  if (error) {
+    throw new Error(`Resend failed to send email: ${error.name ?? "error"} - ${error.message ?? "unknown"}`);
+  }
 }
 
 export function adminInvitationHtml(firstName: string, email: string, tempPassword: string, activateUrl: string): string {

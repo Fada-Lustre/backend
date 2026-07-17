@@ -1281,6 +1281,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"string","required":true},
             "message": {"dataType":"string","required":true},
+            "email_sent": {"dataType":"boolean","required":true},
         },
         "additionalProperties": true,
     },
@@ -1498,9 +1499,46 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "TopRatedPerson": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "rating": {"dataType":"double","required":true},
+            "profile_image_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpcomingBookingGroup": {
+        "dataType": "refObject",
+        "properties": {
+            "service": {"dataType":"string","required":true},
+            "started": {"dataType":"double","required":true},
+            "pending": {"dataType":"double","required":true},
+            "total": {"dataType":"double","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Record_string.number_": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"double"},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DashboardTransactionItem": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "ref": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "type": {"dataType":"string","required":true},
+            "amount": {"dataType":"double","required":true},
+            "date": {"dataType":"string","required":true},
+            "time": {"dataType":"string","required":true},
+            "status": {"dataType":"string","required":true},
+        },
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "DashboardResponse": {
@@ -1509,11 +1547,41 @@ const models: TsoaRoute.Models = {
             "balance": {"dataType":"double","required":true},
             "pending": {"dataType":"double","required":true},
             "total_bookings": {"dataType":"double","required":true},
-            "top_clients": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"profile_image_url":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
-            "top_cleaners": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"profile_image_url":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"rating":{"dataType":"double","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true},
-            "upcoming_bookings": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"total":{"dataType":"double","required":true},"pending":{"dataType":"double","required":true},"started":{"dataType":"double","required":true},"service":{"dataType":"string","required":true}}},"required":true},
+            "top_clients": {"dataType":"array","array":{"dataType":"refObject","ref":"TopRatedPerson"},"required":true},
+            "top_cleaners": {"dataType":"array","array":{"dataType":"refObject","ref":"TopRatedPerson"},"required":true},
+            "upcoming_bookings": {"dataType":"array","array":{"dataType":"refObject","ref":"UpcomingBookingGroup"},"required":true},
             "service_counts": {"ref":"Record_string.number_","required":true},
-            "recent_transactions": {"dataType":"nestedObjectLiteral","nestedProperties":{"meta":{"dataType":"nestedObjectLiteral","nestedProperties":{"limit":{"dataType":"double","required":true},"page":{"dataType":"double","required":true},"total":{"dataType":"double","required":true}},"required":true},"data":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"status":{"dataType":"string","required":true},"time":{"dataType":"string","required":true},"date":{"dataType":"string","required":true},"amount":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"ref":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},"required":true}},"required":true},
+            "recent_transactions": {"dataType":"nestedObjectLiteral","nestedProperties":{"meta":{"dataType":"nestedObjectLiteral","nestedProperties":{"limit":{"dataType":"double","required":true},"page":{"dataType":"double","required":true},"total":{"dataType":"double","required":true}},"required":true},"data":{"dataType":"array","array":{"dataType":"refObject","ref":"DashboardTransactionItem"},"required":true}},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DashboardStatsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "balance": {"dataType":"double","required":true},
+            "pending": {"dataType":"double","required":true},
+            "total_bookings": {"dataType":"double","required":true},
+            "top_clients": {"dataType":"array","array":{"dataType":"refObject","ref":"TopRatedPerson"},"required":true},
+            "top_cleaners": {"dataType":"array","array":{"dataType":"refObject","ref":"TopRatedPerson"},"required":true},
+            "service_counts": {"ref":"Record_string.number_","required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DashboardUpcomingResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "upcoming_bookings": {"dataType":"array","array":{"dataType":"refObject","ref":"UpcomingBookingGroup"},"required":true},
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DashboardTransactionsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"DashboardTransactionItem"},"required":true},
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"limit":{"dataType":"double","required":true},"page":{"dataType":"double","required":true},"total":{"dataType":"double","required":true}},"required":true},
         },
         "additionalProperties": true,
     },
@@ -4927,6 +4995,110 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getDashboard',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminDashboardController_getStats: Record<string, TsoaRoute.ParameterSchema> = {
+                _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
+                from: {"in":"query","name":"from","dataType":"string"},
+                to: {"in":"query","name":"to","dataType":"string"},
+        };
+        app.get('/v1/admin/dashboard/stats',
+            authenticateMiddleware([{"jwt":["admin:home"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController.prototype.getStats)),
+
+            async function AdminDashboardController_getStats(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminDashboardController_getStats, request, response });
+
+                const controller = new AdminDashboardController();
+
+              await templateService.apiHandler({
+                methodName: 'getStats',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminDashboardController_getUpcoming: Record<string, TsoaRoute.ParameterSchema> = {
+                _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                week_start: {"in":"query","name":"week_start","dataType":"string"},
+                week_end: {"in":"query","name":"week_end","dataType":"string"},
+        };
+        app.get('/v1/admin/dashboard/upcoming-bookings',
+            authenticateMiddleware([{"jwt":["admin:home"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController.prototype.getUpcoming)),
+
+            async function AdminDashboardController_getUpcoming(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminDashboardController_getUpcoming, request, response });
+
+                const controller = new AdminDashboardController();
+
+              await templateService.apiHandler({
+                methodName: 'getUpcoming',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminDashboardController_getTransactions: Record<string, TsoaRoute.ParameterSchema> = {
+                _req: {"in":"request","name":"_req","required":true,"dataType":"object"},
+                tx_type: {"in":"query","name":"tx_type","dataType":"union","subSchemas":[{"dataType":"enum","enums":["all"]},{"dataType":"enum","enums":["booking"]},{"dataType":"enum","enums":["payout"]}]},
+                from: {"in":"query","name":"from","dataType":"string"},
+                to: {"in":"query","name":"to","dataType":"string"},
+                tx_page: {"in":"query","name":"tx_page","dataType":"double"},
+                tx_limit: {"in":"query","name":"tx_limit","dataType":"double"},
+                period: {"in":"query","name":"period","dataType":"union","subSchemas":[{"dataType":"enum","enums":["today"]},{"dataType":"enum","enums":["this_month"]},{"dataType":"enum","enums":["past_3_months"]},{"dataType":"enum","enums":["past_6_months"]},{"dataType":"enum","enums":["past_year"]},{"dataType":"enum","enums":["all_time"]}]},
+        };
+        app.get('/v1/admin/dashboard/transactions',
+            authenticateMiddleware([{"jwt":["admin:home"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminDashboardController.prototype.getTransactions)),
+
+            async function AdminDashboardController_getTransactions(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminDashboardController_getTransactions, request, response });
+
+                const controller = new AdminDashboardController();
+
+              await templateService.apiHandler({
+                methodName: 'getTransactions',
                 controller,
                 response,
                 next,

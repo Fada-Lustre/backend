@@ -342,6 +342,8 @@ CREATE INDEX IF NOT EXISTS idx_otp_codes_email_purpose
 CREATE TABLE IF NOT EXISTS admin_invitations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT NOT NULL UNIQUE,
+  first_name TEXT,
+  last_name TEXT,
   role_id UUID NOT NULL,
   temp_password_hash TEXT NOT NULL,
   invited_by UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -350,6 +352,10 @@ CREATE TABLE IF NOT EXISTS admin_invitations (
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Idempotent columns for existing databases (invited admin's name, shown in pending list)
+ALTER TABLE admin_invitations ADD COLUMN IF NOT EXISTS first_name TEXT;
+ALTER TABLE admin_invitations ADD COLUMN IF NOT EXISTS last_name TEXT;
 
 -- ============================================================
 -- ADDRESSES

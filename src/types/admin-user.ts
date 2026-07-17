@@ -27,6 +27,8 @@ export interface InviteAdminRequest {
 export interface InviteAdminResponse {
   id: string;
   message: string;
+  /** Whether the invitation email was actually delivered to the provider. */
+  email_sent: boolean;
 }
 
 export type BlockAdminResponse = IdStatusResponse;

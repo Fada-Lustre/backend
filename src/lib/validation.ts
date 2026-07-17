@@ -18,6 +18,25 @@ export function validatePassword(password: string): void {
   }
 }
 
+/**
+ * Validate an optional ISO-8601 date/datetime query param. Returns the value
+ * unchanged when valid/absent, and throws a descriptive 400 when malformed —
+ * preventing an invalid value from reaching a Postgres date cast (which would
+ * otherwise surface as a 500 Internal Server Error).
+ */
+export function validateIsoDateParam(value: string | undefined, paramName: string): string | undefined {
+  if (value === undefined || value === "") return value;
+  const ts = Date.parse(value);
+  if (Number.isNaN(ts)) {
+    throw new ApplicationError(
+      400,
+      `${paramName} must be a valid ISO-8601 date (e.g. 2026-06-13 or 2026-06-13T23:00:00.000Z)`,
+      "VALIDATION_ERROR"
+    );
+  }
+  return value;
+}
+
 export function clampPagination(
   page: number,
   limit: number,
